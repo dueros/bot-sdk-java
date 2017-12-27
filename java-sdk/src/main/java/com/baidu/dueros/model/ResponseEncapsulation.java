@@ -30,7 +30,7 @@ import com.baidu.dueros.data.response.Session;
 public class ResponseEncapsulation {
 
     // 版本信息
-    private final String version = "2.0";
+    private static final String version = "2.0";
     // 反馈给DuerOS的意图信息
     private Context context;
     // 会话信息
