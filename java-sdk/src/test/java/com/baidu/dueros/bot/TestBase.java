@@ -1,6 +1,19 @@
-/**
- * Copyright (C) 2017 Baidu Inc. All rights reserved.
+/*
+ * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.baidu.dueros.bot;
 
 import static org.junit.Assert.*;
@@ -11,7 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Base 测试类
+ * BaseBot 测试类
  * 
  * @author tianlonglong(tianlong02@baidu.com)
  * @version V1.0
@@ -53,7 +66,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#Base(com.baidu.dueros.model.Request)}.
+     * {@link com.baidu.dueros.bot.BaseBot#Base(com.baidu.dueros.model.Request)}.
      */
     @Test
     public void testBaseRequest() {
@@ -61,7 +74,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#Base(java.lang.String)}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#Base(java.lang.String)}.
      */
     @Test
     public void testBaseString() {
@@ -70,7 +83,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#Base(javax.servlet.http.HttpServletRequest)}
+     * {@link com.baidu.dueros.bot.BaseBot#Base(javax.servlet.http.HttpServletRequest)}
      * .
      */
     @Test
@@ -79,7 +92,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#getRequest()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#getRequest()}.
      */
     @Test
     public void testGetRequest() {
@@ -88,7 +101,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#getSessionAttribute(java.lang.String)}.
+     * {@link com.baidu.dueros.bot.BaseBot#getSessionAttribute(java.lang.String)}.
      */
     @Test
     public void testGetSessionAttribute() {
@@ -97,7 +110,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#setSessionAttribute(java.lang.String, java.lang.String)}
+     * {@link com.baidu.dueros.bot.BaseBot#setSessionAttribute(java.lang.String, java.lang.String)}
      * .
      */
     @Test
@@ -106,7 +119,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#clearSessionAttribute()}
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#clearSessionAttribute()}
      * .
      */
     @Test
@@ -116,7 +129,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#setSlot(com.baidu.dueros.nlu.Slot)}.
+     * {@link com.baidu.dueros.bot.BaseBot#setSlot(com.baidu.dueros.nlu.Slot)}.
      */
     @Test
     public void testSetSlot() {
@@ -125,7 +138,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#getSlot(java.lang.String)}.
+     * {@link com.baidu.dueros.bot.BaseBot#getSlot(java.lang.String)}.
      */
     @Test
     public void testGetSlot() {
@@ -133,7 +146,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#ask(java.lang.String)}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#ask(java.lang.String)}.
      */
     @Test
     public void testAsk() {
@@ -141,7 +154,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#setDelegate()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#setDelegate()}.
      */
     @Test
     public void testSetDelegate() {
@@ -150,7 +163,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#setConfirmSlot(java.lang.String)}.
+     * {@link com.baidu.dueros.bot.BaseBot#setConfirmSlot(java.lang.String)}.
      */
     @Test
     public void testSetConfirmSlot() {
@@ -158,7 +171,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#setConfirmIntent()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#setConfirmIntent()}.
      */
     @Test
     public void testSetConfirmIntent() {
@@ -166,7 +179,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#getIntent()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#getIntent()}.
      */
     @Test
     public void testGetIntent() {
@@ -174,7 +187,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#waitAnswer()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#waitAnswer()}.
      */
     @Test
     public void testWaitAnswer() {
@@ -182,7 +195,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#endDialog()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#endDialog()}.
      */
     @Test
     public void testEndDialog() {
@@ -190,7 +203,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#getQuery()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#getQuery()}.
      */
     @Test
     public void testGetQuery() {
@@ -198,7 +211,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#genToken()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#genToken()}.
      */
     @Test
     public void testGenToken() {
@@ -207,7 +220,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#addDirective(com.baidu.dueros.data.response.directive.Directive)}
+     * {@link com.baidu.dueros.bot.BaseBot#addDirective(com.baidu.dueros.data.response.directive.Directive)}
      * .
      */
     @Test
@@ -217,7 +230,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#build(com.baidu.dueros.model.Response)}.
+     * {@link com.baidu.dueros.bot.BaseBot#build(com.baidu.dueros.model.Response)}.
      */
     @Test
     public void testBuild() {
@@ -226,7 +239,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#onInent(com.baidu.dueros.data.request.IntentRequest)}
+     * {@link com.baidu.dueros.bot.BaseBot#onInent(com.baidu.dueros.data.request.IntentRequest)}
      * .
      */
     @Test
@@ -236,7 +249,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#onLaunch(com.baidu.dueros.data.request.LaunchRequest)}
+     * {@link com.baidu.dueros.bot.BaseBot#onLaunch(com.baidu.dueros.data.request.LaunchRequest)}
      * .
      */
     @Test
@@ -246,7 +259,7 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.Base#onSessionEnded(com.baidu.dueros.data.request.SessionEndedRequest)}
+     * {@link com.baidu.dueros.bot.BaseBot#onSessionEnded(com.baidu.dueros.data.request.SessionEndedRequest)}
      * .
      */
     @Test
@@ -255,7 +268,7 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.Base#run()}.
+     * Test method for {@link com.baidu.dueros.bot.BaseBot#run()}.
      */
     @Test
     public void testRun() {

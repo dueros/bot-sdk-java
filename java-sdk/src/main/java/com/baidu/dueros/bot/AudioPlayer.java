@@ -1,4 +1,4 @@
-/** 
+/*
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,13 +28,13 @@ import com.baidu.dueros.model.Request;
 import com.baidu.dueros.model.Response;
 
 /**
- * {@code AudioPlayer}继承自{@link Base}类，用于处理端上报的audioplayer事件
+ * {@code AudioPlayer}继承自{@link BaseBot}类，用于处理端上报的audioplayer事件
  * 
  * @author tianlonglong(tianlong02@baidu.com)
  * @version V1.0
  * @since 2017年10月4日
  */
-public class AudioPlayer extends Base {
+public class AudioPlayer extends BaseBot {
 
     /**
      * 构造方法，使用反序列化后的Request作为参数

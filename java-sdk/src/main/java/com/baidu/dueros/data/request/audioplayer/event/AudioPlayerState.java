@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AudioPlayerState {
 
-    /** 正在播放中的audio item的token */
+    // 正在播放中的audio item的token
     private final String token;
-    /** 当前的播放进度 */
+    // 当前的播放进度
     private final int offsetInMilliSeconds;
-    /** 音频播放器当前状态 */
+    // 音频播放器当前状态
     private final String playActivity;
 
     /**
@@ -94,17 +94,17 @@ public class AudioPlayerState {
      * @since 2017年10月4日
      */
     public enum PlayActivity {
-        /** 空闲状态 */
+        // 空闲状态
         IDLE,
-        /** 正在缓冲 */
+        // 正在缓冲
         BUFFER_UNDER_RUN,
-        /** 正在播放 */
+        // 正在播放
         PLAYING,
-        /** 中断播放：被高优事件入闹钟中断 */
+        // 中断播放：被高优事件入闹钟中断
         PAUSED,
-        /** 停止播放：指令停止 */
+        // 停止播放：指令停止
         STOPPED,
-        /** 播放完成 */
+        // 播放完成
         FINISHED,
     }
 

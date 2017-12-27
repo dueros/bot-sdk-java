@@ -1,4 +1,4 @@
-/** 
+/*
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,13 +30,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Application {
-
-    /**
-     * <ul>
-     * <li>applicationId是一个DBP平台生成的UUID，用于唯一标识一个Bot
-     * <li>Bot可用于验证该请求是否发给自己
-     * </ul>
-     */
+    
+    // applicationId是一个DBP平台生成的UUID，用于唯一标识一个Bot
     private final String applicationId;
     private final List<String> botConfigList;
 
@@ -99,6 +94,7 @@ public class Application {
      */
     public static final class Builder {
 
+        // applicationId是一个DBP平台生成的UUID，用于唯一标识一个Bot
         private String applicationId;
         private List<String> botConfigList;
 

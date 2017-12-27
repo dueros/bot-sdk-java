@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,21 @@
 
 package com.baidu.dueros.samples.tax;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.baidu.dueros.certificate.Certificate;
 
 /**
  * Servlet implementation class TaxAction
@@ -60,14 +69,48 @@ public class TaxAction extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /** 构造一个TaxBot对象 */
-        TaxBot bot = new TaxBot(request);
+        // 获取HTTP header信息
+        Map<String, String> map = new HashMap<String, String>();
+        Enumeration<String> headernames = request.getHeaderNames();
+        while (headernames.hasMoreElements()) {
+            String key = headernames.nextElement();
+            String value = request.getHeader(key);
+            map.put(key, value);
+        }
+
+        // 获取signature和signaturecerturl
+        String signature = map.get("signature");
+        String signaturecerturl = map.get("signaturecerturl");
+
+        // 获取HTTP body
+        BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader((ServletInputStream) request.getInputStream(), "utf-8"));
+        StringBuffer stringBuffer = new StringBuffer("");
+
+        String temp = "";
+        while ((temp = bufferedReader.readLine()) != null) {
+            stringBuffer.append(temp);
+        }
+        String message = stringBuffer.toString();
+
+        // 创建Bot
+        TaxBot bot = new TaxBot(message);
+
+        Certificate certificate = new Certificate(message, signature, signaturecerturl);
+        bot.setCertificate(certificate);
+
+        // 打开签名验证
+        bot.enableVerify();
+
+        // 关闭签名验证
+        // bot.disableVerify();
+
         try {
-            /** 调用bot的run方法 */
+            // 调用bot的run方法
             String responseJson = bot.run();
-            /** 设置response的编码UTF-8 */
+            // 设置response的编码UTF-8
             response.setCharacterEncoding("UTF-8");
-            /** 返回response */
+            // 返回response
             response.getWriter().append(responseJson);
         } catch (Exception e) {
             e.printStackTrace();

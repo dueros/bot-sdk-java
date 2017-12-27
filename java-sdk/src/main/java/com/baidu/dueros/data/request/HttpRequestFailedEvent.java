@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HttpRequestFailedEvent extends RequestBody {
 
-    /** 本次请求的唯一标识 */
+    // 本次请求的唯一标识
     private final String token;
-    /** 请求失败的原因 */
+    // 请求失败的原因
     private final String reason;
-    /** HTTP 请求失败时的消息描述，是可打印的字符串 */
+    // HTTP 请求失败时的消息描述，是可打印的字符串
     private final String errorMessage;
 
     /**
@@ -97,8 +97,11 @@ public class HttpRequestFailedEvent extends RequestBody {
      */
     public static final class Builder extends RequestBodyBuilder<Builder, HttpRequestFailedEvent> {
 
+        // 本次请求的唯一标识
         private String token;
+        // 请求失败的原因
         private String reason;
+        // HTTP 请求失败时的消息描述，是可打印的字符串
         private String errorMessage;
 
         /**

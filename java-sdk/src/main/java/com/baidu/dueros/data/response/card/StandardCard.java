@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,17 +34,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("standard")
 public class StandardCard extends Card {
 
-    /** 卡片标题 */
+    // 卡片标题
     private String title;
-    /** 卡片内容 */
+    // 卡片内容
     private String content;
-    /** 图片 */
+    // 图片
     private String image;
-    /** 卡片链接 */
+    // 卡片链接
     private String url;
-    /** 链接文本 */
+    // 链接文本
     private String anchorText;
-    /** 引导话术 */
+    // 引导话术
     private List<String> cueWords = new ArrayList<String>();
 
     /**

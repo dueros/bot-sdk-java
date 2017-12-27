@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,13 +32,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HttpRequestSucceededEvent extends RequestBody {
 
-    /** 本次Http请求操作的唯一标识 */
+    // 本次Http请求操作的唯一标识
     private final String token;
-    /** 本次Http响应的返回码 */
+    // 本次Http响应的返回码
     private final String code;
-    /** 本次Http响应的header信息 */
+    // 本次Http响应的header信息
     private final Map<String, String> headers = new HashMap<String, String>();
-    /** 本次Http的响应结果 */
+    // 本次Http的响应结果
     private final HttpBody body;
 
     /**
@@ -115,9 +115,13 @@ public class HttpRequestSucceededEvent extends RequestBody {
      */
     public static final class Builder extends RequestBodyBuilder<Builder, HttpRequestSucceededEvent> {
 
+        // 本次Http请求操作的唯一标识
         private String token;
+        // 本次Http响应的返回码
         private String code;
+        // 本次Http响应的header信息
         private Map<String, String> headers = new HashMap<>();
+        // 本次Http的响应结果
         private HttpBody body;
 
         /**

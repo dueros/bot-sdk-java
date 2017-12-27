@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SessionEndedRequest extends RequestBody {
 
-    /** Session结束的原因 */
+    // Session结束的原因
     private final Type reason;
-    /** Session结束信息 */
+    // Session结束信息
     private final SessionEndedErrorMessage error;
 
     /**
@@ -83,11 +83,11 @@ public class SessionEndedRequest extends RequestBody {
      * @since 2017年10月9日
      */
     public enum Type {
-        /** 用户退出 */
+        // 用户退出
         USER_INITIATED,
-        /** 用户无输入祸多次输入无法理解 */
+        // 用户无输入祸多次输入无法理解
         EXCEEDED_MAX_REPROMPTS,
-        /** 系统错误 */
+        // 系统错误
         ERROR,
     }
 

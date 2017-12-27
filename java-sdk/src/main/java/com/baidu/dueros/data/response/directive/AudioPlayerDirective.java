@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,9 +25,9 @@ package com.baidu.dueros.data.response.directive;
  */
 public class AudioPlayerDirective extends Directive {
 
-    /** 控制端播放的behavior */
+    // 控制端播放的behavior
     private PlayBehaviorType playBehavior;
-    /** 多媒体信息 */
+    // 多媒体信息
     private AudioItem audioItem;
 
     /**
@@ -124,11 +124,11 @@ public class AudioPlayerDirective extends Directive {
      * @since 2017年10月5日
      */
     public enum PlayBehaviorType {
-        /** 立即停止当前播放并清除播放队列,立即播放指令中的audio item */
+        // 立即停止当前播放并清除播放队列,立即播放指令中的audio item
         REPLACE_ALL,
-        /** 将audio item添加到当前队列的尾部 */
+        // 将audio item添加到当前队列的尾部
         ENQUEUE,
-        /** 替换播放队列中的所有audio item，但不影响当前正在播放的audio item */
+        // 替换播放队列中的所有audio item，但不影响当前正在播放的audio item
         REPLACE_ENQUEUED,
     }
 

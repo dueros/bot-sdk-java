@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,9 +31,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("image")
 public class ImageCard extends Card {
 
-    /** 列表里的item */
+    // 列表里的item
     private List<ImageCardInfo> list = new ArrayList<ImageCardInfo>();
-    /** 引导用户进行下一轮对话的文字，提示用户的输入example，用户可以点击其中一个item，快速输入 */
+    // 引导用户进行下一轮对话的文字，提示用户的输入example，用户可以点击其中一个item，快速输入
     private List<String> cueWords = new ArrayList<String>();
 
     /**

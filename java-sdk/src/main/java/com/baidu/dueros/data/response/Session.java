@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class Session {
 
-    /** Bot存储在DuerOS的临时数据，将在Request的session.attributes中被下发至Bot */
+    // Bot存储在DuerOS的临时数据，将在Request的session.attributes中被下发至Bot
     private final Map<String, String> attributes = new HashMap<>();
 
     /**

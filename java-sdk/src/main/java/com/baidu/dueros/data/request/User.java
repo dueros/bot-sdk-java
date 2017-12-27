@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
-    /** 每次enable skill产生一个新的userId */
+    // 每次enable skill产生一个新的userId
     private final String userId;
-    /** 用户用于做OAuth 2.0认证的access token */
+    // 用户用于做OAuth 2.0认证的access token
     private final String accessToken;
-    /** 用户授权提供给Bot的详细信息 */
+    // 用户授权提供给Bot的详细信息
     private final UserInfo userInfo;
 
     /**

@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,11 @@ import java.util.UUID;
  */
 public class Stream {
 
-    /** 链接地址 */
+    // 链接地址
     private String url = "";
-    /** 播放进度 */
+    // 播放进度
     private int offsetInMilliSeconds = 0;
-    /** 正在播放中的audio item的token */
+    // 正在播放中的audio item的token
     private String token = "";
 
     /**

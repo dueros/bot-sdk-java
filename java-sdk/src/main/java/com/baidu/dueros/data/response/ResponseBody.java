@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,33 +31,21 @@ import com.baidu.dueros.data.response.directive.Directive;
  */
 public class ResponseBody {
 
-    /**
-     * 用于Bot反馈本次操作是否会发生副作用
-     * <ul>
-     * <li>当needDetermine为true时,
-     * <li>如果DuerOS仍然会选用当前Bot结果，应该再次下发请求，并将request.determined字段设置为true
-     * </ul>
-     */
+    // 如果DuerOS仍然会选用当前Bot结果，应该再次下发请求，并将request.determined字段设置为true
     private boolean needDetermine;
-    /** 表示本次返回的结果是否为兜底结果 */
+    // 表示本次返回的结果是否为兜底结果
     private boolean fallBack;
-    /** 表示本次返回结果中需要播报的语音信息 */
+    // 表示本次返回结果中需要播报的语音信息
     private OutputSpeech outputSpeech;
-    /** 在需要用户输入时，如果用户没有输入或用户输入内容系统不理解，则播报reprompt内容 */
+    // 在需要用户输入时，如果用户没有输入或用户输入内容系统不理解，则播报reprompt内容
     private Reprompt reprompt;
-    /** Bot输出的Resource内容 */
+    // Bot输出的Resource内容
     private Resource resource;
-    /** Bot输出的Card内容，用于在有屏场景下展示 */
+    // Bot输出的Card内容，用于在有屏场景下展示
     private Card card;
-    /**
-     * Bot输出的指令，分为：
-     * <ul>
-     * <li>对DuerOS指令主要是对话指令
-     * <li>其他都是对端的指令
-     * </ul>
-     */
+    // Bot输出的指令，分为： 对DuerOS指令主要是对话指令;其他都是对端的指令
     private List<Directive> directives = new ArrayList<>();
-    /** 是否需要结束本次会话，DuerOS用于判断是否需要关闭某个打开的Bot，端用于关闭麦克风 */
+    // 是否需要结束本次会话，DuerOS用于判断是否需要关闭某个打开的Bot，端用于关闭麦克风
     private boolean shouldEndSession;
 
     /**

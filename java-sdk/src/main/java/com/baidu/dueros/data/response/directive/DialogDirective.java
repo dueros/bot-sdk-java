@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ import com.baidu.dueros.nlu.Intent;
  */
 public class DialogDirective extends Directive {
 
-    /** 反馈的意图 */
+    // 反馈的意图
     private Intent updatedIntent;
 
     /**

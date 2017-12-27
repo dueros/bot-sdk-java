@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Debug {
 
-    /** 待debug的bot */
+    // 待debug的bot
     private final String smarthomeBotId;
-    /** 需要传给bot的OAuth info id */
+    // 需要传给bot的OAuth info id
     private final String oauthInfoId;
-    /** 待debug的bot的debug访问地址 */
+    // 待debug的bot的debug访问地址
     private final String smarthomeWebServiceUrl;
 
     /**
@@ -95,11 +95,11 @@ public class Debug {
      */
     public static final class Builder {
 
-        /** 待debug的bot */
+        // 待debug的bot
         private String smarthomeBotId;
-        /** 需要传给bot的OAuth info id */
+        // 需要传给bot的OAuth info id
         private String oauthInfoId;
-        /** 待debug的bot的debug访问地址 */
+        // 待debug的bot的debug访问地址 
         private String smarthomeWebServiceUrl;
 
         /**

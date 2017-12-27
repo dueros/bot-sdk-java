@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,12 +27,7 @@ import com.baidu.dueros.nlu.Intent;
  */
 public class Context {
 
-    /**
-     * <ul>
-     * <li>Bot反馈给DuerOS的信息，例如Bot根据自身资源情况对原始Request信息中Intent的进行了修改
-     * <li>Da会根据该反馈信息应用在多轮交互中
-     * </ul>
-     */
+    // Bot反馈给DuerOS的信息，例如Bot根据自身资源情况对原始Request信息中Intent的进行了修改
     private Intent intent;
 
     /**

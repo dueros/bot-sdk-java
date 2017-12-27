@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,13 +29,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppInfo {
 
-    /** 应用名称 */
+    // 应用名称
     private final String appName;
-    /** 应用包名 */
+    // 应用包名
     private final String packageName;
-    /** 应用版本号 */
+    // 应用版本号
     private final String versionCode;
-    /** 应用版本名称 */
+    // 应用版本名称
     private final String versionName;
 
     public static Builder newBuilder() {
@@ -104,13 +104,13 @@ public class AppInfo {
      */
     public static final class Builder {
 
-        /** 应用名称 */
+        // 应用名称
         private String appName;
-        /** 应用包名 */
+        // 应用包名
         private String packageName;
-        /** 应用版本号 */
+        // 应用版本号
         private String versionCode;
-        /** 应用版本名称 */
+        // 应用版本名称
         private String versionName;
 
         /**

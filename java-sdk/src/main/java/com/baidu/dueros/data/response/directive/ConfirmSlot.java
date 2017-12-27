@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Dialog.ConfirmSlot")
 public class ConfirmSlot extends DialogDirective {
 
-    /** 需要确认的槽位 */
+    // 需要确认的槽位
     private String slotToConfirm;
 
     /**

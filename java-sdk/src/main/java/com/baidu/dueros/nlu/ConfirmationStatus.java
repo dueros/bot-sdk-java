@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,10 +24,10 @@ package com.baidu.dueros.nlu;
  * @since 2017年10月5日
  */
 public enum ConfirmationStatus {
-    /** 未确认 */
+    // 未确认
     NONE,
-    /** 确认 */
+    // 确认
     CONFIRMED,
-    /** 否认 */
+    // 否认
     DENIED,
 }

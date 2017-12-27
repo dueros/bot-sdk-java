@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,9 +43,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RequestBody {
 
-    /** 每个request会有不同的requestId */
+    // 每个request会有不同的requestId
     private final String requestId;
-    /** request时间，Bot结合http header一起用于做安全检查 */
+    // request时间，Bot结合http header一起用于做安全检查
     private final String timestamp;
 
     /**

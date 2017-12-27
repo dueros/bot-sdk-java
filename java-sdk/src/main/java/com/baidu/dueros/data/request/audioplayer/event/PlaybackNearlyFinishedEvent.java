@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,9 +31,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AudioPlayer.PlaybackNearlyFinished")
 public class PlaybackNearlyFinishedEvent extends AudioPlayerEvent {
 
-    /** 正在播放中的audioitem的token */
+    // 正在播放中的audioitem的token
     private final String token;
-    /** 当前的播放进度 */
+    // 当前的播放进度
     private final int offsetInMilliSeconds;
 
     /**

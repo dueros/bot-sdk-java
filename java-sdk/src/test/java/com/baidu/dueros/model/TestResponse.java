@@ -1,6 +1,19 @@
-/**
- * Copyright (C) 2017 Baidu Inc. All rights reserved.
+/*
+ * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.baidu.dueros.model;
 
 import static org.junit.Assert.*;
@@ -11,7 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.baidu.dueros.data.response.OutputSpeech;
-import com.baidu.dueros.data.response.OutputSpeech.Type;
+import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.Reprompt;
 import com.baidu.dueros.data.response.card.Card;
 import com.baidu.dueros.data.response.card.TextCard;
@@ -28,7 +41,7 @@ import junit.framework.Assert;
 public class TestResponse {
 
     private Response response = null;
-    private OutputSpeech outputSpeech = new OutputSpeech(Type.PlainText, "This is outputspeech");
+    private OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "This is outputspeech");
     private Card card = new TextCard("This is a text card!");
     private Reprompt reprompt = new Reprompt(outputSpeech);
 

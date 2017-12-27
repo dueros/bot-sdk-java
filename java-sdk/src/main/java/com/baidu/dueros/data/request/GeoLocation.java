@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GeoLocation {
 
-    /** 百度球面坐标 */
+    // 百度球面坐标
     private final CoordinatesInfo bd09ll;
-    /** GPS球面坐标 */
+    // GPS球面坐标
     private final CoordinatesInfo wgs84;
-    /** 百度墨卡托坐标 */
+    // 百度墨卡托坐标
     private final CoordinatesInfo bd09mc;
 
     /**
@@ -93,11 +93,11 @@ public class GeoLocation {
      * @since 2017年10月4日
      */
     public static final class Builder {
-        /** 百度球面坐标 */
+        // 百度球面坐标
         private CoordinatesInfo bd09ll;
-        /** GPS球面坐标 */
+        // GPS球面坐标
         private CoordinatesInfo wgs84;
-        /** 百度墨卡托坐标 */
+        // 百度墨卡托坐标
         private CoordinatesInfo bd09mc;
 
         /**

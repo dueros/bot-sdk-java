@@ -1,4 +1,4 @@
-/** 
+/*
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationInfo {
 
-    /** 地理坐标信息 */
+    // 地理坐标信息
     private final GeoLocation geo;
 
     /**
@@ -67,7 +67,7 @@ public class LocationInfo {
      */
     public static final class Builder {
 
-        /** 地理坐标信息 */
+        // 地理坐标信息
         private GeoLocation geo;
 
         /**

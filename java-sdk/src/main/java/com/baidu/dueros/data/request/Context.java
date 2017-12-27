@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,9 +30,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Context {
 
-    /** 端设备信息和用户信息 */
+    // 端设备信息和用户信息
     private final System system;
-    /** 端上报的状态 */
+    // 端上报的状态
     private final AudioPlayerState audioPlayerState;
 
     /**
@@ -95,8 +95,10 @@ public class Context {
      * @since 2017年10月4日
      */
     public static final class Builder {
-
+        
+        // 端设备信息和用户信息
         private System system;
+        // 端上报的状态
         private AudioPlayerState audioPlayerState;
 
         /**

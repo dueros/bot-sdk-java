@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,14 +60,14 @@ public class AudioPlayerAction extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /** 实例化一个AudioPlayerBot对象 */
+        // 实例化一个AudioPlayerBot对象
         AudioPlayerBot audioPlayerBot = new AudioPlayerBot(request);
         try {
-            /** 调用run方法 */
+            // 调用run方法
             String responseJson = audioPlayerBot.run();
-            /** 设置response的编码UTF-8 */
+            // 设置response的编码UTF-8
             response.setCharacterEncoding("UTF-8");
-            /** 返回response */
+            // 返回response
             response.getWriter().append(responseJson);
         } catch (Exception e) {
         }

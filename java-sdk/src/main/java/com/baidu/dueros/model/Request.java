@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,13 +32,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Request {
 
-    /** 协议版本 */
+    // 协议版本
     private final String version;
-    /** 会话信息 */
+    // 会话信息
     private final Session session;
-    /** 端和系统状态信息 */
+    // 端和系统状态信息
     private final Context context;
-    /** Request请求体 */
+    // Request请求体
     private final RequestBody request;
 
     /**

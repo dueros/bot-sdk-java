@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,9 +25,9 @@ package com.baidu.dueros.data.response.card;
  */
 public class ImageCardInfo {
 
-    /** 图片的地址 */
+    // 图片的地址
     private String src;
-    /** 缩略图地址 */
+    // 缩略图地址
     private String thumb;
 
     /**

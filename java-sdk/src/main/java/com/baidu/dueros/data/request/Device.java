@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Device {
 
-    /** 设备Id */
+    // 设备Id
     private final String deviceId;
-    /** 设备信息 */
+    // 设备信息
     private final DeviceInfo deviceInfo;
 
     /**
@@ -94,8 +94,9 @@ public class Device {
      * @since 2017年10月4日
      */
     public static final class Builder {
-
+        // 设备Id
         private String deviceId;
+        // 设备信息
         private DeviceInfo deviceInfo;
 
         /**

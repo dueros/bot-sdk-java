@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
  * @since 2017年10月5日
  */
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
-@JsonSubTypes({ @Type(value = TextCard.class), @Type(value = StandardCard.class), @Type(value = StandCardList.class),
+@JsonSubTypes({ @Type(value = TextCard.class), @Type(value = StandardCard.class), @Type(value = ListCard.class),
         @Type(value = ImageCard.class), })
 public abstract class Card {
 

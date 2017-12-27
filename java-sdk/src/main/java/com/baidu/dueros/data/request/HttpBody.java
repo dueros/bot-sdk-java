@@ -1,4 +1,4 @@
-/** 
+/*
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,16 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HttpBody {
 
-    /**
-     * HTTP响应数据(data)的类型
-     * <ul>
-     * <li>TEXT: 原始文本数据
-     * <li>BASE64_ENCODED_BINARY: 原始二进制数据经过Base64编码的结果
-     * <li>ATTACHMENT_CID：内容为CID描述即
-     * </ul>
-     */
+    // HTTP响应数据(data)的类型
     private final String dataType;
-    /** HTTP响应数据内容 */
+    // HTTP响应数据内容
     private final String data;
 
     /**
@@ -101,7 +94,9 @@ public class HttpBody {
      */
     public static final class Builder {
 
+        // HTTP响应数据(data)的类型
         private String dataType;
+        // HTTP响应数据内容
         private String data;
 
         /**

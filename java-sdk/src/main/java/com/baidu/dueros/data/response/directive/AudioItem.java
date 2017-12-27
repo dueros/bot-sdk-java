@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ package com.baidu.dueros.data.response.directive;
  */
 public class AudioItem {
 
-    /** 多媒体信息 */
+    // 多媒体信息
     private Stream stream;
 
     /**

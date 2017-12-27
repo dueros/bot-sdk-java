@@ -22,87 +22,71 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * 文本卡片
+ * 标准列表卡片
  * 
  * @author tianlonglong(tianlong02@baidu.com)
  * @version V1.0
- * @since 2017年10月9日
+ * @since 2017年10月5日
  */
-@JsonTypeName("txt")
-public class TextCard extends Card {
+@JsonTypeName("list")
+public class ListCard extends Card {
 
-    // 卡片内容
-    private String content = "";
-    // 卡片链接，可以跳转到对应的落地页
-    private String url = "";
-    // url存在时有效，展示链接显示的文本，如果不设置，展现“查看更多”
-    private String anchorText = "";
-    // 引导用户进行下一轮对话的文字
+    // 列表里的item
+    private List<StandardCardInfo> list = new ArrayList<StandardCardInfo>();
+    // 链接地址
+    private String url;
+    // 链接文本
+    private String anchorText;
+    // 引导话术，引导用户进行下一轮对话的文字
     private List<String> cueWords = new ArrayList<String>();
 
     /**
      * 默认构造方法
      */
-    public TextCard() {
+    public ListCard() {
 
     }
 
     /**
      * 构造方法
      * 
-     * @param content
-     *            卡片内容
+     * @param list
+     *            标准列表卡片信息列表
      */
-    public TextCard(final String content) {
-        this.content = content;
+    public ListCard(final List<StandardCardInfo> list) {
+        this.list = list;
     }
 
     /**
-     * 构造方法
+     * 获取list的getter方法
      * 
-     * @param content
-     *            卡片内容
-     * @param url
-     *            卡片链接
-     * @param anchorText
-     *            链接文本
+     * @return list 标准列表卡片信息列表
      */
-    public TextCard(final String content, final String url, final String anchorText) {
-        this.content = content;
-        this.url = url;
-        this.anchorText = anchorText;
+    public List<StandardCardInfo> getList() {
+        return list;
     }
 
     /**
-     * 获取content的getter方法
+     * 设置标准卡片信息列表的setter方法
      * 
-     * @return String 返回卡片内容
+     * @param list
+     *            标准卡片信息列表
      */
-    public String getContent() {
-        return content;
+    public void setList(final List<StandardCardInfo> list) {
+        this.list = list;
     }
 
     /**
-     * 设置卡片内容的setter方法
+     * 获取链接地址的getter方法
      * 
-     * @param content
-     *            卡片内容
-     */
-    public void setContent(final String content) {
-        this.content = content;
-    }
-
-    /**
-     * 获取url的getter方法
-     * 
-     * @return String 返回链接
+     * @return String 链接地址
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * 设置链接的setter方法
+     * 设置链接地址的setter方法
      * 
      * @param url
      *            链接地址
@@ -114,7 +98,7 @@ public class TextCard extends Card {
     /**
      * 获取链接文本的getter方法
      * 
-     * @return String 返回链接文本
+     * @return String 链接文本
      */
     public String getAnchorText() {
         return anchorText;
@@ -133,7 +117,7 @@ public class TextCard extends Card {
     /**
      * 获取引导话术的getter方法
      * 
-     * @return cueWords 返回引导话术列表
+     * @return cueWords 引导话术
      */
     public List<String> getCueWords() {
         return cueWords;
@@ -143,19 +127,42 @@ public class TextCard extends Card {
      * 设置引导话术的setter方法
      * 
      * @param cueWords
-     *            引导话术列表
+     *            引导话术
      */
     public void setCueWords(final List<String> cueWords) {
         this.cueWords = cueWords;
     }
 
     /**
+     * 添加标准卡片信息列表
+     * 
+     * @param standardCardInfo
+     *            标准卡片信息列表
+     */
+    public void addStandardCardInfo(final StandardCardInfo standardCardInfo) {
+        this.list.add(standardCardInfo);
+    }
+
+    /**
+     * 添加标准卡片信息列表
+     * 
+     * @param title
+     *            标题
+     * @param content
+     *            内容
+     */
+    public void addStandardCardInfo(final String title, final String content) {
+        StandardCardInfo standardCardInfo = new StandardCardInfo(title, content);
+        this.list.add(standardCardInfo);
+    }
+
+    /**
      * 添加引导话术
      * 
      * @param cueWord
-     *            引导话术
+     *            添加引导话术
      */
-    public void addCueWord(final String cueWord) {
+    public void addCueWords(final String cueWord) {
         this.cueWords.add(cueWord);
     }
 

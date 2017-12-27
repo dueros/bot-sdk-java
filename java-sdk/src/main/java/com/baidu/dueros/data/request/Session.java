@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,11 +38,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Session {
 
-    /** 当用户发起对话时，isNew为true */
+    // 当用户发起对话时，isNew为true
     private final boolean isNew;
-    /** sessionId为一个唯一ID，用于标识此次对话 */
+    // sessionId为一个唯一ID，用于标识此次对话
     private final String sessionId;
-    /** 用户可以在response中返回attributes，DuerOS会存储下来，并在本次对话的下一个request中发送给Bot */
+    // 用户可以在response中返回attributes，DuerOS会存储下来，并在本次对话的下一个request中发送给Bot
     private final Map<String, String> attributes;
 
     /**

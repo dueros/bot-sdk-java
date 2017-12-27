@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SessionEndedErrorMessage {
 
-    /** 错误类型 */
+    // 错误类型
     private final Type type;
-    /** 错误信息，可打印 */
+    // 错误信息，可打印
     private final String message;
 
     /**
@@ -80,11 +80,11 @@ public class SessionEndedErrorMessage {
      * @since 2017年10月9日
      */
     public enum Type {
-        /** Bot返回了无效的响应 */
+        // Bot返回了无效的响应
         INVALID_RESPONSE,
-        /** DuerOS与端通信异常 */
+        // DuerOS与端通信异常
         DEVICE_COMMUNICATION_ERROR,
-        /** 其他DuerOS系统错误 */
+        // 其他DuerOS系统错误
         INTERNAL_ERROR,
     }
 

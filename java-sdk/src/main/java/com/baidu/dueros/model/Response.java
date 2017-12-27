@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,13 +30,13 @@ import com.baidu.dueros.data.response.card.Card;
  */
 public class Response {
 
-    /** 在需要用户输入时，如果用户没有输入或用户输入内容系统不理解，则播报reprompt内容 */
+    // 在需要用户输入时，如果用户没有输入或用户输入内容系统不理解，则播报reprompt内容
     private Reprompt reprompt;
-    /** 表示本次返回结果中需要播报的语音信息 */
+    // 表示本次返回结果中需要播报的语音信息
     private OutputSpeech outputSpeech;
-    /** 卡片 */
+    // 卡片
     private Card card;
-    /** 定义Bot输出Resource的数据结构 */
+    // 定义Bot输出Resource的数据结构
     private Resource resource;
 
     /**

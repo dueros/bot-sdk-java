@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Query {
 
-    /** Query类型 */
+    // Query类型
     private final Type type;
-    /** 原始Query */
+    // 原始Query
     private final String original;
-    /** 被改写后的Query */
+    // 被改写后的Query
     private final String rewritten;
 
     /**
@@ -53,11 +53,11 @@ public class Query {
      * @since 2017年10月4日
      */
     public enum Type {
-        /** 文本Query，内容为相应的UTF-8文本 */
+        // 文本Query，内容为相应的UTF-8文本
         TEXT,
-        /** 图片Query, 内容为图片链接 */
+        // 图片Query, 内容为图片链接
         IMAGE,
-        /** 表情Query, 内容为表情对应的Unicode */
+        // 表情Query, 内容为表情对应的Unicode
         EMOJI,
     }
 

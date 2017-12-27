@@ -1,4 +1,4 @@
-/** 
+/*
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,13 +33,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Intent {
 
-    /** 意图名称 */
+    // 意图名称
     private final String name;
-    /** 意图确认状态 */
+    // 意图确认状态
     private final ConfirmationStatus confirmationStatus;
-    /** 意图中的槽位 */
+    // 意图中的槽位
     private final Map<String, Slot> slots;
-    /** 意图置信度 */
+    // 意图置信度
     private final int score;
 
     /**

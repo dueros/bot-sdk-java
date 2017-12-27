@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,12 +25,11 @@ import com.baidu.dueros.data.request.LaunchRequest;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent;
 import com.baidu.dueros.data.response.OutputSpeech;
-import com.baidu.dueros.data.response.OutputSpeech.Type;
+import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.Reprompt;
 import com.baidu.dueros.data.response.card.TextCard;
 import com.baidu.dueros.data.response.directive.AudioPlayerDirective.PlayBehaviorType;
 import com.baidu.dueros.data.response.directive.Play;
-import com.baidu.dueros.data.response.directive.Stop;
 import com.baidu.dueros.model.Response;
 
 /**
@@ -59,22 +58,27 @@ public class AudioPlayerBot extends AudioPlayer {
      * 
      * @param launchRequest
      *            LaunchRequest请求体
-     * @see com.baidu.dueros.bot.Base#onLaunch(com.baidu.dueros.data.request.LaunchRequest)
+     * @see com.baidu.dueros.bot.BaseBot#onLaunch(com.baidu.dueros.data.request.LaunchRequest)
      */
     @Override
     protected Response onLaunch(LaunchRequest launchRequest) {
 
+        // 构造TextCard
         TextCard textCard = new TextCard();
         textCard.setContent("处理端上报事件");
         textCard.setUrl("www:....");
         textCard.setAnchorText("setAnchorText");
         textCard.addCueWord("端上报事件");
 
-        OutputSpeech outputSpeech = new OutputSpeech(Type.SSML, "处理端上报事件");
+        // 构造OutputSpeech
+        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "处理端上报事件");
 
+        // 构造Reprompt
         Reprompt reprompt = new Reprompt(outputSpeech);
 
+        // 构造Response
         Response response = new Response(outputSpeech, textCard, reprompt);
+
         return response;
     }
 
@@ -94,21 +98,17 @@ public class AudioPlayerBot extends AudioPlayer {
         textCard.setAnchorText("setAnchorText");
         textCard.addCueWord("即将完成");
 
-        OutputSpeech outputSpeech = new OutputSpeech(Type.SSML, "处理即将播放完成事件");
+        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "处理即将播放完成事件");
 
-        /** 新建Play指令 */
+        // 新建Play指令
         Play play = new Play(PlayBehaviorType.ENQUEUE, "url", 1000);
-        /** 添加返回的指令 */
+        // 添加返回的指令
         this.addDirective(play);
-
-        /** 新建Stop指令 */
-        Stop stop = new Stop(PlayBehaviorType.REPLACE_ENQUEUED, "url", 1000);
-        /** 添加返回的指令 */
-        this.addDirective(stop);
 
         Reprompt reprompt = new Reprompt(outputSpeech);
 
         Response response = new Response(outputSpeech, textCard, reprompt);
+
         return response;
     }
 
@@ -129,16 +129,16 @@ public class AudioPlayerBot extends AudioPlayer {
         textCard.setAnchorText("setAnchorText");
         textCard.addCueWord("开始播放");
 
-        OutputSpeech outputSpeech = new OutputSpeech(Type.SSML, "处理开始播放完成事件");
+        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "处理开始播放完成事件");
 
-        /** 新建Play指令 */
         Play play = new Play(PlayBehaviorType.ENQUEUE, "url", 1000);
-        /** 添加返回的指令 */
+
         this.addDirective(play);
 
         Reprompt reprompt = new Reprompt(outputSpeech);
 
         Response response = new Response(outputSpeech, textCard, reprompt);
+
         return response;
     }
 

@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,13 +29,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Slot {
 
-    /** 槽位名称 */
+    // 槽位名称
     private final String name;
-    /** 槽位值 */
+    // 槽位值
     private final String value;
-    /** 槽位确认状态 */
+    // 槽位确认状态
     private final ConfirmationStatus confirmationStatus;
-    /** 槽位置信度 */
+    // 槽位置信度
     private final int score;
 
     /**

@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,13 +29,13 @@ import com.baidu.dueros.data.response.Session;
  */
 public class ResponseEncapsulation {
 
-    /** 版本信息 */
+    // 版本信息
     private final String version = "2.0";
-    /** 反馈给DuerOS的意图信息 */
+    // 反馈给DuerOS的意图信息
     private Context context;
-    /** 会话信息 */
+    // 会话信息
     private Session session;
-    /** 响应数据 */
+    // 响应数据
     private ResponseBody response;
 
     /**

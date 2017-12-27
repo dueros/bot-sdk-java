@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,13 +32,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IntentRequest extends RequestBody {
 
-    /** 本次请求的Query */
+    // 本次请求的Query
     private final Query query;
-    /** 当前会话状态 */
+    // 当前会话状态
     private final DialogState dialogState;
-    /** 用于US在召回多个Bot时，表示本次召回的Bot是否可以做带有副作用的操作 */
+    // 用于US在召回多个Bot时，表示本次召回的Bot是否可以做带有副作用的操作
     private final boolean determined;
-    /** 本次下发的Intents，da可能对一个Query解析出多个Intent */
+    // 本次下发的Intents，da可能对一个Query解析出多个Intent
     private final List<Intent> intents;
 
     /**
@@ -168,11 +168,11 @@ public class IntentRequest extends RequestBody {
      * @since 2017年10月4日
      */
     public enum DialogState {
-        /** 开始 */
+        // 开始
         STARTED,
-        /** 进行中 */
+        // 进行中
         IN_PROGRESS,
-        /** 结束 */
+        // 结束
         COMPLETED,
     }
 

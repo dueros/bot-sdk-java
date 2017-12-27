@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,11 +25,11 @@ package com.baidu.dueros.data.response;
  */
 public class OutputSpeech {
 
-    /** 输出类型 */
-    private Type type;
-    /** 文本内容 */
+    // 输出类型
+    private SpeechType type;
+    // 文本内容
     private String text = "";
-    /** SSML内容 */
+    // SSML内容
     private String ssml = "";
 
     /**
@@ -47,11 +47,11 @@ public class OutputSpeech {
      * @param content
      *            输出内容
      */
-    public OutputSpeech(final Type type, final String content) {
+    public OutputSpeech(final SpeechType type, final String content) {
         this.type = type;
-        if (type == Type.PlainText) {
+        if (type == SpeechType.PlainText) {
             this.text = content;
-        } else if (type == Type.SSML) {
+        } else if (type == SpeechType.SSML) {
             this.ssml = content;
         }
     }
@@ -61,7 +61,7 @@ public class OutputSpeech {
      * 
      * @return type 获取输出类型
      */
-    public Type getType() {
+    public SpeechType getType() {
         return type;
     }
 
@@ -89,7 +89,7 @@ public class OutputSpeech {
      * @param type
      *            设置输出类型
      */
-    public void setType(final Type type) {
+    public void setType(final SpeechType type) {
         this.type = type;
     }
 
@@ -120,10 +120,10 @@ public class OutputSpeech {
      * @version V1.0
      * @since 2017年10月5日
      */
-    public enum Type {
-        /** 文本类型 */
+    public enum SpeechType {
+        // 文本类型
         PlainText,
-        /** SSML类型 */
+        // SSML类型
         SSML,
     }
 }

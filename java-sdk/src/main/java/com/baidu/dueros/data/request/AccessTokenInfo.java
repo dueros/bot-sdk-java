@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * AccessToken
+ * AccessToken授权信息
  * 
  * @author tianlonglong(tianlong02@baidu.com)
  * @version V1.0
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessTokenInfo {
 
-    /** oauthInfoId */
+    // oauthInfoId
     private final String oauthInfoId;
-    /** accessToken */
+    // accessToken
     private final String accessToken;
 
     /**
@@ -80,9 +80,9 @@ public class AccessTokenInfo {
      * @since 2017年10月4日
      */
     public static final class Builder {
-        /** oauthInfoId */
+        // oauthInfoId
         private String oauthInfoId;
-        /** accessToken */
+        // accessToken
         private String accessToken;
 
         /**

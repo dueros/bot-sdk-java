@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,13 +25,13 @@ package com.baidu.dueros.data.response.card;
  */
 public class StandardCardInfo {
 
-    /** 卡片标题 */
+    // 卡片标题
     private String title;
-    /** 卡片内容 */
+    // 卡片内容
     private String content;
-    /** 图片 */
+    // 图片
     private String image;
-    /** url存在时有效，展示链接显示的文本。如果不设置，展现“查看更多” */
+    // url存在时有效，展示链接显示的文本。如果不设置，展现“查看更多”
     private String url;
 
     /**

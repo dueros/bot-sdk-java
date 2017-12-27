@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2017 Baidu, Inc. All Rights Reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CoordinatesInfo {
 
-    /** 经度 */
+    // 经度
     private final double longitude;
-    /** 纬度 */
+    // 纬度
     private final double latitude;
 
     /**
@@ -80,9 +80,9 @@ public class CoordinatesInfo {
      * @since 2017年11月16日
      */
     public static final class Builder {
-        /** 经度 */
+        // 经度
         private double longitude;
-        /** 纬度 */
+        // 纬度
         private double latitude;
 
         /**
