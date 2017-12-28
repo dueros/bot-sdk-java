@@ -516,6 +516,7 @@ Response response = new Response(outputSpeech, textCard, reprompt);
 当DuerOS向Bot发送请求时，Bot需要对收到的请求进行验证，验证方法如下：
 获取HTTP请求header中的签名signature、证书地址signaturecerturl以及body信息message。
 ```java
+// 根据签名、证书地址、HTTP body构造Certificate对象
 Certificate certificate = new Certificate(message, signature, signaturecerturl);
 bot.setCertificate(certificate);
 // 打开签名验证

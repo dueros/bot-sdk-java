@@ -172,13 +172,14 @@ public class BaseBot {
     }
 
     /**
-     * 根据NLU返回的结果，获取槽位名slot对应的槽位值
+     * 根据NLU返回的结果，获取槽位名slot对应的槽位值，默认获取第一个意图的槽位
      * 
      * @param slot
      *            槽位名称
      * @return String 槽位值
      */
     protected String getSlot(final String slot) {
+        // 默认获取第一个意图
         Intent intent = getIntent();
         if (intent == null) {
             return null;
@@ -203,13 +204,7 @@ public class BaseBot {
      * @return String 槽位值
      */
     protected String getSlot(final String slot, int index) {
-        RequestBody requestBody = request.getRequest();
-        IntentRequest intentRequest = null;
-        Intent intent = null;
-        if (requestBody instanceof IntentRequest) {
-            intentRequest = (IntentRequest) requestBody;
-            intent = intentRequest.getIntents().get(index);
-        }
+        Intent intent = getIntent(index);
         if (intent == null) {
             return null;
         }
@@ -268,17 +263,29 @@ public class BaseBot {
     }
 
     /**
-     * 获取当前的一个intent名称
+     * 获取当前的一个intent名称，默认获取第一个Intent
      * 
      * @return Intent
      */
     protected Intent getIntent() {
+        return getIntent(0);
+    }
+
+    /**
+     * 获取第index个Intent
+     * 
+     * @param index
+     *            Intent坐标
+     * @return Intent
+     */
+    protected Intent getIntent(int index) {
         RequestBody requestBody = request.getRequest();
         IntentRequest intentRequest = null;
         Intent intent = null;
         if (requestBody instanceof IntentRequest) {
             intentRequest = (IntentRequest) requestBody;
-            intent = intentRequest.getIntents().get(0);
+            // 获取第index个Intent
+            intent = intentRequest.getIntents().get(index);
         }
         return intent;
     }
@@ -395,11 +402,19 @@ public class BaseBot {
 
         ResponseBody responseBody = new ResponseBody();
         responseBody.setDirectives(directives);
-        responseBody.setCard(response.getCard());
-        responseBody.setOutputSpeech(response.getOutputSpeech());
-        responseBody.setReprompt(response.getReprompt());
+        if (response.getCard() != null) {
+            responseBody.setCard(response.getCard());
+        }
+        if (response.getOutputSpeech() != null) {
+            responseBody.setOutputSpeech(response.getOutputSpeech());
+        }
+        if (response.getReprompt() != null) {
+            responseBody.setReprompt(response.getReprompt());
+        }
         responseBody.setShouldEndSession(shouldEndSession);
-        responseBody.setResource(response.getResource());
+        if (response.getResource() != null) {
+            responseBody.setResource(response.getResource());
+        }
 
         ResponseEncapsulation responseEncapsulation = new ResponseEncapsulation(context, session, responseBody);
         return new ObjectMapper().writeValueAsString(responseEncapsulation);
@@ -490,14 +505,14 @@ public class BaseBot {
      *             抛出的异常
      */
     public String run() throws Exception {
-        // 是否需要验证请求参数
-        if (this.certificate.isEnable() == true) {
-            // 请求参数不合法
-            if (certificate.verify() == false) {
-                logger.warn("invalid request!");
-                return this.illegalRequest();
-            }
+        // 请求参数不合法
+        long start = System.currentTimeMillis();
+        if (certificate.verify() == false) {
+            logger.warn("invalid request!");
+            return this.illegalRequest();
         }
+        long end = System.currentTimeMillis();
+        System.out.println("verify == " + (end - start));
         this.dispatch();
         return this.build(response);
     }

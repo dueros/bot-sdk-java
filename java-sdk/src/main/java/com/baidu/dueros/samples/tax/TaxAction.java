@@ -69,6 +69,7 @@ public class TaxAction extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        long start = System.currentTimeMillis();
         // 获取HTTP header信息
         Map<String, String> map = new HashMap<String, String>();
         Enumeration<String> headernames = request.getHeaderNames();
@@ -93,12 +94,12 @@ public class TaxAction extends HttpServlet {
         }
         String message = stringBuffer.toString();
 
-        // 创建Bot
+        // 根据message创建Bot
         TaxBot bot = new TaxBot(message);
 
+        // 构造Certificate对象
         Certificate certificate = new Certificate(message, signature, signaturecerturl);
         bot.setCertificate(certificate);
-
         // 打开签名验证
         bot.enableVerify();
 
@@ -115,6 +116,8 @@ public class TaxAction extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 
 }

@@ -26,7 +26,6 @@ import com.baidu.dueros.data.request.SessionEndedRequest;
 import com.baidu.dueros.data.response.OutputSpeech;
 import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.Reprompt;
-import com.baidu.dueros.data.response.Resource;
 import com.baidu.dueros.data.response.card.TextCard;
 import com.baidu.dueros.model.Response;
 
@@ -101,8 +100,8 @@ public class TaxBot extends BaseBot {
     @Override
     protected Response onInent(IntentRequest intentRequest) {
 
-        // 判断NLU解析的意图名称是否匹配
-        if ("myself".equals(intentRequest.getIntentName())) {
+        // 判断NLU解析的意图名称是否匹配 inquiry
+        if ("inquiry".equals(intentRequest.getIntentName())) {
             // 判断NLU解析解析后是否存在这个槽位
             if (getSlot("monthlysalary") == null) {
                 // 询问月薪槽位monthlysalary
@@ -118,7 +117,7 @@ public class TaxBot extends BaseBot {
                 return askComputeType();
             } else {
                 // 具体计算方法
-                compute();
+                return compute();
             }
         }
 
@@ -157,6 +156,7 @@ public class TaxBot extends BaseBot {
     private Response askLocation() {
 
         TextCard textCard = new TextCard("您所在的城市是哪里呢?");
+        textCard.setUrl("www:......");
         textCard.setAnchorText("setAnchorText");
         textCard.addCueWord("您所在的城市是哪里呢?");
 
@@ -188,14 +188,12 @@ public class TaxBot extends BaseBot {
         setSessionAttribute("key_1", "value_1");
         setSessionAttribute("key_2", "value_2");
 
-        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "java-sdk您的税前工资是多少呢?");
+        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "您的税前工资是多少呢?");
 
         // 构造reprompt
         Reprompt reprompt = new Reprompt(outputSpeech);
 
         Response response = new Response(outputSpeech, textCard, reprompt);
-        Resource resource = new Resource();
-        response.setResource(resource);
 
         return response;
     }
@@ -222,9 +220,17 @@ public class TaxBot extends BaseBot {
         return response;
     }
 
+    /**
+     * 计算个税
+     * 
+     * @return Response
+     */
     private Response compute() {
-
-        String ret = "个税计算结果";
+        // 获取多轮槽位值：月薪值、城市信息、查询种类
+        String monthlysalary = getSlot("monthlysalary");
+        String location = getSlot("location");
+        String type = getSlot("compute_type");
+        String ret = "月薪" + monthlysalary + "城市" + location + "个税种类" + type;
 
         TextCard textCard = new TextCard(ret);
         textCard.setAnchorText("setAnchorText");

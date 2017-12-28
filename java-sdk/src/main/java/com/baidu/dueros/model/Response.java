@@ -37,7 +37,7 @@ public class Response {
     // 卡片
     private Card card;
     // 定义Bot输出Resource的数据结构
-    private Resource resource;
+    private Resource resource = new Resource();
 
     /**
      * 默认构造方法
