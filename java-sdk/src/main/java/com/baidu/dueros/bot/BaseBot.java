@@ -21,12 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.baidu.dueros.certificate.Certificate;
+import com.baidu.dueros.certificate.Verfity;
 import com.baidu.dueros.data.request.IntentRequest;
 import com.baidu.dueros.data.request.LaunchRequest;
 import com.baidu.dueros.data.request.Query;
@@ -76,8 +80,16 @@ public class BaseBot {
     private List<Directive> directives = new ArrayList<Directive>();
     // 通过NLU解析出来的Intent
     private Intent intent;
+    // HTTP body信息，用户认证签名
+    private String message;
+
     // 认证签名
-    private Certificate certificate = new Certificate();
+    private static Certificate certificate = new Certificate();
+
+    // 读写锁，用于控制多线程对Certificate的访问
+    private static ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private static Lock readLock = readWriteLock.readLock();
+    private static Lock writeLock = readWriteLock.writeLock();
 
     /**
      * Base构造方法
@@ -104,6 +116,10 @@ public class BaseBot {
         session = new Session();
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(request, Request.class);
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     /**
@@ -367,13 +383,46 @@ public class BaseBot {
     }
 
     /**
+     * 设置Certificate对象
      * 
      * @param certificate
      *            认证签名
      * @return void
      */
     public void setCertificate(Certificate certificate) {
-        this.certificate = certificate;
+        if (!certificate.getSignaturecerturl().equals(readCertificate().getSignaturecerturl())) {
+            writeCertificate(certificate);
+        }
+    }
+
+    /**
+     * 写锁修改Certificate，主要是signature、signaturecerturl和PublicKey
+     * 
+     * @param certificate
+     * @return void
+     */
+    private void writeCertificate(Certificate certificate) {
+        writeLock.lock();
+        try {
+            BaseBot.certificate = new Certificate(certificate);
+            BaseBot.certificate.setPublicKey(Verfity.getPublicKey(certificate.getSignaturecerturl()));
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    /**
+     * 读锁，读取Certificate对象
+     * 
+     * @return Certificate
+     */
+    private Certificate readCertificate() {
+        readLock.lock();
+        try {
+            return BaseBot.certificate;
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -383,6 +432,15 @@ public class BaseBot {
      */
     public void disableVerify() {
         certificate.disableCertificate();
+    }
+
+    /**
+     * 若请求不合法，则返回该Response
+     * 
+     * @return String 不合法返回的JSON数据
+     */
+    private String illegalRequest() {
+        return "{\"status\":1,\"msg\":\"invalid request\"}";
     }
 
     /**
@@ -489,15 +547,6 @@ public class BaseBot {
     }
 
     /**
-     * 若请求不合法，则返回该Response
-     * 
-     * @return String 不合法返回的JSON数据
-     */
-    private String illegalRequest() {
-        return "{\"status\":1,\"msg\":\"invalid request\"}";
-    }
-
-    /**
      * Bot子类调用
      * 
      * @return String 返回的response信息
@@ -507,7 +556,7 @@ public class BaseBot {
     public String run() throws Exception {
         // 请求参数不合法
         long start = System.currentTimeMillis();
-        if (certificate.verify() == false) {
+        if (Verfity.verify(certificate, message) == false) {
             logger.warn("invalid request!");
             return this.illegalRequest();
         }

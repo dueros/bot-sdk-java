@@ -96,15 +96,16 @@ public class TaxAction extends HttpServlet {
 
         // 根据message创建Bot
         TaxBot bot = new TaxBot(message);
+        bot.setMessage(message);
 
         // 构造Certificate对象
-        Certificate certificate = new Certificate(message, signature, signaturecerturl);
+        Certificate certificate = new Certificate(signature, signaturecerturl);
         bot.setCertificate(certificate);
         // 打开签名验证
         bot.enableVerify();
 
         // 关闭签名验证
-        // bot.disableVerify();
+        //bot.disableVerify();
 
         try {
             // 调用bot的run方法
