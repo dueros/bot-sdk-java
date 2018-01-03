@@ -17,12 +17,12 @@
 package com.baidu.dueros.bot;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,7 +30,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.baidu.dueros.certificate.Certificate;
-import com.baidu.dueros.certificate.Verfity;
 import com.baidu.dueros.data.request.IntentRequest;
 import com.baidu.dueros.data.request.LaunchRequest;
 import com.baidu.dueros.data.request.Query;
@@ -80,16 +79,13 @@ public class BaseBot {
     private List<Directive> directives = new ArrayList<Directive>();
     // 通过NLU解析出来的Intent
     private Intent intent;
-    // HTTP body信息，用户认证签名
-    private String message;
 
+    // 是否打开参数验证，默认为false
+    private boolean enableCertificate = false;
     // 认证签名
-    private static Certificate certificate = new Certificate();
-
-    // 读写锁，用于控制多线程对Certificate的访问
-    private static ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private static Lock readLock = readWriteLock.readLock();
-    private static Lock writeLock = readWriteLock.writeLock();
+    private Certificate certificate;
+    // 缓存认证相关信息
+    private static ConcurrentHashMap<String, PublicKey> cache = new ConcurrentHashMap<>();
 
     /**
      * Base构造方法
@@ -116,10 +112,6 @@ public class BaseBot {
         session = new Session();
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(request, Request.class);
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     /**
@@ -376,10 +368,17 @@ public class BaseBot {
     /**
      * 开启验证请求参数
      * 
-     * @return void
      */
     public void enableVerify() {
-        certificate.enableCertificate();
+        enableCertificate = true;
+    }
+
+    /**
+     * 关闭验证请求参数
+     * 
+     */
+    public void disableVerify() {
+        enableCertificate = false;
     }
 
     /**
@@ -387,51 +386,29 @@ public class BaseBot {
      * 
      * @param certificate
      *            认证签名
-     * @return void
      */
     public void setCertificate(Certificate certificate) {
-        if (!certificate.getSignaturecerturl().equals(readCertificate().getSignaturecerturl())) {
-            writeCertificate(certificate);
-        }
+        this.certificate = certificate;
     }
 
     /**
-     * 写锁修改Certificate，主要是signature、signaturecerturl和PublicKey
+     * 签名验证
      * 
-     * @param certificate
-     * @return void
+     * @return boolean 签名验证是否正确
      */
-    private void writeCertificate(Certificate certificate) {
-        writeLock.lock();
-        try {
-            BaseBot.certificate = new Certificate(certificate);
-            BaseBot.certificate.setPublicKey(Verfity.getPublicKey(certificate.getSignaturecerturl()));
-        } finally {
-            writeLock.unlock();
+    private boolean verify() {
+        String signaturecerturl = certificate.getSignaturecerturl();
+        if (signaturecerturl == null) {
+            return false;
         }
-    }
-
-    /**
-     * 读锁，读取Certificate对象
-     * 
-     * @return Certificate
-     */
-    private Certificate readCertificate() {
-        readLock.lock();
-        try {
-            return BaseBot.certificate;
-        } finally {
-            readLock.unlock();
+        if (!cache.containsKey(signaturecerturl)) {
+            PublicKey publicKey = Certificate.getPublicKeyFromUrl(signaturecerturl);
+            if (publicKey == null) {
+                return false;
+            }
+            cache.put(signaturecerturl, publicKey);
         }
-    }
-
-    /**
-     * 关闭验证请求参数
-     * 
-     * @return void
-     */
-    public void disableVerify() {
-        certificate.disableCertificate();
+        return Certificate.verify(cache, certificate);
     }
 
     /**
@@ -444,6 +421,15 @@ public class BaseBot {
     }
 
     /**
+     * 在Bot没有返回的情况下，默认返回
+     * 
+     * @return String 默认返回
+     */
+    private String defaultResponse() {
+        return "{\"status\":0,\"msg\":\"\"}";
+    }
+
+    /**
      * 根据Bot返回的Response转换为ResponseEncapsulation，然后序列化
      * 
      * @param response
@@ -453,6 +439,9 @@ public class BaseBot {
      * @return String 封装后的ResponseEncapsulation的序列化内容
      */
     protected String build(Response response) throws JsonProcessingException {
+        if (response == null) {
+            return defaultResponse();
+        }
         Context context = new Context();
         if (isIntentRequest() == true) {
             context.setIntent(getIntent());
@@ -555,13 +544,13 @@ public class BaseBot {
      */
     public String run() throws Exception {
         // 请求参数不合法
-        long start = System.currentTimeMillis();
-        if (Verfity.verify(certificate, message) == false) {
-            logger.warn("invalid request!");
-            return this.illegalRequest();
+        if (enableCertificate == true) {
+            if (verify() == false) {
+                logger.warn("invalid request!");
+                return this.illegalRequest();
+            }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("verify == " + (end - start));
+
         this.dispatch();
         return this.build(response);
     }

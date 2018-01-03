@@ -70,6 +70,7 @@ public class TaxAction extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long start = System.currentTimeMillis();
+
         // 获取HTTP header信息
         Map<String, String> map = new HashMap<String, String>();
         Enumeration<String> headernames = request.getHeaderNames();
@@ -87,7 +88,6 @@ public class TaxAction extends HttpServlet {
         BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader((ServletInputStream) request.getInputStream(), "utf-8"));
         StringBuffer stringBuffer = new StringBuffer("");
-
         String temp = "";
         while ((temp = bufferedReader.readLine()) != null) {
             stringBuffer.append(temp);
@@ -96,16 +96,15 @@ public class TaxAction extends HttpServlet {
 
         // 根据message创建Bot
         TaxBot bot = new TaxBot(message);
-        bot.setMessage(message);
 
-        // 构造Certificate对象
-        Certificate certificate = new Certificate(signature, signaturecerturl);
-        bot.setCertificate(certificate);
         // 打开签名验证
         bot.enableVerify();
+        // 构造Certificate对象
+        Certificate certificate = new Certificate(signature, signaturecerturl, message);
+        bot.setCertificate(certificate);
 
         // 关闭签名验证
-        //bot.disableVerify();
+        // bot.disableVerify();
 
         try {
             // 调用bot的run方法

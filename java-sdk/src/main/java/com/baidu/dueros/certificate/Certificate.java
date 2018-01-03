@@ -16,7 +16,17 @@
 
 package com.baidu.dueros.certificate;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.PublicKey;
+import java.security.Signature;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * 签名认证
@@ -27,14 +37,12 @@ import java.security.PublicKey;
  */
 public class Certificate {
 
-    // 是否验证请求参数，默认为false
-    private boolean enable = false;
     // 签名
     private String signature;
     // 证书地址
     private String signaturecerturl;
-    // 证书公钥
-    private PublicKey publicKey;
+    // HTTP请求body信息
+    private String message;
 
     /**
      * 构造方法
@@ -46,83 +54,122 @@ public class Certificate {
      * @param signaturecerturl
      *            证书地址
      */
-    public Certificate(final String signature, final String signaturecerturl) {
+    public Certificate(final String signature, final String signaturecerturl, final String message) {
         this.signature = signature;
         this.signaturecerturl = signaturecerturl;
+        this.message = message;
     }
 
     /**
-     * 默认构造方法
-     */
-    public Certificate() {
-
-    }
-
-    /**
-     * 拷贝构造法方法
+     * 签名认证
      * 
-     * @param certificate
-     *            签名对象
+     * @return boolean 验证是否正确
      */
-    public Certificate(Certificate certificate) {
-        signature = certificate.signature;
-        signaturecerturl = certificate.signaturecerturl;
-        publicKey = certificate.publicKey;
+    private static boolean verify(String body, String signature, PublicKey publicKey) {
+        try {
+            Signature sign = Signature.getInstance("SHA1WithRSA");
+            sign.initVerify(publicKey);
+            sign.update(body.getBytes("UTF-8"));
+            return sign.verify(Base64.decodeBase64(signature.getBytes("UTF-8")));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
-     * 打开验证请求参数
+     * 认证签名
      * 
-     * @return void
+     * @param cache
+     *            缓存的认证信息
+     * @return boolean
      */
-    public void enableCertificate() {
-        this.enable = true;
+    public static boolean verify(ConcurrentHashMap<String, PublicKey> cache, Certificate certificate) {
+        if (cache == null) {
+            return false;
+        }
+        return verify(certificate.getMessage(), certificate.getSignature(),
+                cache.get(certificate.getSignaturecerturl()));
     }
 
     /**
-     * 关闭验证请求参数
+     * 根据证书地址获取公钥
      * 
-     * @return void
+     * @param signaturecerturl
+     *            证书地址
+     * @return PublicKey 公钥
      */
-    public void disableCertificate() {
-        this.enable = false;
+    public static PublicKey getPublicKeyFromUrl(String signaturecerturl) {
+        if (!isBaiduDomain(signaturecerturl)) {
+            return null;
+        }
+        try {
+            URL url = new URL(signaturecerturl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(3 * 1000);
+            InputStream inputStream = connection.getInputStream();
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inputStream);
+            PublicKey publicKey = certificate.getPublicKey();
+            return publicKey;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
-     * 是否需要验证请求参数
+     * 校验signaturecerturl是否为百度域以及HTTPS协议
      * 
-     * @return boolean 是否需要验证请求参数
+     * @return boolean 是否为百度域
      */
-    public boolean isEnable() {
-        return this.enable;
+    private static boolean isBaiduDomain(String signaturecerturl) {
+        try {
+            URL url = new URL(signaturecerturl);
+            String protocol = url.getProtocol();
+            // 必须是HTTPS协议
+            if (!"https".equals(protocol.toLowerCase())) {
+                return false;
+            }
+            // 域名必须是duer.bdstatic.com
+            String host = url.getHost();
+            if (!"duer.bdstatic.com".equals(host)) {
+                return false;
+            }
+            // path必须以/saiya/flow/开头
+            String path = url.getPath();
+            if (!path.startsWith("/saiya/flow/")) {
+                return false;
+            }
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 
+    /**
+     * 获取签名
+     * 
+     * @return String 签名
+     */
     public String getSignature() {
         return signature;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
+    /**
+     * 获取证书地址
+     * 
+     * @return String 证书地址
+     */
     public String getSignaturecerturl() {
         return signaturecerturl;
     }
 
-    public void setSignaturecerturl(String signaturecerturl) {
-        this.signaturecerturl = signaturecerturl;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
-
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(PublicKey publicKey) {
-        this.publicKey = publicKey;
+    /**
+     * 获取HTTP请求的body信息
+     * 
+     * @return String HTTP请求body信息
+     */
+    public String getMessage() {
+        return message;
     }
 
 }
