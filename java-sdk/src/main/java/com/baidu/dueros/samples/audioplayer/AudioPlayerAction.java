@@ -42,17 +42,6 @@ public class AudioPlayerAction extends HttpServlet {
     }
 
     /**
-     * 重写doGet方法，处理GET请求
-     * 
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doPost(request, response);
-    }
-
-    /**
      * 重写doPost方法，处理POST请求
      * 
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

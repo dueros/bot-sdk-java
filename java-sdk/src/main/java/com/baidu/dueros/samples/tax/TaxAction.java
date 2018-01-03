@@ -42,17 +42,6 @@ public class TaxAction extends HttpServlet {
     }
 
     /**
-     * 重写doGet方法，处理GET请求
-     * 
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doPost(request, response);
-    }
-
-    /**
      * 重写doPost方法，处理POST请求
      * 
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -62,7 +51,7 @@ public class TaxAction extends HttpServlet {
             throws ServletException, IOException {
         long start = System.currentTimeMillis();
 
-        // 根据message创建Bot
+        // 根据request创建Bot
         TaxBot bot = new TaxBot(request);
 
         // 打开签名验证
@@ -79,7 +68,7 @@ public class TaxAction extends HttpServlet {
             // 返回response
             response.getWriter().append(responseJson);
         } catch (Exception e) {
-            response.getWriter().append("{\"status\":0,\"msg\":\"\"}");
+            response.getWriter().append("{\"status\":1,\"msg\":\"\"}");
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);

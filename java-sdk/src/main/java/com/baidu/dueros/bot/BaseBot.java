@@ -71,7 +71,7 @@ public class BaseBot {
     // Bot收到的Request请求
     private final Request request;
     // 会话信息
-    private final Session session;
+    private Session session = new Session();
     // 是否需要结束本次会话
     private boolean shouldEndSession = false;
     // 返回的指令
@@ -95,7 +95,6 @@ public class BaseBot {
      *             抛出的异常
      */
     protected BaseBot(Request request) throws IOException {
-        session = new Session();
         this.request = request;
     }
 
@@ -108,9 +107,18 @@ public class BaseBot {
      *             抛出的异常
      */
     protected BaseBot(String request) throws IOException {
-        session = new Session();
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(request, Request.class);
+    }
+
+    /**
+     * BaseBot构造方法
+     * 
+     * @param certificate
+     *            认证对象
+     */
+    protected BaseBot(Certificate certificate) throws IOException {
+        this(certificate.getMessage());
     }
 
     /**
@@ -124,7 +132,6 @@ public class BaseBot {
     protected BaseBot(HttpServletRequest request) throws IOException {
         certificate = new Certificate(request);
         String message = certificate.getMessage();
-        session = new Session();
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(message, Request.class);
     }

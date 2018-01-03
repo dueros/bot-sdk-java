@@ -52,7 +52,7 @@ public class Certificate {
     private String signaturecerturl;
     // HTTP请求body信息
     private String message;
-
+    // 百度域名常量
     private static final String DOMAIN = "duer.bdstatic.com";
 
     /**

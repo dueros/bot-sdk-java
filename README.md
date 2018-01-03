@@ -10,7 +10,7 @@
 * 提供了事件监听接口
 
 ## BOT-SDK安装说明
-* BOT—SDK需要Java 8及以上版本
+* BOT-SDK需要Java 8及以上版本
 * 建议使用Maven作为工程管理工具，BOT-SDK的升级、维护都将通过Maven进行发布
 * BOT-SDK依赖的jar包，见pom.xml，可以通过maven构建
 
@@ -19,7 +19,7 @@ BOT-SDK提供了两个简单的例子，分别在com.baidu.dueros.samples.audiop
 
 ```java
 public class TaxBot extends Base {
-	// todo
+    // todo
 }
 ```
 
@@ -27,11 +27,11 @@ public class TaxBot extends Base {
 
 ```java
 public class AudioPlayerBot extends AudioPlayer {
-	// todo
+    // todo
 }
 ```
 
-Base提供了三种基本的构造函数，Bot可以根据自身情况进行重写
+Base提供了四种基本的构造函数，Bot可以根据自身情况进行重写
 * 使用HttpServletRequest作为参数（针对使用Servlet实现服务）
 
 ```java
@@ -43,11 +43,12 @@ Base提供了三种基本的构造函数，Bot可以根据自身情况进行重�
  * @throws IOException
  *             抛出异常
  */
-protected Base(HttpServletRequest request) throws IOException {
-	session = new Session();
-	String json = IOUtils.toString(request.getInputStream());
-	ObjectMapper mapper = new ObjectMapper();
-	this.request = mapper.readValue(json, Request.class);
+protected BaseBot(HttpServletRequest request) throws IOException {
+    certificate = new Certificate(request);
+    String message = certificate.getMessage();
+    session = new Session();
+    ObjectMapper mapper = new ObjectMapper();
+    this.request = mapper.readValue(message, Request.class);
 }
 ```
 
@@ -63,8 +64,8 @@ protected Base(HttpServletRequest request) throws IOException {
  *             抛出的异常
  */
 protected Base(Request request) throws IOException {
-	session = new Session();
-	this.request = request;
+    session = new Session();
+    this.request = request;
 }
 ```
 
@@ -80,9 +81,22 @@ protected Base(Request request) throws IOException {
  *             抛出的异常
  */
 protected Base(String request) throws IOException {
-	session = new Session();
-	ObjectMapper mapper = new ObjectMapper();
-	this.request = mapper.readValue(request, Request.class);
+    session = new Session();
+    ObjectMapper mapper = new ObjectMapper();
+    this.request = mapper.readValue(request, Request.class);
+}
+```
+
+* 使用Certificate对象作为参数，在开启请求参数验证的情况下，需要构造Certificate对象，Certificate的message成语变量是HTTP请求body信息
+```java
+/**
+ * BaseBot构造方法
+ * 
+ * @param certificate
+ *            认证对象
+ */
+protected BaseBot(Certificate certificate) throws IOException {
+    this(certificate.getMessage());
 }
 ```
 
@@ -98,7 +112,7 @@ protected Base(String request) throws IOException {
  *             抛出异常
  */
 public TaxBot(HttpServletRequest request) throws IOException {
-	super(request);
+    super(request);
 }
 ```
 
@@ -114,26 +128,26 @@ public TaxBot(HttpServletRequest request) throws IOException {
  *            LaunchRequest请求体
  * @see com.baidu.dueros.bot.BaseBot#onLaunch(com.baidu.dueros.data.request.LaunchRequest)
  */
- @Override
- protected Response onLaunch(LaunchRequest launchRequest) {
+@Override
+protected Response onLaunch(LaunchRequest launchRequest) {
 
-	// 新建文本卡片
-	TextCard textCard = new TextCard("所得税为您服务");
-	// 设置链接地址
-	textCard.setUrl("www:....");
-	// 设置链接内容
-	textCard.setAnchorText("setAnchorText");
-	// 添加引导话术
-	textCard.addCueWord("欢迎进入");
-	
-	// 新建返回的语音内容
-	OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "所得税为您服务");
-	
-	// 构造返回的Response
-	Response response = new Response(outputSpeech, textCard);
-	
-	return response;
- }
+    // 新建文本卡片
+    TextCard textCard = new TextCard("所得税为您服务");
+    // 设置链接地址
+    textCard.setUrl("www:....");
+    // 设置链接内容
+    textCard.setAnchorText("setAnchorText");
+    // 添加引导话术
+    textCard.addCueWord("欢迎进入");
+
+    // 新建返回的语音内容
+    OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "所得税为您服务");
+
+    // 构造返回的Response
+    Response response = new Response(outputSpeech, textCard);
+
+    return response;
+}
 ```
 
 #### Bot结束对话
@@ -146,22 +160,22 @@ public TaxBot(HttpServletRequest request) throws IOException {
  *            SessionEndedRequest请求体
  * @see com.baidu.dueros.bot.BaseBot#onSessionEnded(com.baidu.dueros.data.request.SessionEndedRequest)
  */
- @Override
- protected Response onSessionEnded(SessionEndedRequest sessionEndedRequest) {
+@Override
+protected Response onSessionEnded(SessionEndedRequest sessionEndedRequest) {
 
-	// 构造TextCard
-	TextCard textCard = new TextCard("感谢使用所得税服务");
-	textCard.setAnchorText("setAnchorText");
-	textCard.addCueWord("欢迎再次使用");
-	
-	// 构造OutputSpeech
-	OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "欢迎再次使用所得税服务");
-	
-	// 构造Response
-	Response response = new Response(outputSpeech, textCard);
-	
-	return response;
- }
+    // 构造TextCard
+    TextCard textCard = new TextCard("感谢使用所得税服务");
+    textCard.setAnchorText("setAnchorText");
+    textCard.addCueWord("欢迎再次使用");
+
+    // 构造OutputSpeech
+    OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "欢迎再次使用所得税服务");
+
+    // 构造Response
+    Response response = new Response(outputSpeech, textCard);
+
+    return response;
+}
 ```
 
 #### Bot处理NLU解析的意图
@@ -174,32 +188,32 @@ public TaxBot(HttpServletRequest request) throws IOException {
  *            IntentRequest请求体
  * @see com.baidu.dueros.bot.BaseBot#onInent(com.baidu.dueros.data.request.IntentRequest)
  */
- @Override
- protected Response onInent(IntentRequest intentRequest) {
+@Override
+protected Response onInent(IntentRequest intentRequest) {
 
-	// 判断NLU解析的意图名称是否匹配
-	if ("myself".equals(intentRequest.getIntentName())) {
-	    // 判断NLU解析解析后是否存在这个槽位
-	    if (getSlot("monthlysalary") == null) {
-	        // 询问月薪槽位
-	        ask("monthlysalary");
-	        return askSalary();
-	    } else if (getSlot("location") == null) {
-	        // 询问城市槽位
-	        ask("location");
-	        return askLocation();
-	    } else if (getSlot("compute_type") == null) {
-	        // 询问查询种类槽位
-	        ask("compute_type");
-	        return askComputeType();
-	    } else {
-	        // 具体计算方法
-	        compute();
-	    }
-	}
-	
-	return null;
- }
+    // 判断NLU解析的意图名称是否匹配
+    if ("myself".equals(intentRequest.getIntentName())) {
+        // 判断NLU解析解析后是否存在这个槽位
+        if (getSlot("monthlysalary") == null) {
+            // 询问月薪槽位
+            ask("monthlysalary");
+            return askSalary();
+        } else if (getSlot("location") == null) {
+            // 询问城市槽位
+            ask("location");
+            return askLocation();
+        } else if (getSlot("compute_type") == null) {
+            // 询问查询种类槽位
+            ask("compute_type");
+            return askComputeType();
+        } else {
+            // 具体计算方法
+            compute();
+        }
+    }
+
+    return null;
+}
 ```
 
 #### Bot还可以订阅端上触发的事件
@@ -212,28 +226,28 @@ public TaxBot(HttpServletRequest request) throws IOException {
  *            PlaybackNearlyFinishedEvent请求体
  * @see com.baidu.dueros.bot.AudioPlayer#onPlaybackNearlyFinishedEvent(com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent)
  */
- @Override
- protected Response onPlaybackNearlyFinishedEvent(PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
+@Override
+protected Response onPlaybackNearlyFinishedEvent(PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
 
-	TextCard textCard = new TextCard();
-	textCard.setContent("处理即将播放完成事件");
-	textCard.setUrl("www:...");
-	textCard.setAnchorText("setAnchorText");
-	textCard.addCueWord("即将完成");
-	
-	OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "处理即将播放完成事件");
-	
-	// 新建Play指令
-	Play play = new Play(PlayBehaviorType.ENQUEUE, "url", 1000);
-	// 添加返回的指令
-	addDirective(play);
-	
-	Reprompt reprompt = new Reprompt(outputSpeech);
-	
-	Response response = new Response(outputSpeech, textCard, reprompt);
-	
-	return response;
- }
+    TextCard textCard = new TextCard();
+    textCard.setContent("处理即将播放完成事件");
+    textCard.setUrl("www:...");
+    textCard.setAnchorText("setAnchorText");
+    textCard.addCueWord("即将完成");
+
+    OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "处理即将播放完成事件");
+
+    // 新建Play指令
+    Play play = new Play(PlayBehaviorType.ENQUEUE, "url", 1000);
+    // 添加返回的指令
+    addDirective(play);
+
+    Reprompt reprompt = new Reprompt(outputSpeech);
+
+    Response response = new Response(outputSpeech, textCard, reprompt);
+
+    return response;
+}
 ```
 
 提供四种类型的端上报事件
@@ -246,7 +260,7 @@ public TaxBot(HttpServletRequest request) throws IOException {
  * @return Response 返回的Response
  */
 protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackNearlyFinishedEvent) {
-	return response;
+    return response;
 }
 
 /**
@@ -257,7 +271,7 @@ protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackNea
  * @return Response 返回的Response
  */
 protected Response onPlaybackStoppedEvent(final PlaybackStoppedEvent playbackStoppedEvent) {
-	return response;
+    return response;
 }
 
 /**
@@ -268,7 +282,7 @@ protected Response onPlaybackStoppedEvent(final PlaybackStoppedEvent playbackSto
  * @return Response 返回的Response
  */
 protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
-	return response;
+    return response;
 }
 
 /**
@@ -279,7 +293,7 @@ protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEve
  * @return Response 返回的Response
  */
 protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {
-	return response;
+    return response;
 }
 ```
 
@@ -289,12 +303,12 @@ protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackF
 ```java
 @WebServlet("/tax")
 public class TaxAction extends HttpServlet {
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public TaxAction() {
-		super();
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public TaxAction() {
+        super();
+    }
 }
 ```
 
@@ -307,56 +321,29 @@ public class TaxAction extends HttpServlet {
  * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
  *      response)
  */
- protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    // 获取HTTP header信息
-    Map<String, String> map = new HashMap<String, String>();
-    Enumeration<String> headernames = request.getHeaderNames();
-    while (headernames.hasMoreElements()) {
-        String key = headernames.nextElement();
-        String value = request.getHeader(key);
-        map.put(key, value);
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        // 创建Bot
+        TaxBot bot = new TaxBot(request);
+
+        // 打开签名验证
+        bot.enableVerify();
+
+        // 关闭签名验证
+        // bot.disableVerify();
+
+        try {
+            // 调用bot的run方法
+            String responseJson = bot.run();
+            // 设置response的编码UTF-8
+            response.setCharacterEncoding("UTF-8");
+            // 返回response
+            response.getWriter().append(responseJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
-
-    // 获取signature和signaturecerturl
-    String signature = map.get("signature");
-    String signaturecerturl = map.get("signaturecerturl");
-
-    // 获取HTTP body
-    BufferedReader bufferedReader = new BufferedReader(
-            new InputStreamReader((ServletInputStream) request.getInputStream(), "utf-8"));
-    StringBuffer stringBuffer = new StringBuffer("");
-
-    String temp = "";
-    while ((temp = bufferedReader.readLine()) != null) {
-        stringBuffer.append(temp);
-    }
-    String message = stringBuffer.toString();
-
-    // 创建Bot
-    TaxBot bot = new TaxBot(message);
-
-    Certificate certificate = new Certificate(message, signature, signaturecerturl);
-    bot.setCertificate(certificate);
-
-    // 打开签名验证
-    bot.enableVerify();
-
-    // 关闭签名验证
-    // bot.disableVerify();
-
-    try {
-        // 调用bot的run方法
-        String responseJson = bot.run();
-        // 设置response的编码UTF-8
-        response.setCharacterEncoding("UTF-8");
-        // 返回response
-        response.getWriter().append(responseJson);
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    
-}
 ```
 
 将上述servlet部署在Tomcat等服务器上，启动服务后即可提供服务
@@ -377,26 +364,26 @@ public class TaxAction extends HttpServlet {
 多轮对话的Bot，会通过询问用户来收集完成任务所需要的槽位信息，ask就是询问一个特定的槽位，比如查询个税的意图中，没有提供月薪收入，就可以通过ask询问月薪收入。
 
 ```java
-	// 判断NLU解析的意图名称是否匹配
-	if ("inquiry".equals(intentRequest.getIntentName())) {
-	    // 判断NLU解析解析后是否存在这个槽位
-	    if (getSlot("monthlysalary") == null) {
-	        // 询问月薪槽位
-	        ask("monthlysalary");
-	        return askSalary();
-	    } else if (getSlot("location") == null) {
-	        // 询问城市槽位
-	        ask("location");
-	        return askLocation();
-	    } else if (getSlot("compute_type") == null) {
-	        // 询问查询种类槽位
-	        ask("compute_type");
-	        return askComputeType();
-	    } else {
-	        // 具体计算方法
-	        compute();
-	    }
-	}
+// 判断NLU解析的意图名称是否匹配
+if ("inquiry".equals(intentRequest.getIntentName())) {
+    // 判断NLU解析解析后是否存在这个槽位
+    if (getSlot("monthlysalary") == null) {
+        // 询问月薪槽位
+        ask("monthlysalary");
+        return askSalary();
+    } else if (getSlot("location") == null) {
+        // 询问城市槽位
+        ask("location");
+        return askLocation();
+    } else if (getSlot("compute_type") == null) {
+        // 询问查询种类槽位
+        ask("compute_type");
+        return askComputeType();
+    } else {
+        // 具体计算方法
+        compute();
+    }
+}
 ```
 
 #### delegate
@@ -405,8 +392,8 @@ public class TaxAction extends HttpServlet {
 ```java
 // 判断NLU解析的意图名称是否匹配
 if ("inquiry".equals(intentRequest.getIntentName())) {
-	// 如果使用了delegate 就不再需要使用setConfirmSlot/setConfirmIntent，否则返回的directive会被后set的覆盖
-	setDelegate();
+    // 如果使用了delegate 就不再需要使用setConfirmSlot/setConfirmIntent，否则返回的directive会被后set的覆盖
+    setDelegate();
 }
 ```
 
@@ -417,11 +404,11 @@ if ("inquiry".equals(intentRequest.getIntentName())) {
 ```java
 // 判断NLU解析的意图名称是否匹配
 if ("inquiry".equals(intentRequest.getIntentName())) {
-	// 判断NLU解析解析后是否存在这个槽位
-	if (getSlot("monthlysalary") == null) {
-		// 确认槽位
-		setConfirmSlot("monthlysalary");
-	}
+    // 判断NLU解析解析后是否存在这个槽位
+    if (getSlot("monthlysalary") == null) {
+        // 确认槽位
+        setConfirmSlot("monthlysalary");
+    }
 }
 ```
 
@@ -433,11 +420,11 @@ if ("inquiry".equals(intentRequest.getIntentName())) {
 ```java
 // 判断NLU解析的意图名称是否匹配
 if ("inquiry".equals(intentRequest.getIntentName())) {
-	// 判断NLU解析解析后是否存在这个槽位
-	if (getSlot("monthlysalary") != null && getSlot("location") != null) {
-		// 确认意图
-		setConfirmIntent();
-	}
+    // 判断NLU解析解析后是否存在这个槽位
+    if (getSlot("monthlysalary") != null && getSlot("location") != null) {
+        // 确认意图
+        setConfirmIntent();
+    }
 }
 
 ```
