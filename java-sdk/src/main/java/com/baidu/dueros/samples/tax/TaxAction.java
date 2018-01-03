@@ -16,21 +16,12 @@
 
 package com.baidu.dueros.samples.tax;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.baidu.dueros.certificate.Certificate;
 
 /**
  * Servlet implementation class TaxAction
@@ -71,37 +62,11 @@ public class TaxAction extends HttpServlet {
             throws ServletException, IOException {
         long start = System.currentTimeMillis();
 
-        // 获取HTTP header信息
-        Map<String, String> map = new HashMap<String, String>();
-        Enumeration<String> headernames = request.getHeaderNames();
-        while (headernames.hasMoreElements()) {
-            String key = headernames.nextElement();
-            String value = request.getHeader(key);
-            map.put(key, value);
-        }
-
-        // 获取signature和signaturecerturl
-        String signature = map.get("signature");
-        String signaturecerturl = map.get("signaturecerturl");
-
-        // 获取HTTP body
-        BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader((ServletInputStream) request.getInputStream(), "utf-8"));
-        StringBuffer stringBuffer = new StringBuffer("");
-        String temp = "";
-        while ((temp = bufferedReader.readLine()) != null) {
-            stringBuffer.append(temp);
-        }
-        String message = stringBuffer.toString();
-
         // 根据message创建Bot
-        TaxBot bot = new TaxBot(message);
+        TaxBot bot = new TaxBot(request);
 
         // 打开签名验证
         bot.enableVerify();
-        // 构造Certificate对象
-        Certificate certificate = new Certificate(signature, signaturecerturl, message);
-        bot.setCertificate(certificate);
 
         // 关闭签名验证
         // bot.disableVerify();
@@ -114,7 +79,7 @@ public class TaxAction extends HttpServlet {
             // 返回response
             response.getWriter().append(responseJson);
         } catch (Exception e) {
-            e.printStackTrace();
+            response.getWriter().append("{\"status\":0,\"msg\":\"\"}");
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);

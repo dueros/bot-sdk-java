@@ -16,7 +16,10 @@
 
 package com.baidu.dueros.certificate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,7 +27,13 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -44,6 +53,8 @@ public class Certificate {
     // HTTP请求body信息
     private String message;
 
+    private static final String DOMAIN = "duer.bdstatic.com";
+
     /**
      * 构造方法
      * 
@@ -58,6 +69,44 @@ public class Certificate {
         this.signature = signature;
         this.signaturecerturl = signaturecerturl;
         this.message = message;
+    }
+
+    /**
+     * 构造方法
+     * 
+     * @param request
+     *            HttpServletRequest
+     */
+    public Certificate(HttpServletRequest request) {
+        try {
+            Map<String, String> map = new HashMap<String, String>();
+            Enumeration<String> headernames = request.getHeaderNames();
+            while (headernames.hasMoreElements()) {
+                String key = headernames.nextElement();
+                String value = request.getHeader(key);
+                map.put(key, value);
+            }
+
+            // 获取signature和signaturecerturl
+            String signature = map.get("signature");
+            String signaturecerturl = map.get("signaturecerturl");
+
+            // 获取HTTP body
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader((ServletInputStream) request.getInputStream(), "utf-8"));
+            StringBuffer stringBuffer = new StringBuffer("");
+            String temp = "";
+            while ((temp = bufferedReader.readLine()) != null) {
+                stringBuffer.append(temp);
+            }
+            String message = stringBuffer.toString();
+            this.signature = signature;
+            this.signaturecerturl = signaturecerturl;
+            this.message = message;
+        } catch (IOException e) {
+
+        }
+
     }
 
     /**
@@ -131,12 +180,7 @@ public class Certificate {
             }
             // 域名必须是duer.bdstatic.com
             String host = url.getHost();
-            if (!"duer.bdstatic.com".equals(host)) {
-                return false;
-            }
-            // path必须以/saiya/flow/开头
-            String path = url.getPath();
-            if (!path.startsWith("/saiya/flow/")) {
+            if (!DOMAIN.equals(host)) {
                 return false;
             }
             return true;

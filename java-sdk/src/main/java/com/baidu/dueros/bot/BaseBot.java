@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.baidu.dueros.certificate.Certificate;
@@ -123,10 +122,11 @@ public class BaseBot {
      *             抛出异常
      */
     protected BaseBot(HttpServletRequest request) throws IOException {
+        certificate = new Certificate(request);
+        String message = certificate.getMessage();
         session = new Session();
-        String json = IOUtils.toString(request.getInputStream(), "UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        this.request = mapper.readValue(json, Request.class);
+        this.request = mapper.readValue(message, Request.class);
     }
 
     /**
@@ -425,7 +425,7 @@ public class BaseBot {
      * 
      * @return String 默认返回
      */
-    private String defaultResponse() {
+    public String defaultResponse() {
         return "{\"status\":0,\"msg\":\"\"}";
     }
 
