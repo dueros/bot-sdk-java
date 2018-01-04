@@ -404,6 +404,10 @@ public class BaseBot {
      * @return boolean 签名验证是否正确
      */
     private boolean verify() {
+        // 首先检查是否打开请求参数验证
+        if (enableCertificate == false) {
+            return true;
+        }
         String signaturecerturl = certificate.getSignaturecerturl();
         if (signaturecerturl == null) {
             return false;
@@ -551,11 +555,9 @@ public class BaseBot {
      */
     public String run() throws Exception {
         // 请求参数不合法
-        if (enableCertificate == true) {
-            if (verify() == false) {
-                logger.warn("invalid request!");
-                return this.illegalRequest();
-            }
+        if (verify() == false) {
+            logger.warn("invalid request!");
+            return this.illegalRequest();
         }
 
         this.dispatch();

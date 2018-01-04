@@ -15,101 +15,42 @@
 * BOT-SDK依赖的jar包，见pom.xml，可以通过maven构建
 
 ## BOT-SDK使用说明
-BOT-SDK提供了两个简单的例子，分别在com.baidu.dueros.samples.audioplayer和com.baidu.dueros.samples.tax。为了使用BOT-SDK，你需要新建一个Class，比如TaxBot，需要继承com.baidu.dueros.bot.Base类
+BOT-SDK提供了两个简单的例子，分别在com.baidu.dueros.samples.audioplayer和com.baidu.dueros.samples.tax。为了使用BOT-SDK，你需要新建一个Class，比如查询个人所得税的例子TaxBot，根据税前工资、城市计算所要查询的个税，需要继承com.baidu.dueros.bot.BaseBot类。
+
+查询个税的意图为inquiry，槽位分别为monthlysalary（税前工资）、location（城市）、compute_type（个税种类）。关于意图以及槽位的概念见https://dueros.baidu.com/didp/doc/dueros-bot-platform/dbp-nlu/intents_markdown
 
 ```java
-public class TaxBot extends Base {
-    // todo
-}
+public class TaxBot extends BaseBot {}
 ```
 
-开发一个音频播放的Bot，应该继承com.baidu.dueros.bot.AudioPlayer类，AudioPlayer也是继承自Base的子类
+开发一个音频播放的Bot，应该继承com.baidu.dueros.bot.AudioPlayer类，AudioPlayer也是继承自BaseBot的子类
 
 ```java
-public class AudioPlayerBot extends AudioPlayer {
-    // todo
-}
+public class AudioPlayerBot extends AudioPlayer {}
 ```
 
-Base提供了四种基本的构造函数，Bot可以根据自身情况进行重写
-* 使用HttpServletRequest作为参数（针对使用Servlet实现服务）
+然后，重写BaseBot的构造方法，BaseBot提供了四种基本的构造函数，Bot可以根据自身情况进行重写
+
 
 ```java
-/**
- * Base构造方法
- * 
- * @param request
- *            为Servlet的request
- * @throws IOException
- *             抛出异常
- */
-protected BaseBot(HttpServletRequest request) throws IOException {
-    certificate = new Certificate(request);
-    String message = certificate.getMessage();
-    session = new Session();
-    ObjectMapper mapper = new ObjectMapper();
-    this.request = mapper.readValue(message, Request.class);
-}
-```
+// 使用HttpServletRequest作为参数（针对使用Servlet实现服务）
+protected BaseBot(HttpServletRequest request) throws IOException {}
 
-* 使用Request作为参数
+// 使用Request作为参数
+protected BaseBot(Request request) throws IOException {}
 
-```java
-/**
- * Base构造方法
- * 
- * @param request
- *            为封装后的Request
- * @throws IOException
- *             抛出的异常
- */
-protected Base(Request request) throws IOException {
-    session = new Session();
-    this.request = request;
-}
-```
+// 使用序列化后的字符串作为参数
+protected BaseBot(String request) throws IOException {}
 
-* 使用序列化后的字符串作为参数
-
-```java
-/**
- * Base构造方法
- * 
- * @param request
- *            字符串
- * @throws IOException
- *             抛出的异常
- */
-protected Base(String request) throws IOException {
-    session = new Session();
-    ObjectMapper mapper = new ObjectMapper();
-    this.request = mapper.readValue(request, Request.class);
-}
-```
-
-* 使用Certificate对象作为参数，在开启请求参数验证的情况下，需要构造Certificate对象，Certificate的message成语变量是HTTP请求body信息
-```java
-/**
- * BaseBot构造方法
- * 
- * @param certificate
- *            认证对象
- */
-protected BaseBot(Certificate certificate) throws IOException {
-    this(certificate.getMessage());
-}
+// 使用Certificate对象作为参数，在开启请求参数验证的情况下，需要构造Certificate对象，Certificate的message成语变量是HTTP请求body信息
+protected BaseBot(Certificate certificate) throws IOException {}
 ```
 
 假设TaxBot使用HttpServletRequest作为参数实现构造方法
 
 ```java
 /**
- * 重写Base构造方法
- * 
- * @param request
- *            servlet Request作为参数
- * @throws IOException
- *             抛出异常
+ * 重写BaseBot构造方法
  */
 public TaxBot(HttpServletRequest request) throws IOException {
     super(request);
@@ -123,10 +64,6 @@ public TaxBot(HttpServletRequest request) throws IOException {
 ```java
 /**
  * 重写onLaunch方法，处理onLaunch对话事件
- * 
- * @param launchRequest
- *            LaunchRequest请求体
- * @see com.baidu.dueros.bot.BaseBot#onLaunch(com.baidu.dueros.data.request.LaunchRequest)
  */
 @Override
 protected Response onLaunch(LaunchRequest launchRequest) {
@@ -155,10 +92,6 @@ protected Response onLaunch(LaunchRequest launchRequest) {
 ```java
 /**
  * 重写onSessionEnded事件，处理onSessionEnded对话事件
- * 
- * @param sessionEndedRequest
- *            SessionEndedRequest请求体
- * @see com.baidu.dueros.bot.BaseBot#onSessionEnded(com.baidu.dueros.data.request.SessionEndedRequest)
  */
 @Override
 protected Response onSessionEnded(SessionEndedRequest sessionEndedRequest) {
@@ -183,10 +116,6 @@ protected Response onSessionEnded(SessionEndedRequest sessionEndedRequest) {
 ```java
 /**
  * 重写onInent方法，处理onInent对话事件
- * 
- * @param intentRequest
- *            IntentRequest请求体
- * @see com.baidu.dueros.bot.BaseBot#onInent(com.baidu.dueros.data.request.IntentRequest)
  */
 @Override
 protected Response onInent(IntentRequest intentRequest) {
@@ -221,10 +150,6 @@ protected Response onInent(IntentRequest intentRequest) {
 ```java
 /**
  * 重写onPlaybackNearlyFinishedEvent方法，处理onPlaybackNearlyFinishedEvent端上报事件
- * 
- * @param playbackNearlyFinishedEvent
- *            PlaybackNearlyFinishedEvent请求体
- * @see com.baidu.dueros.bot.AudioPlayer#onPlaybackNearlyFinishedEvent(com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent)
  */
 @Override
 protected Response onPlaybackNearlyFinishedEvent(PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
@@ -251,50 +176,19 @@ protected Response onPlaybackNearlyFinishedEvent(PlaybackNearlyFinishedEvent pla
 ```
 
 提供四种类型的端上报事件
+
 ```java
-/**
- * 处理PlaybackStartedEvent事件
- * 
- * @param playbackNearlyFinishedEvent
- *            PlaybackStartedEvent事件
- * @return Response 返回的Response
- */
-protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackNearlyFinishedEvent) {
-    return response;
-}
+// 处理PlaybackStartedEvent事件
+protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackNearlyFinishedEvent) {}
 
-/**
- * 处理PlaybackStoppedEvent事件
- * 
- * @param playbackStoppedEvent
- *            PlaybackStoppedEvent事件
- * @return Response 返回的Response
- */
-protected Response onPlaybackStoppedEvent(final PlaybackStoppedEvent playbackStoppedEvent) {
-    return response;
-}
+// 处理PlaybackStoppedEvent事件
+protected Response onPlaybackStoppedEvent(final PlaybackStoppedEvent playbackStoppedEvent) {}
 
-/**
- * 处理PlaybackNearlyFinishedEvent事件
- * 
- * @param playbackNearlyFinishedEvent
- *            PlaybackNearlyFinishedEvent事件
- * @return Response 返回的Response
- */
-protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
-    return response;
-}
+// 处理PlaybackNearlyFinishedEvent事件
+protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {}
 
-/**
- * 处理PlaybackFinishedEvent事件
- * 
- * @param playbackFinishedEvent
- *            PlaybackFinishedEvent事件
- * @return Response 返回的Response
- */
-protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {
-    return response;
-}
+// 处理PlaybackFinishedEvent事件
+protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {}
 ```
 
 ### 部署服务
@@ -317,18 +211,13 @@ public class TaxAction extends HttpServlet {
 ```java
 /**
  * 重写doPost方法，处理POST请求
- * 
- * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
- *      response)
  */
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         // 创建Bot
         TaxBot bot = new TaxBot(request);
-
         // 打开签名验证
         bot.enableVerify();
-
         // 关闭签名验证
         // bot.disableVerify();
 
@@ -340,7 +229,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             // 返回response
             response.getWriter().append(responseJson);
         } catch (Exception e) {
-            e.printStackTrace();
+            // 返回非法结果
+            response.getWriter().append("{\"status\":1,\"msg\":\"\"}");
         }
 
     }
@@ -514,7 +404,4 @@ bot.enableVerify();
 // 关闭签名验证
 bot.disableVerify();
 ```
-
-
-
 

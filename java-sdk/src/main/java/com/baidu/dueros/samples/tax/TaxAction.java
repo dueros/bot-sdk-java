@@ -49,8 +49,6 @@ public class TaxAction extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        long start = System.currentTimeMillis();
-
         // 根据request创建Bot
         TaxBot bot = new TaxBot(request);
 
@@ -70,8 +68,6 @@ public class TaxAction extends HttpServlet {
         } catch (Exception e) {
             response.getWriter().append("{\"status\":1,\"msg\":\"\"}");
         }
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
     }
 
 }
