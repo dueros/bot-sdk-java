@@ -79,7 +79,7 @@ public class Application {
     /**
      * 获取botConfigList的getter方法
      * 
-     * @return List<String> botConfigList
+     * @return List botConfigList
      */
     public List<String> getBotConfigList() {
         return botConfigList;

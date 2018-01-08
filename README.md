@@ -11,8 +11,15 @@
 
 ## BOT-SDK安装说明
 * BOT-SDK需要Java 8及以上版本
-* 建议使用Maven作为工程管理工具，BOT-SDK的升级、维护都将通过Maven进行发布
-* BOT-SDK依赖的jar包，见pom.xml，可以通过maven构建
+* 建议使用Maven作为工程管理工具，BOT-SDK的升级、维护都将通过Maven进行发布，在pom.xml中添加最新的版本依赖，如下
+
+```java
+<dependency>
+    <groupId>com.baidu.dueros</groupId>
+    <artifactId>bot-sdk</artifactId>
+    <version>1.0</version>
+</dependency>
+```
 
 ## BOT-SDK使用说明
 BOT-SDK提供了两个简单的例子，分别在com.baidu.dueros.samples.audioplayer和com.baidu.dueros.samples.tax。为了使用BOT-SDK，你需要新建一个Class，比如查询个人所得税的例子TaxBot，根据税前工资、城市计算所要查询的个税，需要继承com.baidu.dueros.bot.BaseBot类。

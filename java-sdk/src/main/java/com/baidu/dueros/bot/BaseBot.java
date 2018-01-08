@@ -116,6 +116,7 @@ public class BaseBot {
      * 
      * @param certificate
      *            认证对象
+     * @throws  IOException
      */
     protected BaseBot(Certificate certificate) throws IOException {
         this(certificate.getMessage());
