@@ -412,3 +412,8 @@ bot.enableVerify();
 bot.disableVerify();
 ```
 
+### 线下调试
+
+在启动sample中的taxbot服务后，可以通过postman发送Request，Request的body内容为,resource/request/inquiry_request，便可以看到Bot的返回。
+
+线下调试可以关闭签名认证。

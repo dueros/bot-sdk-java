@@ -55,8 +55,8 @@ public class TaxAction extends HttpServlet {
         // 打开签名验证
         // bot.enableVerify();
 
-        // 关闭签名验证
-        // bot.disableVerify();
+        // 线下调试时，可以关闭签名验证
+        bot.disableVerify();
 
         try {
             // 调用bot的run方法

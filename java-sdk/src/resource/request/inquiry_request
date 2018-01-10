@@ -10,22 +10,6 @@
       "user": {
         "userId": "44389084",
          "userInfo": {
-          "location": {
-            "geo": {
-              "bd09ll": {
-                "longitude": 116.41650258769,
-                "latitude": 39.922596633515
-              },
-              "wgs84": {
-                "longitude": 116.40387397,
-                "latitude": 39.91488908
-              },
-              "bd09mc": {
-                "longitude": 12959566.979183,
-                "latitude": 4827021.3188561
-              }
-            }
-          }
         }
       },
       "application": {
