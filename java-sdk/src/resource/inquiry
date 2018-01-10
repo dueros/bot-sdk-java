@@ -1,0 +1,63 @@
+{
+  "version": "v2.0",
+  "session": {
+    "new": false,
+    "sessionId": "62bd5004-86ae-4965-a2dc-2a411f11074b",
+    "attributes": {}
+  },
+  "context": {
+    "System": {
+      "user": {
+        "userId": "44389084",
+         "userInfo": {
+          "location": {
+            "geo": {
+              "bd09ll": {
+                "longitude": 116.41650258769,
+                "latitude": 39.922596633515
+              },
+              "wgs84": {
+                "longitude": 116.40387397,
+                "latitude": 39.91488908
+              },
+              "bd09mc": {
+                "longitude": 12959566.979183,
+                "latitude": 4827021.3188561
+              }
+            }
+          }
+        }
+      },
+      "application": {
+        "applicationId": "ca2bf578-cc6c-2fe5-7527-328824c1cfb0"
+      }
+    }
+  },
+  "request": {
+    "query": {
+      "type": "TEXT",
+      "original": "我在北京查询111所得税",
+      "rewritten": "我在北京查询所得税"
+    },
+    "dialogState": "COMPLETED",
+    "determined": false,
+    "intents": [
+      {
+        "name": "inquiry",
+        "score": 100,
+        "confirmationStatus": "NONE",
+        "slots": {
+          "location": {
+            "name": "location",
+            "value": "北京",
+            "score": 0,
+            "confirmationStatus": "NONE"
+          }
+        }
+      }
+    ],
+    "type": "IntentRequest",
+    "requestId": "749d678f-c531-4fc2-9400-8595db674ba4",
+    "timestamp": "1506324221"
+  }
+}

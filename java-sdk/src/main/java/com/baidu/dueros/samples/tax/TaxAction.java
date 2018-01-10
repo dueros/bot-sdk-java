@@ -53,7 +53,7 @@ public class TaxAction extends HttpServlet {
         TaxBot bot = new TaxBot(request);
 
         // 打开签名验证
-        bot.enableVerify();
+        // bot.enableVerify();
 
         // 关闭签名验证
         // bot.disableVerify();
