@@ -49,7 +49,7 @@ protected BaseBot(Request request) throws IOException {}
 // 使用序列化后的字符串作为参数
 protected BaseBot(String request) throws IOException {}
 
-// 使用Certificate对象作为参数，在开启请求参数验证的情况下，需要构造Certificate对象，Certificate的message成语变量是HTTP请求body信息
+// 使用Certificate对象作为参数，在开启请求参数验证的情况下，需要构造Certificate对象，Certificate的message成员变量是HTTP请求body信息
 protected BaseBot(Certificate certificate) throws IOException {}
 ```
 
