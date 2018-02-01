@@ -29,6 +29,13 @@ public class Reprompt {
     private OutputSpeech outputSpeech;
 
     /**
+     * 默认构造方法
+     */
+    public Reprompt() {
+
+    }
+
+    /**
      * 构造方法
      * 
      * @param outputSpeech

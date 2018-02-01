@@ -16,6 +16,7 @@
 
 package com.baidu.dueros.nlu;
 
+import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -37,6 +38,8 @@ public class Slot {
     private final ConfirmationStatus confirmationStatus;
     // 槽位置信度
     private final int score;
+    // 槽位值列表
+    private final ArrayList<String> values;
 
     /**
      * 返回一个用来构造{@code Slot}的{@code Builder}
@@ -52,15 +55,17 @@ public class Slot {
         this.value = builder.value;
         this.confirmationStatus = builder.confirmationStatus;
         this.score = builder.score;
+        this.values = builder.values;
     }
 
     private Slot(@JsonProperty("name") final String name, @JsonProperty("value") final String value,
             @JsonProperty("confirmationStatus") final ConfirmationStatus confirmationStatus,
-            @JsonProperty("score") final int score) {
+            @JsonProperty("score") final int score, @JsonProperty("values") final ArrayList<String> values) {
         this.name = name;
         this.value = value;
         this.confirmationStatus = confirmationStatus;
         this.score = score;
+        this.values = values;
     }
 
     /**
@@ -79,6 +84,15 @@ public class Slot {
      */
     public String getValue() {
         return value;
+    }
+
+    /**
+     * 获取槽位值列表
+     * 
+     * @return ArrayList 槽位值列表
+     */
+    public ArrayList<String> getValues() {
+        return values;
     }
 
     /**
@@ -112,6 +126,7 @@ public class Slot {
         private String value;
         private ConfirmationStatus confirmationStatus;
         private int score;
+        private ArrayList<String> values;
 
         /**
          * 设置槽位名
@@ -158,6 +173,18 @@ public class Slot {
          */
         public Builder setScore(final int score) {
             this.score = score;
+            return this;
+        }
+
+        /**
+         * 设置槽位值列表
+         * 
+         * @param values
+         *            槽位值列表
+         * @return 构造Slot的Builder
+         */
+        public Builder setValues(final ArrayList<String> values) {
+            this.values = values;
             return this;
         }
 

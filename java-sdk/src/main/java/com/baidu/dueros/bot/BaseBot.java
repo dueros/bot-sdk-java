@@ -54,6 +54,7 @@ import com.baidu.dueros.nlu.Intent;
 import com.baidu.dueros.nlu.Slot;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.baidu.apm.monitor.BotMonitor;
 
 /**
  * {@code BaseBot}是所有Bot的基类，使用Bot-SDK开发的Bot需要继承这个类
@@ -85,6 +86,8 @@ public class BaseBot {
     private Certificate certificate;
     // 缓存认证相关信息
     private static ConcurrentHashMap<String, PublicKey> cache = new ConcurrentHashMap<>();
+    // 数据统计信息
+    public BotMonitor botMonitor;
 
     /**
      * Base构造方法
@@ -109,6 +112,7 @@ public class BaseBot {
     protected BaseBot(String request) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(request, Request.class);
+        this.botMonitor = new BotMonitor(request);
     }
 
     /**
@@ -135,6 +139,7 @@ public class BaseBot {
         String message = certificate.getMessage();
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(message, Request.class);
+        this.botMonitor = new BotMonitor(message);
     }
 
     /**
@@ -562,6 +567,9 @@ public class BaseBot {
         }
 
         this.dispatch();
-        return this.build(response);
+        String responseStr = this.build(response);
+        this.botMonitor.setResponse(responseStr);
+        this.botMonitor.uploadData();
+        return responseStr;
     }
 }

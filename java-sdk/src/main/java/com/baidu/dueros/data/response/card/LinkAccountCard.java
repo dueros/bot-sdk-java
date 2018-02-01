@@ -16,22 +16,16 @@
 
 package com.baidu.dueros.data.response.card;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * 卡片信息
+ * 账号关联卡片
  * 
  * @author tianlonglong(tianlong02@baidu.com)
  * @version V1.0
- * @since 2017年10月5日
+ * @since 2018年1月17日
  */
-@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
-@JsonSubTypes({ @Type(value = TextCard.class), @Type(value = StandardCard.class), @Type(value = ListCard.class),
-        @Type(value = ImageCard.class), @Type(value = LinkAccountCard.class) })
-public abstract class Card {
+@JsonTypeName("LinkAccount")
+public class LinkAccountCard extends Card {
 
 }
