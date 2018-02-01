@@ -17,7 +17,7 @@
 <dependency>
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
-    <version>1.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
@@ -63,7 +63,6 @@ public TaxBot(HttpServletRequest request) throws IOException {
     super(request);
 }
 ```
-
 ### Bot重写多轮对话接口或事件监听接口
 
 #### Bot开始提供服务
@@ -423,3 +422,41 @@ bot.disableVerify();
 bot.disableVerify();
 ```
 
+### 使用Bot的数据统计功能
+bot-sdk里已经集成了[数据统计功能](https://gitlab.com/tianyi17/bot-monitor-java)(默认该功能是关闭的)，你只需要进行简单的几步操作就可以使用bot的数据统计功能：
+
+1. 打开终端，执行`openssl genrsa -out rsa_private_key.pem 1024`命令生成私钥
+2. 执行`openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem`生成和私钥匹配的公钥。
+3. 执行`openssl pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt >> rsa_private_key_java.psk`命令，将私钥转换成pkcs8格式。
+4. 使用编辑器打开公钥文件，将文件的完整内容上传到DBP平台对应的Bot空间。
+保存`rsa_private_key_java.psk`私钥文件，我们下面会用到。
+5. 在bot的构造函数里开启数据上报功能。假设你在TaxBot使用`HttpServletRequest`作为参数实现构造方法，把`rsa_private_key_java.psk`文件里内容赋值给`String`类型的`privateKey`变量：
+
+```
+public TaxBot(HttpServletRequest request) throws IOException {
+        super(request);
+        String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALcD5iNhmR/fN9Sw\n" +
+                "D9dmiyZo31wVapoUmDTjqHOe0qpxQTgRYNqaR8cxmIKpk1IzPskJEYwAl37wu12X\n" +
+                "tobCZuIZSScrnuSZFozC33DWg3DR4dngf7S1FS08FLKUfAZ7H0rPzuOMRtFUj6Yk\n" +
+                "iVKArnzNVoTT2bmlrEeq6ttAY5RnAgMBAAECgYBe5MGmZMudsALl3+hG2p+Z6dSu\n" +
+                "jVg5ziXhfo1wbdBzmcekR7Z9gnNnQDsAvOZrP7D1UiNsAT6MDkxISgrVMuVew91q\n" +
+                "rEfu7MbmUx6dp4wlVSJOtzhF7VqiisV3zr8EHbf9utWX9yqwhUlszBrsx8Cqvy/B\n" +
+                "mTsWSmkCST1jFBzV+QJBAOMpYhoyUBjrbq0Y7y7oa8RmW+tmMjUfCbR9W4lFPomN\n" +
+                "bxnVpwA7OefLzdBjzRM/pfEfQZYSPJYWnENPO7LTxyMCQQDOP8icc9sjWRY//Jtr\n" +
+                "IIvq3jyAV/o6GwJVXUvwCLTZD+RxkNwUsVVio+bfQ7eBgbb8j7tKKMvftrjKQ11O\n" +
+                "WvPtAkA19vHQSV2P3fZH9uFzYlGfsbVqgbexuPLkRteFD8cghFH9cC0hN/C0qUz2\n" +
+                "kY75YKh6VLOPBDwSZ8KtltgWzorDAkBKgoh63PAB6SE8pImRPgTOKNM6mo3vh+pj\n" +
+                "5HyWjs6mzDL/RBH998KdDBFP/yrAQphUzagftnVQsLY5e/StZfZRAkEAnrolcj06\n" +
+                "+77j6Ibc++C+IAgUYiuo+ZZmVTDOI0BS1lC6kZz8HMlAqDl4Mf7HulijcdHqm/Z0\n" +
+                "XgtBxVoMpmbJmQ==";
+        //privateKey为私钥内容,0代表你的Bot在DBP平台debug环境，1或者其他整数代表online环境,botMonitor对象已经在bot-sdk里初始化，可以直接调用
+        this.botMonitor.setEnvironmentInfo(privateKey, 0);
+}
+```
+
+你也可以在代码里随时开启和关闭数据统计功能：
+
+```
+//true代表开启,false代表关闭。调用setEnvironmentInfo之后会默认开启
+this.botMonitor.setMonitorEnabled(false);
+```
