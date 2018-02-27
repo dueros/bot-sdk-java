@@ -21,7 +21,7 @@
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.0.5</version>
     <name>bot-sdk</name>
     <url>http://maven.apache.org</url>
     <properties>
@@ -117,9 +117,14 @@
             <version>2.1</version>
         </dependency>
         <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>openapi</artifactId>
-            <version>7.0.3</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.apm</groupId>
+            <artifactId>bot-monitor-java</artifactId>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 </project>
