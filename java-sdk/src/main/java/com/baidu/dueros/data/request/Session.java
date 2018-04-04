@@ -80,7 +80,9 @@ public class Session {
             @JsonProperty("attributes") final Map<String, String> attributes) {
         this.isNew = isNew;
         this.sessionId = sessionId;
-        this.attributes = attributes;
+        if (attributes != null) {
+            this.attributes = attributes;
+        }
     }
 
     /**
