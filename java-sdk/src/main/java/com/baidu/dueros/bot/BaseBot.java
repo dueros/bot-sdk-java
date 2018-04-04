@@ -94,10 +94,8 @@ public class BaseBot {
      * 
      * @param request
      *            为封装后的RequestEncapsulation
-     * @throws IOException
-     *             抛出的异常
      */
-    protected BaseBot(Request request) throws IOException {
+    protected BaseBot(Request request){
         this.request = request;
     }
 
