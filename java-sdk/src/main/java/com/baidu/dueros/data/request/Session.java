@@ -43,7 +43,7 @@ public class Session {
     // sessionId为一个唯一ID，用于标识此次对话
     private final String sessionId;
     // 用户可以在response中返回attributes，DuerOS会存储下来，并在本次对话的下一个request中发送给Bot
-    private final Map<String, String> attributes;
+    private Map<String, String> attributes = new HashMap<String, String>();
 
     /**
      * 返回一个用来构造{@code Session}的{@code Builder}
