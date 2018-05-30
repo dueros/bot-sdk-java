@@ -36,6 +36,16 @@ public class Stop extends AudioPlayerDirective {
     }
 
     /**
+     * 构造函数
+     * 
+     * @param url
+     *            音频url
+     */
+    public Stop(String url) {
+        super(url);
+    }
+
+    /**
      * 构造方法
      * 
      * @param playBehavior

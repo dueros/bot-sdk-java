@@ -130,7 +130,8 @@ public class Certificate {
      * 
      * @param cache
      *            缓存的认证信息
-     * @param certificate   认证对象
+     * @param certificate
+     *            认证对象
      * @return boolean
      */
     public static boolean verify(ConcurrentHashMap<String, PublicKey> cache, Certificate certificate) {

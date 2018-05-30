@@ -29,10 +29,11 @@ public class AudioItem {
     private Stream stream;
 
     /**
-     * 默认构造方法
+     * 默认构造函数
      */
     public AudioItem() {
-
+        Stream stream = new Stream();
+        this.stream = stream;
     }
 
     /**
@@ -83,9 +84,47 @@ public class AudioItem {
      * 
      * @param stream
      *            多媒体流信息
+     * @return 当前AudioItem
      */
-    public void setStream(final Stream stream) {
+    public AudioItem setStream(final Stream stream) {
         this.stream = stream;
+        return this;
+    }
+
+    /**
+     * 设置链接地址的setter方法
+     * 
+     * @param url
+     *            链接地址
+     * @return 当前AudioItem
+     */
+    public AudioItem setUrl(final String url) {
+        stream.setUrl(url);
+        return this;
+    }
+
+    /**
+     * 设置播放进度的setter方法
+     * 
+     * @param offsetInMilliSeconds
+     *            播放进度
+     * @return 当前AudioItem
+     */
+    public AudioItem setOffsetInMilliSeconds(final int offsetInMilliSeconds) {
+        stream.setOffsetInMilliSeconds(offsetInMilliSeconds);
+        return this;
+    }
+
+    /**
+     * 设置token的setter方法
+     * 
+     * @param token
+     *            token
+     * @return 当前AudioItem
+     */
+    public AudioItem setToken(final String token) {
+        stream.setToken(token);
+        return this;
     }
 
 }

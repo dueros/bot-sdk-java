@@ -30,8 +30,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
  */
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({ @JsonSubTypes.Type(ConfirmIntent.class), @JsonSubTypes.Type(ConfirmSlot.class),
-        @JsonSubTypes.Type(Delegate.class), @JsonSubTypes.Type(ElicitSlot.class), @JsonSubTypes.Type(Play.class),
-        @JsonSubTypes.Type(Stop.class), })
+        @JsonSubTypes.Type(Delegate.class), @JsonSubTypes.Type(ElicitSlot.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.Play.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.Stop.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.display.Hint.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.display.RenderTemplate.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.audioplayer.Play.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.audioplayer.Stop.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.Play.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.Stop.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.ClearQueue.class), })
 public abstract class Directive {
 
 }

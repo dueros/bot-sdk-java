@@ -16,10 +16,19 @@
 
 package com.baidu.dueros.data.request;
 
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent;
+import com.baidu.dueros.data.request.events.ElementSelectedEvent;
+import com.baidu.dueros.data.request.events.LinkClickedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackFinishedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackNearlyFinishedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackPausedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackQueueClearedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackResumedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStartedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStoppedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStutterFinishedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStutterStartedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.ProgressReportDelayElapsedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.ProgressReportIntervalElapsedEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -37,9 +46,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
  */
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({ @Type(value = IntentRequest.class), @Type(value = LaunchRequest.class),
-        @Type(value = SessionEndedRequest.class), @Type(value = PlaybackStartedEvent.class),
-        @Type(value = PlaybackStoppedEvent.class), @Type(value = PlaybackNearlyFinishedEvent.class),
-        @Type(value = PlaybackFinishedEvent.class), })
+        @Type(value = SessionEndedRequest.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent.class),
+        @Type(value = PlaybackStartedEvent.class), @Type(value = PlaybackStoppedEvent.class),
+        @Type(value = PlaybackFinishedEvent.class), @Type(value = PlaybackNearlyFinishedEvent.class),
+        @Type(value = ProgressReportIntervalElapsedEvent.class), @Type(value = ProgressReportDelayElapsedEvent.class),
+        @Type(value = PlaybackStutterStartedEvent.class), @Type(value = PlaybackStutterFinishedEvent.class),
+        @Type(value = PlaybackPausedEvent.class), @Type(value = PlaybackResumedEvent.class),
+        @Type(value = PlaybackQueueClearedEvent.class), @Type(value = ElementSelectedEvent.class),
+        @Type(value = LinkClickedEvent.class), })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RequestBody {
 

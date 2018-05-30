@@ -53,6 +53,16 @@ public class AudioPlayerDirective extends Directive {
     /**
      * 构造方法
      * 
+     * @param url
+     *            音频地址
+     */
+    public AudioPlayerDirective(String url) {
+        audioItem = new AudioItem(url);
+    }
+
+    /**
+     * 构造方法
+     * 
      * @param playBehaviorType
      *            控制端播放的behavior
      * @param url
@@ -92,9 +102,11 @@ public class AudioPlayerDirective extends Directive {
      * 
      * @param playBehavior
      *            当前播放状态
+     * @return AudioPlayerDirective
      */
-    public void setPlayBehavior(final PlayBehaviorType playBehavior) {
+    public AudioPlayerDirective setPlayBehavior(final PlayBehaviorType playBehavior) {
         this.playBehavior = playBehavior;
+        return this;
     }
 
     /**
@@ -111,9 +123,47 @@ public class AudioPlayerDirective extends Directive {
      * 
      * @param audioItem
      *            多媒体信息
+     * @return AudioPlayerDirective
      */
-    public void setAudioItem(final AudioItem audioItem) {
+    public AudioPlayerDirective setAudioItem(final AudioItem audioItem) {
         this.audioItem = audioItem;
+        return this;
+    }
+
+    /**
+     * 设置链接地址的setter方法
+     * 
+     * @param url
+     *            链接地址
+     * @return AudioPlayerDirective
+     */
+    public AudioPlayerDirective setUrl(final String url) {
+        audioItem.setUrl(url);
+        return this;
+    }
+
+    /**
+     * 设置播放进度的setter方法
+     * 
+     * @param offsetInMilliSeconds
+     *            播放进度
+     * @return AudioPlayerDirective
+     */
+    public AudioPlayerDirective setOffsetInMilliSeconds(final int offsetInMilliSeconds) {
+        audioItem.setOffsetInMilliSeconds(offsetInMilliSeconds);
+        return this;
+    }
+
+    /**
+     * 设置token的setter方法
+     * 
+     * @param token
+     *            token
+     * @return AudioPlayerDirective
+     */
+    public AudioPlayerDirective setToken(final String token) {
+        audioItem.setToken(token);
+        return this;
     }
 
     /**

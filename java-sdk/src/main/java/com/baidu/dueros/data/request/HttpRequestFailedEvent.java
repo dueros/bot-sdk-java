@@ -141,8 +141,7 @@ public class HttpRequestFailedEvent extends RequestBody {
         }
 
         /**
-         * 调用{@code HttpRequestFailedEvent}的私有构造方法构造
-         * {@code HttpRequestFailedEvent}
+         * 调用{@code HttpRequestFailedEvent}的私有构造方法构造 {@code HttpRequestFailedEvent}
          * 
          * @see com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
          */

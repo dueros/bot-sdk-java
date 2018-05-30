@@ -26,8 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-
+import com.baidu.apm.monitor.BotMonitor;
 import com.baidu.dueros.certificate.Certificate;
 import com.baidu.dueros.data.request.IntentRequest;
 import com.baidu.dueros.data.request.LaunchRequest;
@@ -35,10 +34,21 @@ import com.baidu.dueros.data.request.Query;
 import com.baidu.dueros.data.request.RequestBody;
 import com.baidu.dueros.data.request.SessionEndedRequest;
 import com.baidu.dueros.data.request.audioplayer.event.AudioPlayerEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent;
-import com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent;
+import com.baidu.dueros.data.request.events.ElementSelectedEvent;
+import com.baidu.dueros.data.request.events.CommonEvent;
+import com.baidu.dueros.data.request.events.LinkClickedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackFinishedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackNearlyFinishedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackPausedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackQueueClearedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackResumedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStartedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStoppedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStutterFinishedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.PlaybackStutterStartedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.ProgressReportDelayElapsedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.ProgressReportIntervalElapsedEvent;
+import com.baidu.dueros.data.request.videoplayer.event.VideoPlayerEvent;
 import com.baidu.dueros.data.response.Context;
 import com.baidu.dueros.data.response.ResponseBody;
 import com.baidu.dueros.data.response.Session;
@@ -54,7 +64,6 @@ import com.baidu.dueros.nlu.Intent;
 import com.baidu.dueros.nlu.Slot;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.baidu.apm.monitor.BotMonitor;
 
 /**
  * {@code BaseBot}是所有Bot的基类，使用Bot-SDK开发的Bot需要继承这个类
@@ -65,8 +74,6 @@ import com.baidu.apm.monitor.BotMonitor;
  */
 public class BaseBot {
 
-    private static final Logger logger = Logger.getLogger(BaseBot.class.getName());
-
     // Base子类构造的Response
     protected Response response;
     // Bot收到的Request请求
@@ -75,6 +82,10 @@ public class BaseBot {
     private Session session = new Session();
     // 是否需要结束本次会话
     private boolean shouldEndSession = false;
+    // 如果DuerOS仍然会选用当前Bot结果，应该再次下发请求，并将request.determined字段设置为true
+    private boolean needDetermine = false;
+    // 麦克风开关是否打开
+    private boolean expectSpeech = false;
     // 返回的指令
     private List<Directive> directives = new ArrayList<Directive>();
     // 通过NLU解析出来的Intent
@@ -94,9 +105,12 @@ public class BaseBot {
      * 
      * @param request
      *            为封装后的RequestEncapsulation
+     * @throws IOException
+     *             抛出的异常
      */
-    protected BaseBot(Request request){
+    protected BaseBot(Request request) throws IOException {
         this.request = request;
+        this.session.getAttributes().putAll(this.request.getSession().getAttributes());
     }
 
     /**
@@ -111,6 +125,7 @@ public class BaseBot {
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(request, Request.class);
         this.botMonitor = new BotMonitor(request);
+        this.session.getAttributes().putAll(this.request.getSession().getAttributes());
     }
 
     /**
@@ -118,7 +133,8 @@ public class BaseBot {
      * 
      * @param certificate
      *            认证对象
-     * @throws  IOException
+     * @throws IOException
+     *             可能抛出的IOException异常
      */
     protected BaseBot(Certificate certificate) throws IOException {
         this(certificate.getMessage());
@@ -138,6 +154,7 @@ public class BaseBot {
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(message, Request.class);
         this.botMonitor = new BotMonitor(message);
+        this.session.getAttributes().putAll(this.request.getSession().getAttributes());
     }
 
     /**
@@ -333,6 +350,32 @@ public class BaseBot {
     }
 
     /**
+     * 获取needDetermine的getter方法
+     *
+     * @return needDetermine 是否会发生副作用
+     */
+    public boolean effectConfirmed() {
+        return needDetermine;
+    }
+
+    /**
+     * 设置needDetermine的setter方法
+     */
+    public void declareEffect() {
+        this.needDetermine = true;
+    }
+
+    /**
+     * 通过控制expectSpeech来控制麦克风开关
+     * 
+     * @param expectSpeech
+     *            麦克风是否开启
+     */
+    public void setExpectSpeech(boolean expectSpeech) {
+        this.expectSpeech = expectSpeech;
+    }
+
+    /**
      * 获取原始Query信息
      * 
      * @return String 原始Query信息
@@ -474,6 +517,8 @@ public class BaseBot {
             responseBody.setReprompt(response.getReprompt());
         }
         responseBody.setShouldEndSession(shouldEndSession);
+        responseBody.setNeedDetermine(needDetermine);
+        responseBody.setExpectSpeech(expectSpeech);
         if (response.getResource() != null) {
             responseBody.setResource(response.getResource());
         }
@@ -491,6 +536,7 @@ public class BaseBot {
     private void dispatch() {
         RequestBody requestBody = request.getRequest();
         if (requestBody instanceof LaunchRequest) {
+
             LaunchRequest launchRequest = (LaunchRequest) requestBody;
             response = onLaunch(launchRequest);
         } else if (requestBody instanceof IntentRequest) {
@@ -501,18 +547,66 @@ public class BaseBot {
             response = onSessionEnded(sessionEndedRequest);
         } else if (requestBody instanceof AudioPlayerEvent) {
             AudioPlayer audioPlayer = (AudioPlayer) this;
-            if (requestBody instanceof PlaybackNearlyFinishedEvent) {
-                PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent = (PlaybackNearlyFinishedEvent) requestBody;
+            if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent;
+                playbackNearlyFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent) requestBody;
                 response = audioPlayer.onPlaybackNearlyFinishedEvent(playbackNearlyFinishedEvent);
-            } else if (requestBody instanceof PlaybackStartedEvent) {
-                PlaybackStartedEvent playbackStartedEvent = (PlaybackStartedEvent) requestBody;
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent playbackStartedEvent;
+                playbackStartedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent) requestBody;
                 response = audioPlayer.onPlaybackStartedEvent(playbackStartedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent playbackStoppedEvent;
+                playbackStoppedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent) requestBody;
+                response = audioPlayer.onPlaybackStoppedEvent(playbackStoppedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent playbackFinishedEvent;
+                playbackFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent) requestBody;
+                response = audioPlayer.onPlaybackFinishedEvent(playbackFinishedEvent);
+            }
+        } else if (requestBody instanceof VideoPlayerEvent) {
+            VideoPlayer videoPlayer = (VideoPlayer) this;
+            if (requestBody instanceof PlaybackStartedEvent) {
+                PlaybackStartedEvent playbackStartedEvent = (PlaybackStartedEvent) requestBody;
+                response = videoPlayer.onPlaybackStartedEvent(playbackStartedEvent);
             } else if (requestBody instanceof PlaybackStoppedEvent) {
                 PlaybackStoppedEvent playbackStoppedEvent = (PlaybackStoppedEvent) requestBody;
-                response = audioPlayer.onPlaybackStoppedEvent(playbackStoppedEvent);
+                response = videoPlayer.onPlaybackStoppedEvent(playbackStoppedEvent);
             } else if (requestBody instanceof PlaybackFinishedEvent) {
                 PlaybackFinishedEvent playbackFinishedEvent = (PlaybackFinishedEvent) requestBody;
-                response = audioPlayer.onPlaybackFinishedEvent(playbackFinishedEvent);
+                response = videoPlayer.onPlaybackFinishedEvent(playbackFinishedEvent);
+            } else if (requestBody instanceof PlaybackNearlyFinishedEvent) {
+                PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent = (PlaybackNearlyFinishedEvent) requestBody;
+                response = videoPlayer.onPlaybackNearlyFinishedEvent(playbackNearlyFinishedEvent);
+            } else if (requestBody instanceof ProgressReportIntervalElapsedEvent) {
+                ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent = (ProgressReportIntervalElapsedEvent) requestBody;
+                response = videoPlayer.onProgressReportIntervalElapsedEvent(progressReportIntervalElapsedEvent);
+            } else if (requestBody instanceof ProgressReportDelayElapsedEvent) {
+                ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent = (ProgressReportDelayElapsedEvent) requestBody;
+                response = videoPlayer.onProgressReportDelayElapsedEvent(progressReportDelayElapsedEvent);
+            } else if (requestBody instanceof PlaybackStutterStartedEvent) {
+                PlaybackStutterStartedEvent playbackStutterStartedEvent = (PlaybackStutterStartedEvent) requestBody;
+                response = videoPlayer.onPlaybackStutterStartedEvent(playbackStutterStartedEvent);
+            } else if (requestBody instanceof PlaybackStutterFinishedEvent) {
+                PlaybackStutterFinishedEvent playbackStutterFinishedEvent = (PlaybackStutterFinishedEvent) requestBody;
+                response = videoPlayer.onPlaybackStutterFinishedEvent(playbackStutterFinishedEvent);
+            } else if (requestBody instanceof PlaybackPausedEvent) {
+                PlaybackPausedEvent playbackPausedEvent = (PlaybackPausedEvent) requestBody;
+                response = videoPlayer.onPlaybackPausedEvent(playbackPausedEvent);
+            } else if (requestBody instanceof PlaybackResumedEvent) {
+                PlaybackResumedEvent playbackResumedEvent = (PlaybackResumedEvent) requestBody;
+                response = videoPlayer.onPlaybackResumedEvent(playbackResumedEvent);
+            } else if (requestBody instanceof PlaybackQueueClearedEvent) {
+                PlaybackQueueClearedEvent playbackQueueClearedEvent = (PlaybackQueueClearedEvent) requestBody;
+                response = videoPlayer.onPlaybackQueueClearedEvent(playbackQueueClearedEvent);
+            }
+        } else if (requestBody instanceof CommonEvent) {
+            if (requestBody instanceof ElementSelectedEvent) {
+                ElementSelectedEvent elementSelectedEvent = (ElementSelectedEvent) requestBody;
+                response = this.onElementSelectedEvent(elementSelectedEvent);
+            } else if (requestBody instanceof LinkClickedEvent) {
+                LinkClickedEvent linkClickedEvent = (LinkClickedEvent) requestBody;
+                response = this.onLinkClickedEvent(linkClickedEvent);
             }
         }
     }
@@ -551,6 +645,28 @@ public class BaseBot {
     }
 
     /**
+     * 处理列表模版项点击事件 对应的事件是：Display.ElementSelected 事件
+     * 
+     * @param elementSelectedEvent
+     *            模板列表项点击事件
+     * @return Response 返回的Response
+     */
+    protected Response onElementSelectedEvent(final ElementSelectedEvent elementSelectedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理卡片列表项点击事件 对应的事件是：Screen.LinkClicked
+     * 
+     * @param linkClickedEvent
+     *            卡片列表项点击事件
+     * @return Response 返回的Response
+     */
+    protected Response onLinkClickedEvent(final LinkClickedEvent linkClickedEvent) {
+        return response;
+    }
+
+    /**
      * Bot子类调用
      * 
      * @return String 返回的response信息
@@ -560,7 +676,6 @@ public class BaseBot {
     public String run() throws Exception {
         // 请求参数不合法
         if (verify() == false) {
-            logger.warn("invalid request!");
             return this.illegalRequest();
         }
 

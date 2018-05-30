@@ -23,6 +23,7 @@ package com.baidu.dueros.data.response.card;
  * @version V1.0
  * @since 2017年10月5日
  */
+
 public class ImageCardInfo {
 
     // 图片的地址

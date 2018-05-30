@@ -18,7 +18,9 @@ package com.baidu.dueros.data.response.card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
@@ -32,8 +34,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2017年10月5日
  */
 @JsonTypeName("standard")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StandardCard extends Card {
-
+    // token
+    private String token;
     // 卡片标题
     private String title;
     // 卡片内容
@@ -51,7 +55,7 @@ public class StandardCard extends Card {
      * 默认构造方法
      */
     public StandardCard() {
-
+        this.token = genToken();
     }
 
     /**
@@ -63,6 +67,7 @@ public class StandardCard extends Card {
      *            卡片内容
      */
     public StandardCard(final String title, final String content) {
+        this.token = genToken();
         this.title = title;
         this.content = content;
     }
@@ -191,4 +196,31 @@ public class StandardCard extends Card {
         this.cueWords.add(cueWord);
     }
 
+    /**
+     * 获取token的getter方法
+     * 
+     * @return String token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * 设置token的setter方法
+     * 
+     * @param token
+     *            token
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /**
+     * 生成token的方法
+     * 
+     * @return String token
+     */
+    private String genToken() {
+        return UUID.randomUUID().toString();
+    }
 }

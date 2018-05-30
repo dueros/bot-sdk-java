@@ -71,7 +71,6 @@ public class TaxBot extends BaseBot {
      */
     @Override
     protected Response onLaunch(LaunchRequest launchRequest) {
-
         // 新建文本卡片
         TextCard textCard = new TextCard("所得税为您服务");
         // 设置链接地址
@@ -86,7 +85,6 @@ public class TaxBot extends BaseBot {
 
         // 构造返回的Response
         Response response = new Response(outputSpeech, textCard);
-
         return response;
     }
 
@@ -99,7 +97,6 @@ public class TaxBot extends BaseBot {
      */
     @Override
     protected Response onInent(IntentRequest intentRequest) {
-
         // 判断NLU解析的意图名称是否匹配 inquiry
         if ("inquiry".equals(intentRequest.getIntentName())) {
             // 判断NLU解析解析后是否存在这个槽位

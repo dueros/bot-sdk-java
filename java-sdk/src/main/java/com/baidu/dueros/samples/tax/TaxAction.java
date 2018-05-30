@@ -51,7 +51,6 @@ public class TaxAction extends HttpServlet {
             throws ServletException, IOException {
         // 根据request创建Bot
         TaxBot bot = new TaxBot(request);
-
         // 打开签名验证
         // bot.enableVerify();
 
@@ -66,6 +65,7 @@ public class TaxAction extends HttpServlet {
             // 返回response
             response.getWriter().append(responseJson);
         } catch (Exception e) {
+            e.printStackTrace();
             response.getWriter().append("{\"status\":1,\"msg\":\"\"}");
         }
     }

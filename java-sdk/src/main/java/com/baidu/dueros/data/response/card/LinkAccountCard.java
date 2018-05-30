@@ -16,6 +16,7 @@
 
 package com.baidu.dueros.data.response.card;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2018年1月17日
  */
 @JsonTypeName("LinkAccount")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LinkAccountCard extends Card {
 
 }

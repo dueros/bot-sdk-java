@@ -17,6 +17,7 @@
 package com.baidu.dueros.data.request;
 
 import com.baidu.dueros.data.request.audioplayer.event.AudioPlayerState;
+import com.baidu.dueros.data.request.videoplayer.event.VideoPlayerState;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,8 +33,12 @@ public class Context {
 
     // 端设备信息和用户信息
     private final System system;
-    // 端上报的状态
-    private final AudioPlayerState audioPlayerState;
+    // 端上报的音频播放的状态
+    private final AudioPlayerState audioPlayer;
+    // 端上报的视频播放的状态
+    private final VideoPlayerState videoPlayer;
+    // 端屏幕显示信息
+    private final Screen screen;
 
     /**
      * 返回一个构造{@code Context}的{@code Builder}
@@ -52,7 +57,9 @@ public class Context {
      */
     private Context(final Builder builder) {
         system = builder.system;
-        audioPlayerState = builder.audioPlayerState;
+        audioPlayer = builder.audioPlayer;
+        videoPlayer = builder.videoPlayer;
+        screen = builder.screen;
     }
 
     /**
@@ -65,12 +72,30 @@ public class Context {
     }
 
     /**
-     * 获取audioPlayerState的getter方法
+     * 获取audioPlayer的getter方法
      * 
-     * @return AudioPlayerState 获取audioPlayerState成员
+     * @return AudioPlayer 获取audioPlayer成员
      */
-    public AudioPlayerState getAudioPlayerState() {
-        return audioPlayerState;
+    public AudioPlayerState getAudioPlayer() {
+        return audioPlayer;
+    }
+
+    /**
+     * 获取videoPlayer的getter方法
+     * 
+     * @return VideoPlayer 获取videoPlayer成员
+     */
+    public VideoPlayerState getVideoPlayer() {
+        return videoPlayer;
+    }
+
+    /**
+     * 获取screen的getter方法
+     * 
+     * @return Screen 获取到的屏幕信息
+     */
+    public Screen getScreen() {
+        return screen;
     }
 
     /**
@@ -78,13 +103,21 @@ public class Context {
      * 
      * @param system
      *            端设备信息和用户信息
-     * @param audioPlayerState
-     *            端上报的状态
+     * @param audioPlayer
+     *            端上报的音频播放状态
+     * @param videoPlayer
+     *            端上报的视频播放状态
+     * @param screen
+     *            端屏幕显示信息
      */
     public Context(@JsonProperty("System") final System system,
-            @JsonProperty("audioPlayerState") final AudioPlayerState audioPlayerState) {
+            @JsonProperty("AudioPlayer") final AudioPlayerState audioPlayer,
+            @JsonProperty("VideoPlayer") final VideoPlayerState videoPlayer,
+            @JsonProperty("Screen") final Screen screen) {
         this.system = system;
-        this.audioPlayerState = audioPlayerState;
+        this.audioPlayer = audioPlayer;
+        this.videoPlayer = videoPlayer;
+        this.screen = screen;
     }
 
     /**
@@ -95,11 +128,15 @@ public class Context {
      * @since 2017年10月4日
      */
     public static final class Builder {
-        
+
         // 端设备信息和用户信息
         private System system;
-        // 端上报的状态
-        private AudioPlayerState audioPlayerState;
+        // 端上报的音频播放的状态
+        private AudioPlayerState audioPlayer;
+        // 端上报的视频播放的状态
+        private VideoPlayerState videoPlayer;
+        // 端屏幕显示信息
+        private Screen screen;
 
         /**
          * 设置system的setter方法
@@ -114,14 +151,38 @@ public class Context {
         }
 
         /**
-         * 设置audioPlayerState的setter方法
+         * 设置audioPlayer的setter方法
          * 
-         * @param audioPlayerState
+         * @param audioPlayer
          *            端上报的状态
          * @return Builder 用来构造{@code Context}
          */
-        public Builder setAudioPlayerState(final AudioPlayerState audioPlayerState) {
-            this.audioPlayerState = audioPlayerState;
+        public Builder setAudioPlayer(final AudioPlayerState audioPlayer) {
+            this.audioPlayer = audioPlayer;
+            return this;
+        }
+
+        /**
+         * 设置videoPlayer的setter方法
+         * 
+         * @param videoPlayer
+         *            端上报的状态
+         * @return Builder 用来构造{@code Context}
+         */
+        public Builder setVideoPlayer(final VideoPlayerState videoPlayer) {
+            this.videoPlayer = videoPlayer;
+            return this;
+        }
+
+        /**
+         * 设置screen的setter方法
+         * 
+         * @param screen
+         *            屏幕显示信息
+         * @return Builder 用来构造{@code Context}
+         */
+        public Builder setScreen(final Screen screen) {
+            this.screen = screen;
             return this;
         }
 
@@ -133,7 +194,6 @@ public class Context {
         public Context build() {
             return new Context(this);
         }
-
     }
 
 }

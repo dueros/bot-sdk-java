@@ -99,7 +99,7 @@ public class Debug {
         private String smarthomeBotId;
         // 需要传给bot的OAuth info id
         private String oauthInfoId;
-        // 待debug的bot的debug访问地址 
+        // 待debug的bot的debug访问地址
         private String smarthomeWebServiceUrl;
 
         /**
@@ -129,7 +129,8 @@ public class Debug {
         /**
          * 设置smarthomeWebServiceUrl的setter方法
          * 
-         * @param smarthomeWebServiceUrl    待debug的bot的debug访问地址
+         * @param smarthomeWebServiceUrl
+         *            待debug的bot的debug访问地址
          * 
          * @return Builder 用来构造{@code Debug}
          */

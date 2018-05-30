@@ -47,6 +47,8 @@ public class ResponseBody {
     private List<Directive> directives = new ArrayList<>();
     // 是否需要结束本次会话，DuerOS用于判断是否需要关闭某个打开的Bot，端用于关闭麦克风
     private boolean shouldEndSession;
+    // 麦克风是否开启
+    private boolean expectSpeech;
 
     /**
      * 默认构造方法
@@ -223,4 +225,22 @@ public class ResponseBody {
         this.shouldEndSession = shouldEndSession;
     }
 
+    /**
+     * 获取麦克风开关状态
+     * 
+     * @return boolean 麦克风打开状态
+     */
+    public boolean isExpectSpeech() {
+        return expectSpeech;
+    }
+
+    /**
+     * 通过控制expectSpeech来控制麦克风开关
+     * 
+     * @param expectSpeech
+     *            麦克风是否打开
+     */
+    public void setExpectSpeech(boolean expectSpeech) {
+        this.expectSpeech = expectSpeech;
+    }
 }

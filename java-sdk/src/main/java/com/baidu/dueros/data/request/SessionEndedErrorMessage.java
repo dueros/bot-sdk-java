@@ -125,8 +125,7 @@ public class SessionEndedErrorMessage {
         }
 
         /**
-         * 调用{@code SessionEndedErrorMessage}的私有构造方法构造
-         * {@code SessionEndedErrorMessage}
+         * 调用{@code SessionEndedErrorMessage}的私有构造方法构造 {@code SessionEndedErrorMessage}
          * 
          * @return SessionEndedErrorMessage
          */

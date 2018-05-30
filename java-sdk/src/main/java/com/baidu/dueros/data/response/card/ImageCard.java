@@ -18,7 +18,9 @@ package com.baidu.dueros.data.response.card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
@@ -29,8 +31,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2017年10月5日
  */
 @JsonTypeName("image")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ImageCard extends Card {
-
+    // token
+    private String token;
     // 列表里的item
     private List<ImageCardInfo> list = new ArrayList<ImageCardInfo>();
     // 引导用户进行下一轮对话的文字，提示用户的输入example，用户可以点击其中一个item，快速输入
@@ -40,7 +44,7 @@ public class ImageCard extends Card {
      * 默认构造方法
      */
     public ImageCard() {
-
+        this.token = genToken();
     }
 
     /**
@@ -52,6 +56,7 @@ public class ImageCard extends Card {
      *            用户引导
      */
     public ImageCard(final List<ImageCardInfo> list, final List<String> cueWords) {
+        this.token = genToken();
         this.list = list;
         this.cueWords = cueWords;
     }
@@ -127,4 +132,31 @@ public class ImageCard extends Card {
         this.addImageCardInfo(imageCardInfo);
     }
 
+    /**
+     * 获取token的getter方法
+     * 
+     * @return String token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * 设置token的setter方法
+     * 
+     * @param token
+     *            token
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /**
+     * 生成token的方法
+     * 
+     * @return String token
+     */
+    private String genToken() {
+        return UUID.randomUUID().toString();
+    }
 }

@@ -38,6 +38,16 @@ public class Play extends AudioPlayerDirective {
     /**
      * 构造方法
      * 
+     * @param url
+     *            音频地址
+     */
+    public Play(String url) {
+        super(url);
+    }
+
+    /**
+     * 构造方法
+     * 
      * @param playBehavior
      *            当前播放状态
      * @param audioItem
@@ -60,5 +70,4 @@ public class Play extends AudioPlayerDirective {
     public Play(final PlayBehaviorType playBehavior, final String url, final int offsetInMilliSeconds) {
         super(playBehavior, url, offsetInMilliSeconds);
     }
-
 }

@@ -18,7 +18,9 @@ package com.baidu.dueros.data.response.card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
@@ -29,8 +31,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2017年10月5日
  */
 @JsonTypeName("list")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ListCard extends Card {
-
+    // token
+    private String token;
     // 列表里的item
     private List<StandardCardInfo> list = new ArrayList<StandardCardInfo>();
     // 链接地址
@@ -44,7 +48,7 @@ public class ListCard extends Card {
      * 默认构造方法
      */
     public ListCard() {
-
+        this.token = genToken();
     }
 
     /**
@@ -54,6 +58,7 @@ public class ListCard extends Card {
      *            标准列表卡片信息列表
      */
     public ListCard(final List<StandardCardInfo> list) {
+        this.token = genToken();
         this.list = list;
     }
 
@@ -166,4 +171,31 @@ public class ListCard extends Card {
         this.cueWords.add(cueWord);
     }
 
+    /**
+     * 获取token的getter方法
+     * 
+     * @return String token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * 设置token的setter方法
+     * 
+     * @param token
+     *            token
+     */
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    /**
+     * 生成token的方法
+     * 
+     * @return String token
+     */
+    private String genToken() {
+        return UUID.randomUUID().toString();
+    }
 }

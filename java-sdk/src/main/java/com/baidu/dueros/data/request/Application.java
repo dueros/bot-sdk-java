@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Application {
-    
+
     // applicationId是一个DBP平台生成的UUID，用于唯一标识一个Bot
     private final String applicationId;
     private final List<String> botConfigList;

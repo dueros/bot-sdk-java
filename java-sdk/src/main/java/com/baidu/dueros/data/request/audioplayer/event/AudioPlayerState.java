@@ -34,7 +34,7 @@ public class AudioPlayerState {
     // 当前的播放进度
     private final int offsetInMilliSeconds;
     // 音频播放器当前状态
-    private final String playActivity;
+    private final String playerActivity;
 
     /**
      * 返回一个用来构造{@code AudioPlayerState}的{@code Builder}
@@ -48,15 +48,15 @@ public class AudioPlayerState {
     private AudioPlayerState(final Builder builder) {
         token = builder.token;
         offsetInMilliSeconds = builder.offsetInMilliSeconds;
-        playActivity = builder.playActivity;
+        playerActivity = builder.playerActivity;
     }
 
     private AudioPlayerState(@JsonProperty("token") final String token,
             @JsonProperty("offsetInMilliSeconds") final int offsetInMilliSeconds,
-            @JsonProperty("playActivity") final String playActivity) {
+            @JsonProperty("playerActivity") final String playerActivity) {
         this.token = token;
         this.offsetInMilliSeconds = offsetInMilliSeconds;
-        this.playActivity = playActivity;
+        this.playerActivity = playerActivity;
     }
 
     /**
@@ -82,8 +82,8 @@ public class AudioPlayerState {
      * 
      * @return String 音频播放器当前状态
      */
-    public String getPlayActivity() {
-        return playActivity;
+    public String getPlayerActivity() {
+        return playerActivity;
     }
 
     /**
@@ -119,7 +119,7 @@ public class AudioPlayerState {
 
         private String token;
         private int offsetInMilliSeconds;
-        private String playActivity;
+        private String playerActivity;
 
         /**
          * 设置token的setter方法
@@ -146,14 +146,14 @@ public class AudioPlayerState {
         }
 
         /**
-         * 设置playActivity的setter方法
+         * 设置playerActivity的setter方法
          * 
-         * @param playActivity
+         * @param playerActivity
          *            音频播放器当前状态
          * @return Builder 用来构造{@code AudioPlayerState}
          */
-        public Builder setPlayActivity(final String playActivity) {
-            this.playActivity = playActivity;
+        public Builder setPlayerActivity(final String playerActivity) {
+            this.playerActivity = playerActivity;
             return this;
         }
 

@@ -17,7 +17,7 @@
 <dependency>
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
-    <version>1.0.6</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -357,7 +357,118 @@ ImageCard imageCard = new ImageCard();
 imageCard.addImageCardInfo("图片地址", "缩略图地址");
 imageCard.addCueWords("引导话术");
 ```
+#### 文本展现模板
+BodyTemplate1
+```java
+// 构造模板BodyTemplate1
+BodyTemplate1 bodyTemplate = new BodyTemplate1();
+bodyTemplate.setToken("token");
+bodyTemplate.setTitle("托尔斯泰的格言");
+// 可以链式set设置信息
+bodyTemplate.setPlainContent("拖尔斯泰-理想的书籍是智慧的钥匙")
+            .setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(bodyTemplate);
+this.addDirective(renderTemplate);
+```
 
+#### 上图下文模版
+BodyTemplate2
+```java
+// 构造模板BodyTemplate2
+BodyTemplate2 bodyTemplate = new BodyTemplate2();
+bodyTemplate.setToken("token");
+// 可以链式set设置信息
+bodyTemplate.setPlainContent("拖尔斯泰-理想的书籍是智慧的钥匙")
+            .setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(bodyTemplate);
+this.addDirective(renderTemplate);
+```
+#### 左图右文模板
+BodyTemplate3
+定义图片文本展现模板，图片在文字内容左侧，即左图右文
+```java
+// 构造模板BodyTemplate3
+BodyTemplate3 bodyTemplate = new BodyTemplate3();
+bodyTemplate.setToken("token");
+bodyTemplate.setTitle("托尔斯泰的格言");
+// 可以链式set设置信息
+bodyTemplate.setPlainContent("拖尔斯泰-理想的书籍是智慧的钥匙")
+            .setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(bodyTemplate);
+this.addDirective(renderTemplate);
+```
+#### 右图左文模板 
+BodyTemplate4
+```java
+// 构造模板BodyTemplate4
+BodyTemplate4 bodyTemplate = new BodyTemplate4();
+bodyTemplate.setToken("token");
+bodyTemplate.setTitle("托尔斯泰的格言");
+// 可以链式set设置信息
+bodyTemplate.setPlainContent("拖尔斯泰-理想的书籍是智慧的钥匙")
+            .setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(bodyTemplate);
+this.addDirective(renderTemplate);
+```
+#### 图片模板
+BodyTemplate5
+```java
+// 构造模板BodyTemplate5
+BodyTemplate5 bodyTemplate = new BodyTemplate5();
+bodyTemplate.setTitle("托尔斯泰的格言");
+bodyTemplate.setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+// 也可以链式set设置信息
+bodyTemplate.addImage("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg")
+            .addImage("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(bodyTemplate);
+this.addDirective(renderTemplate);
+```
+#### 横向列表模板  
+ListTemplate1
+```java
+ListTemplate1 listTemplate = new ListTemplate1();
+listTemplate.setTitle("title");
+listTemplate.setToken("token");
+// 设置模版列表数组listItems其中一项，即列表的一个元素
+ListItem listItem = new ListItem();
+listItem.setPlainPrimaryText("一级标题");
+// 也可以链式设置信息
+listItem.setPlainSecondaryText("二级标题")
+        .setPlainTertiaryText("三级标题")
+        .setImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+
+// 把listItem添加到模版listTemplate
+listTemplate.addListItem(listItem);
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(listTemplate);
+this.addDirective(renderTemplate);
+```
+#### 纵向列表模板
+ListTemplate2 
+```java
+ListTemplate2 listTemplate = new ListTemplate2();
+listTemplate.setTitle("title");
+listTemplate.setToken("token");
+// 设置模版列表数组listItems其中一项，即列表的一个元素
+ListItem listItem = new ListItem();
+listItem.setPlainPrimaryText("一级标题");
+// 也可以链式设置信息
+listItem.setPlainSecondaryText("二级标题")
+        .setPlainTertiaryText("三级标题")
+        .setImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+// 把listItem添加到模版listTemplate
+listTemplate.addListItem(listItem);
+// 定义RenderTemplate指令
+RenderTemplate renderTemplate = new RenderTemplate(listTemplate);
+this.addDirective(renderTemplate);
+```
 ### 返回speech
 
 #### outputSpeech
@@ -377,17 +488,85 @@ Reprompt reprompt = new Reprompt(outputSpeech);
 #### 播放指令
 ```java
 // 新建Play指令
-Play play = new Play(PlayBehaviorType.ENQUEUE, "url", 1000);
-// 添加返回的指令
-addDirective(play);
+Play play = new Play("url");
+play.setPlayBehavior(PlayBehaviorType.REPLACE_ALL);
+play.setOffsetInMilliSeconds(1000);
 ```
 
-#### 暂停指令
+#### 渲染音频播放器的主界面
+AudioPlayer.Play指令中增加playerInfo信息
+（com.baidu.dueros.data.response.directive.audioplayer.Play）
+
+```java
+// 新建Play指令
+Play play = new Play("http://www.music");
+play.setPlayBehavior(PlayBehaviorType.ENQUEUE);
+// 音频播放器的主界面
+PlayerInfo playerInfo = new PlayerInfo();
+// 创建按钮
+PlayPauseButton playpause = new PlayPauseButton();
+PreviousButton previous = new PreviousButton();
+// 设置PlayerInfo的按钮控件
+playerInfo.addButton(playpause);
+playerInfo.addButton(previous);
+
+playerInfo.setTitle("周杰伦");
+playerInfo.setTitleSubtext1("七里香");
+// 也可以链式set信息
+playerInfo.setLyric("www.lyric...")
+          .setTitleSubtext2("周文山");
+// 设置Play指令的PlayerInfo
+play.setPlayerInfo(playerInfo);
+```
+
+
+#### 音频暂停指令
 ```java
 // 新建Stop指令
-Stop stop = new Stop(PlayBehaviorType.REPLACE_ENQUEUED, "url", 1000);
-// 添加返回的指令
-addDirective(stop);
+Stop stop = new Stop();
+```
+
+### 视频播放指令
+#### 视频播放指令
+```java
+Play play = new Play("http://www.video");
+play.setPlayBehavior(PlayBehaviorType.REPLACE_ALL);
+play.setToken("token");
+// 也可以链式set信息
+play.setOffsetInMilliSeconds(1000)
+    .setVideoItemId("video_1");
+```
+
+#### 视频停止播放指令
+```java
+Stop stop = new Stop();
+```
+
+#### 清除播放队列指令
+```java
+ClearQueue clear = new ClearQueue("CLEAR_ALL");
+```
+### 获取端音频播放器状态
+
+```java
+Context context = this.getRequest().getContext();
+AudioPlayerState audioPlayerState = context.getAudioPlayer();
+```
+### 获取端视频播放器状态
+
+```java
+Context context = this.getRequest().getContext();
+VideoPlayerState videoPlayerState = context.getVideoPlayer();
+```
+### 渲染引导词
+使用Hint指令渲染引导词
+
+```java
+ArrayList<String> hints = new ArrayList<>();
+hints.add("提示1");
+hints.add("提示2");
+hints.add("提示3");
+Hint hint = new Hint(hints);
 ```
 
 ### 构造Response
