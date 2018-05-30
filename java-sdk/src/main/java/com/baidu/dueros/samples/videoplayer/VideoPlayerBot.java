@@ -49,7 +49,7 @@ import com.baidu.dueros.model.Response;
  * 
  * @author hujie08
  * @version 1.0
- * @since 2018年4月26日
+ * @since v1.1.1
  */
 public class VideoPlayerBot extends VideoPlayer {
 
@@ -269,9 +269,27 @@ public class VideoPlayerBot extends VideoPlayer {
         return getResponse();
     }
 
+    /*
+     * 重写onSessionEnded方法，处理SessionEndedRequest对话事件
+     * 
+     * @see com.baidu.dueros.bot.BaseBot#onSessionEnded(com.baidu.dueros.data.request.
+     * SessionEndedRequest)
+     */
     @Override
     protected Response onSessionEnded(SessionEndedRequest sessionEndedRequest) {
         return super.onSessionEnded(sessionEndedRequest);
+    }
+
+    /*
+     * 重写onDefaultEvent方法，处理没有订阅的事件
+     * 
+     * @see com.baidu.dueros.bot.BaseBot#onDefaultEvent()
+     */
+    @Override
+    protected Response onDefaultEvent() {
+        this.waitAnswer();
+        this.setExpectSpeech(false);
+        return new Response();
     }
 
     /**

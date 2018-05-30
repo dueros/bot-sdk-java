@@ -31,8 +31,8 @@ import com.baidu.dueros.model.Response;
  * {@code AudioPlayer}继承自{@link BaseBot}类，用于处理端上报的audioplayer事件
  * 
  * @author tianlonglong(tianlong02@baidu.com)
- * @version V1.0
- * @since 2017年10月4日
+ * @version V1.1.1
+ * @since v1.1.1
  */
 public class AudioPlayer extends BaseBot {
 
@@ -75,11 +75,11 @@ public class AudioPlayer extends BaseBot {
     /**
      * 处理PlaybackStartedEvent事件
      * 
-     * @param playbackNearlyFinishedEvent
+     * @param playbackStartedEvent
      *            PlaybackStartedEvent事件
      * @return Response 返回的Response
      */
-    protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackNearlyFinishedEvent) {
+    protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackStartedEvent) {
         return response;
     }
 

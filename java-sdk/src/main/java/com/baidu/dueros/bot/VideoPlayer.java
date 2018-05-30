@@ -36,8 +36,8 @@ import com.baidu.dueros.model.Response;
  * {@code VideoPlayer}继承自{@link BaseBot}类，用于处理端上报的videoplayer事件
  * 
  * @author hujie08(hujie08@baidu.com)
- * @version V1.0
- * @since 2018年4月26日
+ * @version V1.1.1
+ * @since v1.1.1
  */
 public class VideoPlayer extends BaseBot {
 

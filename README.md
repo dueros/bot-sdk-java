@@ -17,7 +17,7 @@
 <dependency>
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -35,6 +35,14 @@ public class TaxBot extends BaseBot {}
 ```java
 public class AudioPlayerBot extends AudioPlayer {}
 ```
+
+
+开发一个视频播放的Bot，应该继承com.baidu.dueros.bot.VideoPlayer类，VideoPlayer也是继承自BaseBot的子类
+
+```java
+public class VideoPlayerBot extends VideoPlayer {}
+```
+
 
 然后，重写BaseBot的构造方法，BaseBot提供了四种基本的构造函数，Bot可以根据自身情况进行重写
 
@@ -151,8 +159,36 @@ protected Response onInent(IntentRequest intentRequest) {
 }
 ```
 
-#### Bot还可以订阅端上触发的事件
-订阅端上触发的事件，Bot继承com.baidu.dueros.bot.AudioPlayer类，重写处理端上报事件的方法
+#### Bot处理端上触发的事件
+
+在音频类和视频类技能中，端在播放音频或者视频时，会上报事件，Bot收到事件后需要做出相应的处理。
+
+##### 音频类技能
+
+开发一个音频播放的Bot，应该继承com.baidu.dueros.bot.AudioPlayer类，AudioPlayer也是继承自BaseBot的子类
+
+```java
+public class AudioPlayerBot extends AudioPlayer {}
+```
+
+音频类技能端上报的事件有PlaybackStartedEvent、PlaybackStoppedEvent、PlaybackNearlyFinishedEvent、PlaybackFinishedEvent事件。
+
+```java
+// 处理PlaybackStartedEvent事件
+protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackNearlyFinishedEvent) {}
+
+// 处理PlaybackStoppedEvent事件
+protected Response onPlaybackStoppedEvent(final PlaybackStoppedEvent playbackStoppedEvent) {}
+
+// 处理PlaybackNearlyFinishedEvent事件
+protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {}
+
+// 处理PlaybackFinishedEvent事件
+protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {}
+```
+
+以处理onPlaybackNearlyFinishedEvent事件为例:
+
 ```java
 /**
  * 重写onPlaybackNearlyFinishedEvent方法，处理onPlaybackNearlyFinishedEvent端上报事件
@@ -181,7 +217,16 @@ protected Response onPlaybackNearlyFinishedEvent(PlaybackNearlyFinishedEvent pla
 }
 ```
 
-提供四种类型的端上报事件
+##### 视频类技能
+
+开发一个视频播放的Bot，应该继承com.baidu.dueros.bot.VideoPlayer类，VideoPlayer也是继承自BaseBot的子类
+
+```java
+public class VideoPlayerBot extends VideoPlayer {}
+```
+
+视频类技能端上报的事件有PlaybackStartedEvent、PlaybackStoppedEvent、PlaybackNearlyFinishedEvent、PlaybackFinishedEvent、ProgressReportIntervalElapsedEvent、ProgressReportDelayElapsedEvent、PlaybackStutterStartedEvent、PlaybackStutterFinishedEvent、PlaybackPausedEvent、PlaybackResumedEvent、PlaybackQueueClearedEvent等事件。
+
 
 ```java
 // 处理PlaybackStartedEvent事件
@@ -195,6 +240,38 @@ protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEve
 
 // 处理PlaybackFinishedEvent事件
 protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {}
+
+// 处理ProgressReportIntervalElapsedEvent事件
+protected Response onProgressReportIntervalElapsedEvent(final ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent) {}
+
+// 处理ProgressReportDelayElapsedEvent事件
+protected Response onProgressReportDelayElapsedEvent(final ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent) {}
+
+// 处理PlaybackStutterStartedEvent事件
+protected Response onPlaybackStutterStartedEvent(final PlaybackStutterStartedEvent playbackStutterStartedEvent) {}
+
+// 处理PlaybackStutterFinishedEvent事件
+protected Response onPlaybackStutterFinishedEvent(final PlaybackStutterFinishedEvent playbackStutterFinishedEvent) {}
+
+// 处理PlaybackPausedEvent事件
+protected Response onPlaybackPausedEvent(final PlaybackPausedEvent playbackPausedEvent) {}
+
+// 处理PlaybackResumedEvent事件
+protected Response onPlaybackResumedEvent(final PlaybackResumedEvent playbackResumedEvent) {}
+
+// 处理PlaybackQueueClearedEvent事件
+protected Response onPlaybackQueueClearedEvent(final PlaybackQueueClearedEvent playbackQueueClearedEvent) {}
+```
+
+如果不想对每个事件都进行处理，可以通过重写onDefaultEvent方法来统一处理。
+
+```java
+@Override
+protected Response onDefaultEvent() {
+    this.waitAnswer();
+    this.setExpectSpeech(false);
+    return new Response();
+}
 ```
 
 ### 部署服务
@@ -327,36 +404,6 @@ if ("inquiry".equals(intentRequest.getIntentName())) {
 
 ### 返回卡片
 
-#### 文本卡片
-```java
-TextCard textCard = new TextCard("您的税前工资是多少呢?");
-textCard.setUrl("www:......");
-textCard.setAnchorText("链接文本");
-textCard.addCueWord("您的税前工资是多少呢?");
-```
-
-#### 标准卡片
-```java
-StandardCard standardCard = new StandardCard("您的税前工资是多少呢?", "您的税前工资是多少呢?");
-standardCard.setUrl("www:......");
-standardCard.setAnchorText("链接文本");
-standardCard.addCueWords("您的税前工资是多少呢?");
-standardCard.setImage("图片");
-```
-
-#### 列表卡片
-```java
-StandCardList standCardList = new StandCardList();
-standCardList.addStandardCardInfo("您的税前工资是多少呢?", "您的税前工资是多少呢?");
-standCardList.addCueWords("您的税前工资是多少呢?");
-```
-
-#### 图片卡片
-```java
-ImageCard imageCard = new ImageCard();
-imageCard.addImageCardInfo("图片地址", "缩略图地址");
-imageCard.addCueWords("引导话术");
-```
 #### 文本展现模板
 BodyTemplate1
 ```java
@@ -366,7 +413,7 @@ bodyTemplate.setToken("token");
 bodyTemplate.setTitle("托尔斯泰的格言");
 // 可以链式set设置信息
 bodyTemplate.setPlainContent("拖尔斯泰-理想的书籍是智慧的钥匙")
-            .setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
+.setBackgroundImageUrl("https://skillstore.cdn.bcebos.com/icon/100/c709eed1-c07a-be4a-b242-0b0d8b777041.jpg");
 // 定义RenderTemplate指令
 RenderTemplate renderTemplate = new RenderTemplate(bodyTemplate);
 this.addDirective(renderTemplate);
@@ -469,6 +516,38 @@ listTemplate.addListItem(listItem);
 RenderTemplate renderTemplate = new RenderTemplate(listTemplate);
 this.addDirective(renderTemplate);
 ```
+
+#### 文本卡片
+```java
+TextCard textCard = new TextCard("您的税前工资是多少呢?");
+textCard.setUrl("www:......");
+textCard.setAnchorText("链接文本");
+textCard.addCueWord("您的税前工资是多少呢?");
+```
+
+#### 标准卡片
+```java
+StandardCard standardCard = new StandardCard("您的税前工资是多少呢?", "您的税前工资是多少呢?");
+standardCard.setUrl("www:......");
+standardCard.setAnchorText("链接文本");
+standardCard.addCueWords("您的税前工资是多少呢?");
+standardCard.setImage("图片");
+```
+
+#### 列表卡片
+```java
+StandCardList standCardList = new StandCardList();
+standCardList.addStandardCardInfo("您的税前工资是多少呢?", "您的税前工资是多少呢?");
+standCardList.addCueWords("您的税前工资是多少呢?");
+```
+
+#### 图片卡片
+```java
+ImageCard imageCard = new ImageCard();
+imageCard.addImageCardInfo("图片地址", "缩略图地址");
+imageCard.addCueWords("引导话术");
+```
+
 ### 返回speech
 
 #### outputSpeech
@@ -483,10 +562,12 @@ OutputSpeech outputSpeech = new OutputSpeech(Type.SSML, "您的税前工资是�
 Reprompt reprompt = new Reprompt(outputSpeech);
 ```
 
-### 音乐播放指令
+### 音频指令
 
-#### 播放指令
+#### 音频播放指令
 ```java
+import com.baidu.dueros.data.response.directive.audioplayer.Play;
+
 // 新建Play指令
 Play play = new Play("url");
 play.setPlayBehavior(PlayBehaviorType.REPLACE_ALL);
@@ -495,9 +576,10 @@ play.setOffsetInMilliSeconds(1000);
 
 #### 渲染音频播放器的主界面
 AudioPlayer.Play指令中增加playerInfo信息
-（com.baidu.dueros.data.response.directive.audioplayer.Play）
 
 ```java
+import com.baidu.dueros.data.response.directive.audioplayer.Play;
+
 // 新建Play指令
 Play play = new Play("http://www.music");
 play.setPlayBehavior(PlayBehaviorType.ENQUEUE);
@@ -522,13 +604,18 @@ play.setPlayerInfo(playerInfo);
 
 #### 音频暂停指令
 ```java
+import com.baidu.dueros.data.response.directive.audioplayer.Stop;
+
 // 新建Stop指令
 Stop stop = new Stop();
 ```
 
-### 视频播放指令
+### 视频指令
 #### 视频播放指令
 ```java
+import com.baidu.dueros.data.response.directive.videoplayer.Play;
+
+// 新建视频播放指令
 Play play = new Play("http://www.video");
 play.setPlayBehavior(PlayBehaviorType.REPLACE_ALL);
 play.setToken("token");
@@ -538,12 +625,19 @@ play.setOffsetInMilliSeconds(1000)
 ```
 
 #### 视频停止播放指令
+
 ```java
+import com.baidu.dueros.data.response.directive.videoplayer.Stop;
+
+// 新建视频停止指令
 Stop stop = new Stop();
 ```
 
 #### 清除播放队列指令
+
 ```java
+import com.baidu.dueros.data.response.directive.videoplayer.ClearQueue;
+
 ClearQueue clear = new ClearQueue("CLEAR_ALL");
 ```
 ### 获取端音频播放器状态
@@ -552,13 +646,16 @@ ClearQueue clear = new ClearQueue("CLEAR_ALL");
 Context context = this.getRequest().getContext();
 AudioPlayerState audioPlayerState = context.getAudioPlayer();
 ```
+
 ### 获取端视频播放器状态
 
 ```java
 Context context = this.getRequest().getContext();
 VideoPlayerState videoPlayerState = context.getVideoPlayer();
 ```
+
 ### 渲染引导词
+
 使用Hint指令渲染引导词
 
 ```java
@@ -570,13 +667,16 @@ Hint hint = new Hint(hints);
 ```
 
 ### 构造Response
+
 ```java
 Response response = new Response(outputSpeech, textCard, reprompt);
 ```
 
 ### 认证
+
 当DuerOS向Bot发送请求时，Bot需要对收到的请求进行验证，验证方法如下：
 获取HTTP请求header中的签名signature、证书地址signaturecerturl以及body信息message。
+
 ```java
 // 根据签名、证书地址、HTTP body构造Certificate对象
 Certificate certificate = new Certificate(message, signature, signaturecerturl);
@@ -584,7 +684,9 @@ bot.setCertificate(certificate);
 // 打开签名验证
 bot.enableVerify();
 ```
+
 在调试过程中，可以关闭认证
+
 ```java
 // 关闭签名验证
 bot.disableVerify();
@@ -602,40 +704,41 @@ bot.disableVerify();
 ```
 
 ### 使用Bot的数据统计功能
-bot-sdk里已经集成了[数据统计功能](https://gitlab.com/tianyi17/bot-monitor-java)(默认该功能是关闭的)，你只需要进行简单的几步操作就可以使用bot的数据统计功能：
+    bot-sdk里已经集成了[数据统计功能](https://gitlab.com/tianyi17/bot-monitor-java)(默认该功能是关闭的)，你只需要进行简单的几步操作就可以使用bot的数据统计功能：
 
-1. 打开终端，执行`openssl genrsa -out rsa_private_key.pem 1024`命令生成私钥
-2. 执行`openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem`生成和私钥匹配的公钥。
-3. 执行`openssl pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt >> rsa_private_key_java.psk`命令，将私钥转换成pkcs8格式。
-4. 使用编辑器打开公钥文件，将文件的完整内容上传到DBP平台对应的Bot空间。
-保存`rsa_private_key_java.psk`私钥文件，我们下面会用到。
-5. 在bot的构造函数里开启数据上报功能。假设你在TaxBot使用`HttpServletRequest`作为参数实现构造方法，把`rsa_private_key_java.psk`文件里内容赋值给`String`类型的`privateKey`变量：
+    1. 打开终端，执行`openssl genrsa -out rsa_private_key.pem 1024`命令生成私钥
+    2. 执行`openssl rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem`生成和私钥匹配的公钥。
+    3. 执行`openssl pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt >> rsa_private_key_java.psk`命令，将私钥转换成pkcs8格式。
+    4. 使用编辑器打开公钥文件，将文件的完整内容上传到DBP平台对应的Bot空间。
+    保存`rsa_private_key_java.psk`私钥文件，我们下面会用到。
+    5. 在bot的构造函数里开启数据上报功能。假设你在TaxBot使用`HttpServletRequest`作为参数实现构造方法，把`rsa_private_key_java.psk`文件里内容赋值给`String`类型的`privateKey`变量：
 
-```
-public TaxBot(HttpServletRequest request) throws IOException {
+```java
+    public TaxBot(HttpServletRequest request) throws IOException {
         super(request);
         String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALcD5iNhmR/fN9Sw\n" +
-                "D9dmiyZo31wVapoUmDTjqHOe0qpxQTgRYNqaR8cxmIKpk1IzPskJEYwAl37wu12X\n" +
-                "tobCZuIZSScrnuSZFozC33DWg3DR4dngf7S1FS08FLKUfAZ7H0rPzuOMRtFUj6Yk\n" +
-                "iVKArnzNVoTT2bmlrEeq6ttAY5RnAgMBAAECgYBe5MGmZMudsALl3+hG2p+Z6dSu\n" +
-                "jVg5ziXhfo1wbdBzmcekR7Z9gnNnQDsAvOZrP7D1UiNsAT6MDkxISgrVMuVew91q\n" +
-                "rEfu7MbmUx6dp4wlVSJOtzhF7VqiisV3zr8EHbf9utWX9yqwhUlszBrsx8Cqvy/B\n" +
-                "mTsWSmkCST1jFBzV+QJBAOMpYhoyUBjrbq0Y7y7oa8RmW+tmMjUfCbR9W4lFPomN\n" +
-                "bxnVpwA7OefLzdBjzRM/pfEfQZYSPJYWnENPO7LTxyMCQQDOP8icc9sjWRY//Jtr\n" +
-                "IIvq3jyAV/o6GwJVXUvwCLTZD+RxkNwUsVVio+bfQ7eBgbb8j7tKKMvftrjKQ11O\n" +
-                "WvPtAkA19vHQSV2P3fZH9uFzYlGfsbVqgbexuPLkRteFD8cghFH9cC0hN/C0qUz2\n" +
-                "kY75YKh6VLOPBDwSZ8KtltgWzorDAkBKgoh63PAB6SE8pImRPgTOKNM6mo3vh+pj\n" +
-                "5HyWjs6mzDL/RBH998KdDBFP/yrAQphUzagftnVQsLY5e/StZfZRAkEAnrolcj06\n" +
-                "+77j6Ibc++C+IAgUYiuo+ZZmVTDOI0BS1lC6kZz8HMlAqDl4Mf7HulijcdHqm/Z0\n" +
-                "XgtBxVoMpmbJmQ==";
+            "D9dmiyZo31wVapoUmDTjqHOe0qpxQTgRYNqaR8cxmIKpk1IzPskJEYwAl37wu12X\n" +
+            "tobCZuIZSScrnuSZFozC33DWg3DR4dngf7S1FS08FLKUfAZ7H0rPzuOMRtFUj6Yk\n" +
+            "iVKArnzNVoTT2bmlrEeq6ttAY5RnAgMBAAECgYBe5MGmZMudsALl3+hG2p+Z6dSu\n" +
+            "jVg5ziXhfo1wbdBzmcekR7Z9gnNnQDsAvOZrP7D1UiNsAT6MDkxISgrVMuVew91q\n" +
+            "rEfu7MbmUx6dp4wlVSJOtzhF7VqiisV3zr8EHbf9utWX9yqwhUlszBrsx8Cqvy/B\n" +
+            "mTsWSmkCST1jFBzV+QJBAOMpYhoyUBjrbq0Y7y7oa8RmW+tmMjUfCbR9W4lFPomN\n" +
+            "bxnVpwA7OefLzdBjzRM/pfEfQZYSPJYWnENPO7LTxyMCQQDOP8icc9sjWRY//Jtr\n" +
+            "IIvq3jyAV/o6GwJVXUvwCLTZD+RxkNwUsVVio+bfQ7eBgbb8j7tKKMvftrjKQ11O\n" +
+            "WvPtAkA19vHQSV2P3fZH9uFzYlGfsbVqgbexuPLkRteFD8cghFH9cC0hN/C0qUz2\n" +
+            "kY75YKh6VLOPBDwSZ8KtltgWzorDAkBKgoh63PAB6SE8pImRPgTOKNM6mo3vh+pj\n" +
+            "5HyWjs6mzDL/RBH998KdDBFP/yrAQphUzagftnVQsLY5e/StZfZRAkEAnrolcj06\n" +
+            "+77j6Ibc++C+IAgUYiuo+ZZmVTDOI0BS1lC6kZz8HMlAqDl4Mf7HulijcdHqm/Z0\n" +
+            "XgtBxVoMpmbJmQ==";
         //privateKey为私钥内容,0代表你的Bot在DBP平台debug环境，1或者其他整数代表online环境,botMonitor对象已经在bot-sdk里初始化，可以直接调用
         this.botMonitor.setEnvironmentInfo(privateKey, 0);
-}
+    }
 ```
 
 你也可以在代码里随时开启和关闭数据统计功能：
 
-```
+```java
 //true代表开启,false代表关闭。调用setEnvironmentInfo之后会默认开启
 this.botMonitor.setMonitorEnabled(false);
 ```
+

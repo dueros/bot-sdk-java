@@ -69,8 +69,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * {@code BaseBot}是所有Bot的基类，使用Bot-SDK开发的Bot需要继承这个类
  * 
  * @author tianlonglong(tianlong02@baidu.com)
- * @version V1.0
- * @since 2017年10月4日
+ * @version V1.1.1
+ * @since v1.1.1
  */
 public class BaseBot {
 
@@ -536,7 +536,6 @@ public class BaseBot {
     private void dispatch() {
         RequestBody requestBody = request.getRequest();
         if (requestBody instanceof LaunchRequest) {
-
             LaunchRequest launchRequest = (LaunchRequest) requestBody;
             response = onLaunch(launchRequest);
         } else if (requestBody instanceof IntentRequest) {
@@ -609,6 +608,9 @@ public class BaseBot {
                 response = this.onLinkClickedEvent(linkClickedEvent);
             }
         }
+        if (response == null) {
+            response = this.onDefaultEvent();
+        }
     }
 
     /**
@@ -663,6 +665,15 @@ public class BaseBot {
      * @return Response 返回的Response
      */
     protected Response onLinkClickedEvent(final LinkClickedEvent linkClickedEvent) {
+        return response;
+    }
+
+    /**
+     * 默认事件处理
+     * @since   V1.1.1
+     * @return Response 返回的Response
+     */
+    protected Response onDefaultEvent() {
         return response;
     }
 

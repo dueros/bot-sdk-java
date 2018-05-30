@@ -97,6 +97,7 @@ public class TaxBot extends BaseBot {
      */
     @Override
     protected Response onInent(IntentRequest intentRequest) {
+        System.out.println(123123);
         // 判断NLU解析的意图名称是否匹配 inquiry
         if ("inquiry".equals(intentRequest.getIntentName())) {
             // 判断NLU解析解析后是否存在这个槽位
