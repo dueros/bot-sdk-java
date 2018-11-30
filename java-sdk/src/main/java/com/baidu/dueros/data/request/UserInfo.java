@@ -30,28 +30,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserInfo {
 
     private final LocationInfo location;
+    private final Account account;
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    private UserInfo(@JsonProperty("location") final LocationInfo location) {
+    private UserInfo(@JsonProperty("location") final LocationInfo location,
+            @JsonProperty("account") final Account account) {
         this.location = location;
+        this.account = account;
     }
 
     private UserInfo(final Builder builder) {
         location = builder.location;
+        account = builder.account;
     }
 
     public LocationInfo getLocation() {
         return location;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+    
     public static final class Builder {
         private LocationInfo location;
+        private Account account;
 
         public Builder setLocation(final LocationInfo location) {
             this.location = location;
+            return this;
+        }
+
+        public Builder setAccount(final Account account) {
+            this.account = account;
             return this;
         }
 

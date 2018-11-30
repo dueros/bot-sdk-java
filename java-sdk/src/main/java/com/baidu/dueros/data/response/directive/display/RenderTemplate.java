@@ -17,6 +17,7 @@ package com.baidu.dueros.data.response.directive.display;
 
 import com.baidu.dueros.data.response.directive.Directive;
 import com.baidu.dueros.data.response.directive.display.templates.BaseTemplate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2018年4月26日
  */
 @JsonTypeName("Display.RenderTemplate")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RenderTemplate extends Directive {
     // 模板
     private BaseTemplate template;

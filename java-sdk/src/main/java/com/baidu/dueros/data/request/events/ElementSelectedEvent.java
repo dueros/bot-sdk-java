@@ -21,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * 使用rederTemplate指令展示列表模板ListTemplate1，ListTemplate2，列表项点击时会上报的事件:Display.ElementSelected
+ * 使用rederTemplate指令展示列表模板ListTemplate1，ListTemplate2，列表项点击时会上报的事件:Display.
+ * ElementSelected
  * 
  * @author hujie08
  * @version 1.0
@@ -53,8 +54,9 @@ public class ElementSelectedEvent extends CommonEvent {
      *            点击列表项对应的token
      */
     private ElementSelectedEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token) {
-        super(requestId, timestamp);
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token) {
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
     }
 
@@ -103,7 +105,8 @@ public class ElementSelectedEvent extends CommonEvent {
         /*
          * 调用{@code ElementSelectedEvent}的私有构造方法构造{@code ElementSelectedEvent}
          * 
-         * @see com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
+         * @see
+         * com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
          */
         @Override
         public ElementSelectedEvent build() {

@@ -15,6 +15,7 @@
  */
 package com.baidu.dueros.data.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @version V1.0
  * @since 2018年5月3日
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SkillInfo {
     // 技能图标信息
     private final Icon icon;

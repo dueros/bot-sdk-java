@@ -51,10 +51,11 @@ public class HttpRequestSucceededEvent extends RequestBody {
     }
 
     private HttpRequestSucceededEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token,
             @JsonProperty("code") final String code, @JsonProperty("headers") final Map<String, String> headers,
             @JsonProperty("body") final HttpBody body) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
         this.code = code;
         this.headers.putAll(headers);

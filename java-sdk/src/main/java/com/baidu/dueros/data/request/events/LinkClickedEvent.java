@@ -54,8 +54,9 @@ public class LinkClickedEvent extends CommonEvent {
      *            点击列表项对应的token
      */
     private LinkClickedEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token) {
-        super(requestId, timestamp);
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token) {
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
     }
 
@@ -104,7 +105,8 @@ public class LinkClickedEvent extends CommonEvent {
         /*
          * 调用{@code LinkClickedEvent}的私有构造方法构造{@code LinkClickedEvent}
          * 
-         * @see com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
+         * @see
+         * com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
          */
         @Override
         public LinkClickedEvent build() {

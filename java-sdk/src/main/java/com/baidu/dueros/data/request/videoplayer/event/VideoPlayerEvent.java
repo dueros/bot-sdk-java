@@ -46,9 +46,12 @@ public class VideoPlayerEvent extends RequestBody {
      *            每个request会有不同的requestId
      * @param timestamp
      *            request时间，Bot结合http header一起用于做安全检查
+     * @param dialogRequestId
+     *            dialogRequestId
      */
     protected VideoPlayerEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp) {
-        super(requestId, timestamp);
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId) {
+        super(requestId, timestamp, dialogRequestId);
     }
 }

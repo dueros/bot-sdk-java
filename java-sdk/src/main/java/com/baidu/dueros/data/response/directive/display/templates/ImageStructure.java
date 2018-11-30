@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.baidu.dueros.data.response.directive.display.templates;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 定义图片结构
@@ -22,6 +28,7 @@ package com.baidu.dueros.data.response.directive.display.templates;
  * @version 1.0
  * @since 2018年4月28日
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ImageStructure {
     // 图片地址，要求为https的地址
     private String url = "";
@@ -29,6 +36,8 @@ public class ImageStructure {
     private int widthPixels;
     // 图片的高度，单位像素
     private int heightPixels;
+    // 标签
+    private List<Tag> tags = new ArrayList<>();
 
     /**
      * 默认构造函数
@@ -124,4 +133,38 @@ public class ImageStructure {
         this.heightPixels = heightPixels;
         return this;
     }
+
+    /**
+     * 设置标签的getter方法
+     * 
+     * @return List
+     */
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    /**
+     * 设置标签的setter方法
+     * 
+     * @param tags
+     *            标签列表
+     * @return ImageStructure ImageStructure
+     */
+    public ImageStructure setTags(List<Tag> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * 设置标签的setter方法
+     * 
+     * @param tag
+     *            标签
+     * @return ImageStructure ImageStructure
+     */
+    public ImageStructure addTag(Tag tag) {
+        tags.add(tag);
+        return this;
+    }
+
 }

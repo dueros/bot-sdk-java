@@ -18,6 +18,11 @@ package com.baidu.dueros.data.request;
 
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
+import com.baidu.dueros.data.request.pay.event.ChargeEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionGrantFailedEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionGrantedEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionRejectedEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionRequiredEvent;
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackFinishedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackNearlyFinishedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackPausedEvent;
@@ -51,13 +56,22 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent.class),
         @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent.class),
         @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackFailedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent.class),
+        @Type(value = com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent.class),
         @Type(value = PlaybackStartedEvent.class), @Type(value = PlaybackStoppedEvent.class),
         @Type(value = PlaybackFinishedEvent.class), @Type(value = PlaybackNearlyFinishedEvent.class),
         @Type(value = ProgressReportIntervalElapsedEvent.class), @Type(value = ProgressReportDelayElapsedEvent.class),
         @Type(value = PlaybackStutterStartedEvent.class), @Type(value = PlaybackStutterFinishedEvent.class),
         @Type(value = PlaybackPausedEvent.class), @Type(value = PlaybackResumedEvent.class),
         @Type(value = PlaybackQueueClearedEvent.class), @Type(value = ElementSelectedEvent.class),
-        @Type(value = LinkClickedEvent.class), })
+        @Type(value = LinkClickedEvent.class), @Type(value = ChargeEvent.class),
+        @Type(value = PermissionGrantFailedEvent.class), @Type(value = PermissionRejectedEvent.class),
+        @Type(value = PermissionGrantedEvent.class), @Type(value = PermissionRequiredEvent.class) })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RequestBody {
 
@@ -65,6 +79,7 @@ public abstract class RequestBody {
     private final String requestId;
     // request时间，Bot结合http header一起用于做安全检查
     private final String timestamp;
+    private final String dialogRequestId;
 
     /**
      * 通过{@code Builder}来构造{@code RequestBody}
@@ -75,6 +90,7 @@ public abstract class RequestBody {
     protected RequestBody(final RequestBodyBuilder builder) {
         requestId = builder.requestId;
         timestamp = builder.timestamp;
+        dialogRequestId = builder.dialogRequestId;
     }
 
     /**
@@ -84,11 +100,15 @@ public abstract class RequestBody {
      *            每个request会有不同的requestId
      * @param timestamp
      *            request时间，Bot结合http header一起用于做安全检查
+     * @param dialogRequestId
+     *            dialogRequestId
      */
     protected RequestBody(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp) {
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId) {
         this.requestId = requestId;
         this.timestamp = timestamp;
+        this.dialogRequestId = dialogRequestId;
     }
 
     /**
@@ -120,6 +140,7 @@ public abstract class RequestBody {
 
         private String requestId;
         private String timestamp;
+        private String dialogRequestId;
 
         /**
          * 设置requestId的setter方法
@@ -142,6 +163,11 @@ public abstract class RequestBody {
          */
         public T setTimestamp(final String timestamp) {
             this.timestamp = timestamp;
+            return (T) this;
+        }
+
+        public T setDialogRequestId(final String dialogRequestId) {
+            this.dialogRequestId = dialogRequestId;
             return (T) this;
         }
 

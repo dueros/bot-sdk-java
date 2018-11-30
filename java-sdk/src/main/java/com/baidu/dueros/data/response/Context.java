@@ -16,6 +16,9 @@
 
 package com.baidu.dueros.data.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.baidu.dueros.nlu.Intent;
 
 /**
@@ -29,6 +32,9 @@ public class Context {
 
     // Bot反馈给DuerOS的信息，例如Bot根据自身资源情况对原始Request信息中Intent的进行了修改
     private Intent intent;
+    // afterSearchScore
+    private float afterSearchScore = 1.0f;
+    private List<ExpectResponse> expectResponse = new ArrayList<ExpectResponse>();
 
     /**
      * 默认构造方法
@@ -66,4 +72,30 @@ public class Context {
         this.intent = intent;
     }
 
+    /**
+     * 获取afterSearchScore的getter方法
+     * 
+     * @return afterSearchScore afterSearchScore
+     */
+    public float getAfterSearchScore() {
+        return afterSearchScore;
+    }
+
+    /**
+     * 设置意图的afterSearchScore方法
+     * 
+     * @param afterSearchScore
+     *            afterSearchScore
+     */
+    public void setAfterSearchScore(float afterSearchScore) {
+        this.afterSearchScore = afterSearchScore;
+    }
+
+    public void setExpectResponses(List<ExpectResponse> expectResponses) {
+        this.expectResponse = expectResponses;
+    }
+
+    public List<ExpectResponse> getExpectResponse() {
+        return expectResponse;
+    }
 }

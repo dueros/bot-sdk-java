@@ -26,8 +26,11 @@ import com.baidu.dueros.data.request.SessionEndedRequest;
 import com.baidu.dueros.data.response.OutputSpeech;
 import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.Reprompt;
+import com.baidu.dueros.data.response.card.ListCard;
+import com.baidu.dueros.data.response.card.StandardCardInfo;
 import com.baidu.dueros.data.response.card.TextCard;
 import com.baidu.dueros.model.Response;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * 查询个税Bot例子，继承{@code BaseBot}类
@@ -46,7 +49,7 @@ public class TaxBot extends BaseBot {
      * @throws IOException
      *             抛出异常
      */
-    public TaxBot(HttpServletRequest request) throws IOException {
+    public TaxBot(HttpServletRequest request) throws IOException, JsonMappingException {
         super(request);
     }
 
@@ -140,6 +143,13 @@ public class TaxBot extends BaseBot {
         // 构造OutputSpeech
         OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "欢迎再次使用所得税服务");
 
+        
+        ListCard listCard = new ListCard();
+        StandardCardInfo item1 = new StandardCardInfo("title1", "content1");
+        StandardCardInfo item2 = new StandardCardInfo("title2", "content2");
+        listCard.addStandardCardInfo(item1);
+        listCard.addStandardCardInfo(item2);
+        
         // 构造Response
         Response response = new Response(outputSpeech, textCard);
 
@@ -202,6 +212,23 @@ public class TaxBot extends BaseBot {
      * @return Response 返回Response
      */
     private Response askComputeType() {
+        TextCard textCard = new TextCard("请选择您要查询的种类");
+        textCard.setAnchorText("setAnchorText");
+        textCard.addCueWord("请选择您要查询的种类");
+
+        setSessionAttribute("key_1", "value_1");
+        setSessionAttribute("key_2", "value_2");
+
+        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "请选择您要查询的种类");
+
+        Reprompt reprompt = new Reprompt(outputSpeech);
+
+        Response response = new Response(outputSpeech, textCard, reprompt);
+
+        return response;
+    }
+    
+    protected Response onDefaultEvent() {
         TextCard textCard = new TextCard("请选择您要查询的种类");
         textCard.setAnchorText("setAnchorText");
         textCard.addCueWord("请选择您要查询的种类");

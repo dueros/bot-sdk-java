@@ -56,9 +56,10 @@ public class PlaybackFinishedEvent extends VideoPlayerEvent {
      *            当前的播放进度
      */
     private PlaybackFinishedEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token,
             @JsonProperty("offsetInMilliSeconds") final int offsetInMilliSeconds) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
         this.offsetInMilliSeconds = offsetInMilliSeconds;
     }

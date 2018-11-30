@@ -15,11 +15,14 @@
  */
 package com.baidu.dueros.data.response.directive.display.templates;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * ListItem 中定义文本内容的结构体（包含一级，二级，三级文本内容）
  * 
  * @author hujie08
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TextContent {
     // 一级文本内容
     private TextStructure primaryText;

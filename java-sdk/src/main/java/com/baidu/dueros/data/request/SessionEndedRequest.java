@@ -44,9 +44,10 @@ public class SessionEndedRequest extends RequestBody {
     }
 
     private SessionEndedRequest(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("type") final String type,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("type") final String type,
             @JsonProperty("reason") final Type reason, @JsonProperty("error") final SessionEndedErrorMessage error) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.reason = reason;
         this.error = error;
     }

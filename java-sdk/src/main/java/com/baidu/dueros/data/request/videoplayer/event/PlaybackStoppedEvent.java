@@ -33,8 +33,6 @@ public class PlaybackStoppedEvent extends VideoPlayerEvent {
     private final String token;
     // 事件上报时视频流的播放点
     private final int offsetInMilliSeconds;
-    // 每轮对话的id
-    private final String dialogRequestId;
 
     /**
      * 返回一个用来构造{@code PlaybackStoppedEvent}的{@code Builder}
@@ -61,17 +59,15 @@ public class PlaybackStoppedEvent extends VideoPlayerEvent {
             @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token,
             @JsonProperty("dialogRequestId") final String dialogRequestId,
             @JsonProperty("offsetInMilliSeconds") final int offsetInMilliSeconds) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
         this.offsetInMilliSeconds = offsetInMilliSeconds;
-        this.dialogRequestId = dialogRequestId;
     }
 
     private PlaybackStoppedEvent(final Builder builder) {
         super(builder);
         token = builder.token;
         offsetInMilliSeconds = builder.offsetInMilliSeconds;
-        dialogRequestId = builder.dialogRequestId;
     }
 
     /**
@@ -90,15 +86,6 @@ public class PlaybackStoppedEvent extends VideoPlayerEvent {
      */
     public int getOffsetInMilliSeconds() {
         return offsetInMilliSeconds;
-    }
-
-    /**
-     * 获取dialogRequestId的getter方法
-     * 
-     * @return String 每轮对话的id
-     */
-    public String getDialogRequestId() {
-        return dialogRequestId;
     }
 
     /**

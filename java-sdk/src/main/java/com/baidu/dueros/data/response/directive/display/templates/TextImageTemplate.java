@@ -16,6 +16,7 @@
 package com.baidu.dueros.data.response.directive.display.templates;
 
 import com.baidu.dueros.data.response.directive.display.templates.TextStructure.TextType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -32,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({ @Type(value = BodyTemplate2.class), @Type(value = BodyTemplate3.class),
         @Type(value = BodyTemplate4.class), @Type(value = BodyTemplate5.class) })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class TextImageTemplate extends BaseTemplate {
     // 展现的图片
     private ImageStructure image;

@@ -20,6 +20,7 @@ package com.baidu.dueros.data.response.directive.display.templates;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -36,7 +37,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({ @Type(value = BodyTemplate1.class), @Type(value = BodyTemplate2.class),
         @Type(value = BodyTemplate3.class), @Type(value = BodyTemplate4.class), @Type(value = BodyTemplate5.class),
-        @Type(value = ListTemplate1.class), @Type(value = ListTemplate2.class) })
+        @Type(value = ListTemplate1.class), @Type(value = ListTemplate2.class), @Type(value = ListTemplate3.class),
+        @Type(value = ListTemplate4.class)})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BaseTemplate {
     // 唯一标识这个模板
     private String token;

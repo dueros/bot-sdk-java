@@ -58,9 +58,10 @@ public class PlaybackNearlyFinishedEvent extends VideoPlayerEvent {
      *            当前的播放进度
      */
     private PlaybackNearlyFinishedEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token,
             @JsonProperty("offsetInMilliSeconds") final int offsetInMilliSeconds) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
         this.offsetInMilliSeconds = offsetInMilliSeconds;
     }
@@ -126,7 +127,8 @@ public class PlaybackNearlyFinishedEvent extends VideoPlayerEvent {
         }
 
         /**
-         * 调用{@code PlaybackNearlyFinishedEvent}的私有构造方法构造{@code PlaybackNearlyFinishedEvent}
+         * 调用{@code PlaybackNearlyFinishedEvent}的私有构造方法构造
+         * {@code PlaybackNearlyFinishedEvent}
          * 
          * @see com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
          */

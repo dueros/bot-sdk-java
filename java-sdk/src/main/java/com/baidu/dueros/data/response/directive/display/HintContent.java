@@ -15,6 +15,8 @@
  */
 package com.baidu.dueros.data.response.directive.display;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * hint内容的结构体
  * 
@@ -22,6 +24,7 @@ package com.baidu.dueros.data.response.directive.display;
  * @version 1.0
  * @since 2018年4月27日
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HintContent {
     private static final String type = "PlainText";
     private String text;

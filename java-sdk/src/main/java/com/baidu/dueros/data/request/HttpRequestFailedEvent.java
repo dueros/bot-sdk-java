@@ -46,9 +46,10 @@ public class HttpRequestFailedEvent extends RequestBody {
     }
 
     private HttpRequestFailedEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token,
             @JsonProperty("reason") final String reason, @JsonProperty("errorMessage") final String errorMessage) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
         this.reason = reason;
         this.errorMessage = errorMessage;
@@ -141,7 +142,8 @@ public class HttpRequestFailedEvent extends RequestBody {
         }
 
         /**
-         * 调用{@code HttpRequestFailedEvent}的私有构造方法构造 {@code HttpRequestFailedEvent}
+         * 调用{@code HttpRequestFailedEvent}的私有构造方法构造
+         * {@code HttpRequestFailedEvent}
          * 
          * @see com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
          */

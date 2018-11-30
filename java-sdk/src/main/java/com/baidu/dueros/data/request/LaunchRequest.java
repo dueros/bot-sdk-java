@@ -57,8 +57,9 @@ public class LaunchRequest extends RequestBody {
      *            request时间，Bot结合http header一起用于做安全检查
      */
     private LaunchRequest(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp) {
-        super(requestId, timestamp);
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId) {
+        super(requestId, timestamp, dialogRequestId);
     }
 
     /**

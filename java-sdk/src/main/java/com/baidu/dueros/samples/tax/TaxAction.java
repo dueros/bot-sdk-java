@@ -42,6 +42,22 @@ public class TaxAction extends HttpServlet {
     }
 
     /**
+     * @see HttpServlet#doHead(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doHead(HttpServletRequest requestm, HttpServletResponse response) {
+        response.setStatus(204);
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest requestm, HttpServletResponse response) {
+        response.setStatus(204);
+    }
+
+    /**
      * 重写doPost方法，处理POST请求
      * 
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -50,23 +66,26 @@ public class TaxAction extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // 根据request创建Bot
-        TaxBot bot = new TaxBot(request);
-        // 打开签名验证
-        // bot.enableVerify();
-
-        // 线下调试时，可以关闭签名验证
-        bot.disableVerify();
-
+        TaxBot bot;
         try {
+            bot = new TaxBot(request);
+            // 线下调试时，可以关闭签名验证
+            // bot.enableVerify();
+            bot.disableVerify();
+
             // 调用bot的run方法
             String responseJson = bot.run();
             // 设置response的编码UTF-8
             response.setCharacterEncoding("UTF-8");
             // 返回response
             response.getWriter().append(responseJson);
+
+            // 打开签名验证
+            // bot.enableVerify();
+
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().append("{\"status\":1,\"msg\":\"\"}");
+            response.getWriter().append(e.toString());
         }
     }
 

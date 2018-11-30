@@ -17,6 +17,7 @@ package com.baidu.dueros.data.response.directive.display;
 
 import java.util.ArrayList;
 import com.baidu.dueros.data.response.directive.Directive;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2018年4月26日
  */
 @JsonTypeName("Hint")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Hint extends Directive {
     // 话术列表
     private ArrayList<HintContent> hints = new ArrayList<>();

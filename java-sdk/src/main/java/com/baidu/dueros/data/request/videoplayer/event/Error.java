@@ -134,7 +134,8 @@ public class Error {
     public enum ErrorType {
         // 未知错误
         MEDIA_ERROR_UNKNOWN,
-        // stream服务端返回请求无效 (可能的情况有bad request, unauthorized, forbidden, not found等等)
+        // stream服务端返回请求无效 (可能的情况有bad request, unauthorized, forbidden, not
+        // found等等)
         MEDIA_ERROR_INVALID_REQUEST,
         // 设备端无法连接stream服务端
         MEDIA_ERROR_SERVICE_UNAVAILABLE,

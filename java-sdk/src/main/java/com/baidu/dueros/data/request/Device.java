@@ -33,6 +33,10 @@ public class Device {
     private final String deviceId;
     // 设备信息
     private final DeviceInfo deviceInfo;
+    // 原始的设备Id
+    private final String originalDeviceId;
+    // 端支持的接口类型,如果支持则value不为空，具体含义如以上Message定义
+    private final SupportedInterfaces supportedInterfaces;
 
     /**
      * 返回一个构造{@code Device}的{@code Builder}
@@ -52,6 +56,8 @@ public class Device {
     private Device(final Builder builder) {
         deviceId = builder.deviceId;
         deviceInfo = builder.deviceInfo;
+        originalDeviceId = builder.originalDeviceId;
+        supportedInterfaces = builder.supportedInterfaces;
     }
 
     /**
@@ -63,9 +69,13 @@ public class Device {
      *            设备信息
      */
     private Device(@JsonProperty("deviceId") final String deviceId,
-            @JsonProperty("deviceInfo") final DeviceInfo deviceInfo) {
+            @JsonProperty("deviceInfo") final DeviceInfo deviceInfo,
+            @JsonProperty("originalDeviceId") final String originalDeviceId,
+            @JsonProperty("supportedInterfaces") final SupportedInterfaces supportedInterfaces) {
         this.deviceId = deviceId;
         this.deviceInfo = deviceInfo;
+        this.originalDeviceId = originalDeviceId;
+        this.supportedInterfaces = supportedInterfaces;
     }
 
     /**
@@ -86,6 +96,14 @@ public class Device {
         return deviceInfo;
     }
 
+    public String getOriginalDeviceId() {
+        return originalDeviceId;
+    }
+
+    public SupportedInterfaces getSupportedInterfaces() {
+        return supportedInterfaces;
+    }
+
     /**
      * 用来构造{@code Device}
      * 
@@ -98,6 +116,10 @@ public class Device {
         private String deviceId;
         // 设备信息
         private DeviceInfo deviceInfo;
+        // 原始的设备Id
+        private String originalDeviceId;
+        // 端支持的接口类型,如果支持则value不为空，具体含义如以上Message定义
+        private SupportedInterfaces supportedInterfaces;
 
         /**
          * 设置deviceId的setter方法
@@ -120,6 +142,23 @@ public class Device {
          */
         public Builder setDeviceInfo(final DeviceInfo deviceInfo) {
             this.deviceInfo = deviceInfo;
+            return this;
+        }
+
+        /**
+         * 设置originalDeviceId的setter方法
+         * 
+         * @param originalDeviceId
+         *            原始的设备Id
+         * @return Builder 用来构造{@code Device}
+         */
+        public Builder setOriginalDeviceId(final String originalDeviceId) {
+            this.originalDeviceId = originalDeviceId;
+            return this;
+        }
+
+        public Builder setSupportedInterfaces(final SupportedInterfaces supportedInterfaces) {
+            this.supportedInterfaces = supportedInterfaces;
             return this;
         }
 

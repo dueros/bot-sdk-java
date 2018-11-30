@@ -33,10 +33,16 @@ import com.baidu.dueros.data.request.LaunchRequest;
 import com.baidu.dueros.data.request.Query;
 import com.baidu.dueros.data.request.RequestBody;
 import com.baidu.dueros.data.request.SessionEndedRequest;
+import com.baidu.dueros.data.request.SupportedInterfaces;
 import com.baidu.dueros.data.request.audioplayer.event.AudioPlayerEvent;
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
 import com.baidu.dueros.data.request.events.CommonEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
+import com.baidu.dueros.data.request.pay.event.ChargeEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionGrantFailedEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionGrantedEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionRejectedEvent;
+import com.baidu.dueros.data.request.permission.event.PermissionRequiredEvent;
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackFinishedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackNearlyFinishedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackPausedEvent;
@@ -50,8 +56,10 @@ import com.baidu.dueros.data.request.videoplayer.event.ProgressReportDelayElapse
 import com.baidu.dueros.data.request.videoplayer.event.ProgressReportIntervalElapsedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.VideoPlayerEvent;
 import com.baidu.dueros.data.response.Context;
+import com.baidu.dueros.data.response.ExpectResponse;
 import com.baidu.dueros.data.response.ResponseBody;
 import com.baidu.dueros.data.response.Session;
+import com.baidu.dueros.data.response.ExpectResponse.ExpectResponseType;
 import com.baidu.dueros.data.response.directive.ConfirmIntent;
 import com.baidu.dueros.data.response.directive.ConfirmSlot;
 import com.baidu.dueros.data.response.directive.Delegate;
@@ -63,6 +71,7 @@ import com.baidu.dueros.model.ResponseEncapsulation;
 import com.baidu.dueros.nlu.Intent;
 import com.baidu.dueros.nlu.Slot;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -93,6 +102,9 @@ public class BaseBot {
 
     // 是否打开参数验证，默认为false
     private boolean enableCertificate = false;
+    // afterSearchScore
+    private float afterSearchScore = 1.0f;
+    private List<ExpectResponse> expectResponses = new ArrayList<>();
     // 认证签名
     private Certificate certificate;
     // 缓存认证相关信息
@@ -121,7 +133,7 @@ public class BaseBot {
      * @throws IOException
      *             抛出的异常
      */
-    protected BaseBot(String request) throws IOException {
+    protected BaseBot(String request) throws IOException, JsonMappingException {
         ObjectMapper mapper = new ObjectMapper();
         this.request = mapper.readValue(request, Request.class);
         this.botMonitor = new BotMonitor(request);
@@ -148,7 +160,7 @@ public class BaseBot {
      * @throws IOException
      *             抛出异常
      */
-    protected BaseBot(HttpServletRequest request) throws IOException {
+    protected BaseBot(HttpServletRequest request) throws IOException, JsonMappingException {
         certificate = new Certificate(request);
         String message = certificate.getMessage();
         ObjectMapper mapper = new ObjectMapper();
@@ -194,6 +206,69 @@ public class BaseBot {
      */
     protected void clearSessionAttribute() {
         session.getAttributes().clear();
+    }
+
+    /**
+     * 获取userID
+     * 
+     * @return String userid
+     */
+    protected String getUserId() {
+        return request.getContext().getSystem().getUser().getUserId();
+    }
+
+    /**
+     * 获取百度uid
+     * 
+     * @return String uid
+     */
+    protected String getBaiduUid() {
+        return request.getContext().getSystem().getUser().getUserInfo().getAccount().getBaidu().getBaiduUid();
+    }
+
+    /**
+     * 获取deviceID
+     * 
+     * @return String deviceID
+     */
+    protected String getDeviceId() {
+        return request.getContext().getSystem().getDevice().getDeviceId();
+    }
+
+    /**
+     * 获取设备apiAccessToken
+     * 
+     * @return String apiAccessToken
+     */
+    protected String getApiAccessToken() {
+        return request.getContext().getSystem().getApiAccessToken();
+    }
+
+    /**
+     * 获取设备SupportedInterfaces
+     * 
+     * @return SupportedInterfaces SupportedInterfaces
+     */
+    protected SupportedInterfaces getSupportedInterfaces() {
+        return request.getContext().getSystem().getDevice().getSupportedInterfaces();
+    }
+
+    /**
+     * 获取apiEndPoint
+     * 
+     * @return String apiEndPoint
+     */
+    protected String getApiEndPoint() {
+        return request.getContext().getSystem().getApiEndPoint();
+    }
+
+    /**
+     * 获取来自端上报的原始设备Id
+     * 
+     * @return String 原始设备Id
+     */
+    protected String getOriginalDeviceId() {
+        return request.getContext().getSystem().getDevice().getOriginalDeviceId();
     }
 
     /**
@@ -391,6 +466,36 @@ public class BaseBot {
     }
 
     /**
+     * 设置afterSearchScore
+     *
+     * @param afterSearchScore
+     *            afterSearchScore
+     */
+    protected void setAfterSearchScore(final float afterSearchScore) {
+        this.afterSearchScore = afterSearchScore;
+    }
+
+    /**
+     * 新增text类型的ExpectResponse
+     *
+     * @param text
+     *            text
+     */
+    protected void addExpectTextResponse(String text) {
+        expectResponses.add(new ExpectResponse(ExpectResponseType.Text, text));
+    }
+
+    /**
+     * 新增slot类型的ExpectResponse
+     *
+     * @param slot
+     *            slot
+     */
+    protected void addExpectSlotResponse(String slot) {
+        expectResponses.add(new ExpectResponse(ExpectResponseType.Slot, slot));
+    }
+
+    /**
      * 判断是否为IntentRequest
      * 
      * @return boolean 判断是否为IntentRequest
@@ -503,6 +608,8 @@ public class BaseBot {
         Context context = new Context();
         if (isIntentRequest() == true) {
             context.setIntent(getIntent());
+            context.setAfterSearchScore(afterSearchScore);
+            context.setExpectResponses(expectResponses);
         }
 
         ResponseBody responseBody = new ResponseBody();
@@ -562,6 +669,30 @@ public class BaseBot {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent playbackFinishedEvent;
                 playbackFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent) requestBody;
                 response = audioPlayer.onPlaybackFinishedEvent(playbackFinishedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent playbackPausedEvent;
+                playbackPausedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent) requestBody;
+                response = audioPlayer.onPlaybackPausedEvent(playbackPausedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent playbackResumedEvent;
+                playbackResumedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent) requestBody;
+                response = audioPlayer.onPlaybackResumedEvent(playbackResumedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent playbackStutterFinishedEvent;
+                playbackStutterFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent) requestBody;
+                response = audioPlayer.onPlaybackStutterFinishedEvent(playbackStutterFinishedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent playbackStutterStartedEvent;
+                playbackStutterStartedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent) requestBody;
+                response = audioPlayer.onPlaybackStutterStartedEvent(playbackStutterStartedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent;
+                progressReportDelayElapsedEvent = (com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent) requestBody;
+                response = audioPlayer.onProgressReportDelayElapsedEvent(progressReportDelayElapsedEvent);
+            } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent) {
+                com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent;
+                progressReportIntervalElapsedEvent = (com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent) requestBody;
+                response = audioPlayer.onProgressReportIntervalElapsedEvent(progressReportIntervalElapsedEvent);
             }
         } else if (requestBody instanceof VideoPlayerEvent) {
             VideoPlayer videoPlayer = (VideoPlayer) this;
@@ -606,7 +737,22 @@ public class BaseBot {
             } else if (requestBody instanceof LinkClickedEvent) {
                 LinkClickedEvent linkClickedEvent = (LinkClickedEvent) requestBody;
                 response = this.onLinkClickedEvent(linkClickedEvent);
+            } else if (requestBody instanceof PermissionGrantFailedEvent) {
+                PermissionGrantFailedEvent permissionGrantFailedEvent = (PermissionGrantFailedEvent) requestBody;
+                response = this.onPermissionGrantFailedEvent(permissionGrantFailedEvent);
+            } else if (requestBody instanceof PermissionRejectedEvent) {
+                PermissionRejectedEvent permissionRejectedEvent = (PermissionRejectedEvent) requestBody;
+                response = this.onPermissionRejectedEvent(permissionRejectedEvent);
+            } else if (requestBody instanceof PermissionGrantedEvent) {
+                PermissionGrantedEvent permissionGrantedEvent = (PermissionGrantedEvent) requestBody;
+                response = this.onPermissionGrantedEvent(permissionGrantedEvent);
+            } else if (requestBody instanceof PermissionRequiredEvent) {
+                PermissionRequiredEvent permissionRequiredEvent = (PermissionRequiredEvent) requestBody;
+                response = this.onPermissionRequiredEvent(permissionRequiredEvent);
             }
+        } else if (requestBody instanceof ChargeEvent) {
+            ChargeEvent chargeEvent = (ChargeEvent) requestBody;
+            response = this.onChargeEvent(chargeEvent);
         }
         if (response == null) {
             response = this.onDefaultEvent();
@@ -669,8 +815,65 @@ public class BaseBot {
     }
 
     /**
+     * 处理表示用户拒绝授权事件 对应的事件是：Permission.GrantFailed
+     *
+     * @param permissionGrantFailedEvent
+     *            表示用户拒绝授权
+     * @return Response 返回的Response
+     */
+    protected Response onPermissionGrantFailedEvent(final PermissionGrantFailedEvent permissionGrantFailedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理表表示用户同意授权，但是由于其他原因导致授权失败事件 对应的事件是：Permission.Rejected
+     *
+     * @param permissionRejectedEvent
+     *            表示用户同意授权，但是由于其他原因导致授权失败
+     * @return Response 返回的Response
+     */
+    protected Response onPermissionRejectedEvent(final PermissionRejectedEvent permissionRejectedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理表示用户同意授权事件 对应的事件是：Permission.Granted
+     *
+     * @param permissionGrantedEvent
+     *            表示用户同意授权
+     * @return Response 返回的Response
+     */
+    protected Response onPermissionGrantedEvent(final PermissionGrantedEvent permissionGrantedEvent) {
+        return response;
+    }
+
+    /**
+     * 当技能返回了录音等需要权限才可以使用的指令时，但是没有录音等权限时会收到该事件，需要技能返回Permission.
+     * AskForPermissionsConsent指令申请用户录音等权限。
+     *
+     * @param permissionRequiredEvent
+     *            表示需要用户授权
+     * @return Response 返回的Response
+     */
+    protected Response onPermissionRequiredEvent(final PermissionRequiredEvent permissionRequiredEvent) {
+        return response;
+    }
+
+    /**
+     * 处理支付事件
+     *
+     * @param chargeEvent
+     *            支付事件
+     * @return Response 返回的Response
+     */
+    protected Response onChargeEvent(final ChargeEvent chargeEvent) {
+        return response;
+    }
+
+    /**
      * 默认事件处理
-     * @since   V1.1.1
+     *
+     * @since V1.1.1
      * @return Response 返回的Response
      */
     protected Response onDefaultEvent() {

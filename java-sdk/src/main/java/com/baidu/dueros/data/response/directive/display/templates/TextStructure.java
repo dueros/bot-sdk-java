@@ -15,11 +15,14 @@
  */
 package com.baidu.dueros.data.response.directive.display.templates;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 定义文本类型结构体
  * 
  * @author hujie08
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TextStructure {
     // 文本类型
     private TextType type;

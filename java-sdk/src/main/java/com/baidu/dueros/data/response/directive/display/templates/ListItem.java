@@ -17,6 +17,8 @@ package com.baidu.dueros.data.response.directive.display.templates;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 定义列表中的一个元素的结构
  * 
@@ -24,6 +26,7 @@ import java.util.UUID;
  * @version 1.0
  * @since 2018年4月27日
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ListItem {
     // 唯一标识当前元素
     private String token;
@@ -31,6 +34,8 @@ public class ListItem {
     private ImageStructure image;
     // 文本内容
     private TextContent textContent = new TextContent();
+    // anchorWord
+    private String anchorWord;
 
     /**
      * 构造函数
@@ -159,6 +164,27 @@ public class ListItem {
     public ListItem setToken(String token) {
         this.token = token;
         return this;
+    }
+
+    /**
+     * 设置列表项anchorWord的setter方法
+     * 
+     * @param anchorWord
+     *            anchorWord
+     * @return ListItem
+     */
+    public ListItem setAnchorWord(String anchorWord) {
+        this.anchorWord = anchorWord;
+        return this;
+    }
+
+    /**
+     * 获取列表项AnchorWord的getter方法
+     * 
+     * @return String AnchorWord
+     */
+    public String getAnchorWord() {
+        return anchorWord;
     }
 
     /**

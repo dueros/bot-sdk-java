@@ -17,7 +17,7 @@
 <dependency>
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.5</version>
 </dependency>
 ```
 
@@ -664,6 +664,61 @@ hints.add("提示1");
 hints.add("提示2");
 hints.add("提示3");
 Hint hint = new Hint(hints);
+```
+
+### 支付
+
+#### 返回支付指令
+
+发起支付扣款指令
+
+```java
+// 构造返回的charge指令
+// 默认参数为(扣款金额、订单ID、商品名称、商品描述信息)
+Charge charge = new Charge("0.01", "sellerOrderId", "productName", "description");
+// 添加返回的charge指令
+this.addDirective(charge);
+```
+
+#### 处理扣款事件
+
+支付完成后，会收到扣款事件
+
+```java
+// 处理扣款事件
+protected Response onChargeEvent(final ChargeEvent chargeEvent) {}
+```
+
+### 权限
+
+#### 返回权限申请指令
+
+```java
+// 构造返回的AskForPermissionsConsent指令
+AskForPermissionsConsent askForPermissionsConsent = new AskForPermissionsConsent();
+askForPermissionsConsent.addPermission(Permission.READ_USER_PROFILE);
+this.addDirective(askForPermissionsConsent);
+```
+
+#### 处理用户同意授权事件
+
+```java
+// 处理用户同意授权事件
+protected Response onPermissionGrantedEvent(PermissionGrantedEvent permissionGrantedEvent) {}
+```
+
+#### 处理用户拒绝授权事件
+
+```java
+// 处理用户拒绝授权事件
+protected Response onPermissionRejectedEvent(PermissionRejectedEvent permissionRejectedEvent) {}
+```
+
+#### 处理授权失败事件
+
+```java
+// 处理授权失败事件
+protected Response onPermissionGrantFailedEvent(PermissionGrantFailedEvent permissionGrantFailedEvent) {}
 ```
 
 ### 构造Response

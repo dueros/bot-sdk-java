@@ -81,10 +81,11 @@ public class IntentRequest extends RequestBody {
      *            本次下发的Intents，da可能对一个Query解析出多个Intent
      */
     private IntentRequest(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("query") final Query query,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("query") final Query query,
             @JsonProperty("dialogState") final DialogState dialogState,
             @JsonProperty("determined") final boolean determined, @JsonProperty("intents") final List<Intent> intents) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.query = query;
         this.dialogState = dialogState;
         this.determined = determined;

@@ -16,6 +16,8 @@
 
 package com.baidu.dueros.data.response.card;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 标准卡片信息
  * 
@@ -23,6 +25,7 @@ package com.baidu.dueros.data.response.card;
  * @version V1.0
  * @since 2017年10月5日
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StandardCardInfo {
 
     // 卡片标题

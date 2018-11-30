@@ -35,6 +35,10 @@ public class System {
     private final Application application;
     // 端上设备信息
     private final Device device;
+    // apiAccessToken
+    private final String apiAccessToken;
+    // apiEndPoint
+    private final String apiEndPoint;
 
     /**
      * 返回一个用来构造{@code System}的{@code Builder}
@@ -49,13 +53,18 @@ public class System {
         user = builder.user;
         application = builder.application;
         device = builder.device;
+        apiAccessToken = builder.apiAccessToken;
+        apiEndPoint = builder.apiEndPoint;
     }
 
     private System(@JsonProperty("user") final User user, @JsonProperty("application") final Application application,
-            @JsonProperty("device") final Device device) {
+            @JsonProperty("device") final Device device, @JsonProperty("apiAccessToken") final String apiAccessToken,
+            @JsonProperty("apiEndPoint") final String apiEndPoint) {
         this.user = user;
         this.application = application;
         this.device = device;
+        this.apiAccessToken = apiAccessToken;
+        this.apiEndPoint = apiEndPoint;
     }
 
     /**
@@ -86,6 +95,24 @@ public class System {
     }
 
     /**
+     * 获取apiAccessToken的getter方法
+     * 
+     * @return String apiAccessToken
+     */
+    public String getApiAccessToken() {
+        return apiAccessToken;
+    }
+
+    /**
+     * 获取apiEndPoint的getter方法
+     * 
+     * @return String apiEndPoint
+     */
+    public String getApiEndPoint() {
+        return apiEndPoint;
+    }
+
+    /**
      * 用来构造{@code System}
      * 
      * @author tianlonglong(tianlong02@baidu.com)
@@ -97,6 +124,8 @@ public class System {
         private User user;
         private Application application;
         private Device device;
+        private String apiAccessToken;
+        private String apiEndPoint;
 
         /**
          * 设置user的setter方法
@@ -131,6 +160,30 @@ public class System {
          */
         public Builder setDevice(final Device device) {
             this.device = device;
+            return this;
+        }
+
+        /**
+         * 设置apiAccessToken的setter方法
+         * 
+         * @param apiAccessToken
+         *            apiAccessToken
+         * @return Builder 用来构造{@code System}
+         */
+        public Builder setApiAccessToken(final String apiAccessToken) {
+            this.apiAccessToken = apiAccessToken;
+            return this;
+        }
+
+        /**
+         * 设置apiEndPoint的setter方法
+         * 
+         * @param apiEndPoint
+         *            apiEndPoint
+         * @return Builder 用来构造{@code System}
+         */
+        public Builder setApiEndPoint(final String apiEndPoint) {
+            this.apiEndPoint = apiEndPoint;
             return this;
         }
 

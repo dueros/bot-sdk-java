@@ -22,8 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent;
+import com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent;
+import com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent;
+import com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent;
+import com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent;
+import com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent;
+import com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent;
 import com.baidu.dueros.model.Request;
 import com.baidu.dueros.model.Response;
 
@@ -113,6 +119,74 @@ public class AudioPlayer extends BaseBot {
      * @return Response 返回的Response
      */
     protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackPausedEvent事件
+     * 
+     * @param playbackPausedEvent
+     *            PlaybackPausedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackPausedEvent(final PlaybackPausedEvent playbackPausedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackResumedEvent事件
+     * 
+     * @param playbackResumedEvent
+     *            PlaybackResumedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackResumedEvent(final PlaybackResumedEvent playbackResumedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStutterFinishedEvent事件
+     * 
+     * @param playbackStutterFinishedEvent
+     *            PlaybackStutterFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStutterFinishedEvent(final PlaybackStutterFinishedEvent playbackStutterFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理onPlaybackStutterStartedEvent事件
+     * 
+     * @param playbackStutterStartedEvent
+     *            playbackStutterStartedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStutterStartedEvent(final PlaybackStutterStartedEvent playbackStutterStartedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理ProgressReportDelayElapsedEvent事件
+     * 
+     * @param progressReportDelayElapsedEvent
+     *            progressReportDelayElapsedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onProgressReportDelayElapsedEvent(
+            final ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理ProgressReportIntervalElapsedEvent事件
+     * 
+     * @param progressReportIntervalElapsedEvent
+     *            ProgressReportIntervalElapsedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onProgressReportIntervalElapsedEvent(
+            final ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent) {
         return response;
     }
 

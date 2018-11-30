@@ -39,7 +39,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.audioplayer.Stop.class),
         @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.Play.class),
         @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.Stop.class),
-        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.ClearQueue.class), })
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.ClearQueue.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.pay.Charge.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.permission.AskForPermissionsConsent.class),
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.display.PushStack.class)})
 public abstract class Directive {
 
 }

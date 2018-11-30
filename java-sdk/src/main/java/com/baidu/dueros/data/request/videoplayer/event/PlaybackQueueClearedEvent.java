@@ -56,9 +56,10 @@ public class PlaybackQueueClearedEvent extends VideoPlayerEvent {
      *            当前的播放进度
      */
     private PlaybackQueueClearedEvent(@JsonProperty("requestId") final String requestId,
-            @JsonProperty("timestamp") final String timestamp, @JsonProperty("token") final String token,
+            @JsonProperty("timestamp") final String timestamp,
+            @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("token") final String token,
             @JsonProperty("offsetInMilliSeconds") final int offsetInMilliSeconds) {
-        super(requestId, timestamp);
+        super(requestId, timestamp, dialogRequestId);
         this.token = token;
         this.offsetInMilliSeconds = offsetInMilliSeconds;
     }
@@ -124,7 +125,8 @@ public class PlaybackQueueClearedEvent extends VideoPlayerEvent {
         }
 
         /**
-         * 调用{@code PlaybackQueueClearedEvent}的私有构造方法构造{@code PlaybackQueueClearedEvent}
+         * 调用{@code PlaybackQueueClearedEvent}的私有构造方法构造
+         * {@code PlaybackQueueClearedEvent}
          * 
          * @see com.baidu.dueros.data.request.RequestBody.RequestBodyBuilder#build()
          */

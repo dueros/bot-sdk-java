@@ -17,12 +17,14 @@ package com.baidu.dueros.data.response.directive.display.templates;
 
 import com.baidu.dueros.data.response.directive.display.templates.BodyTemplate1.PositionType;
 import com.baidu.dueros.data.response.directive.display.templates.TextStructure.TextType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * BodyTemplate1 中需要的文本结构
  * 
  * @author hujie08
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tpl1Content {
     // 文本垂直方向的位置,默认置底左对齐
     private PositionType position;
