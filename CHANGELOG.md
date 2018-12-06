@@ -5,3 +5,7 @@
     * 增加页面栈压栈指令
     * 提供一些常见方法(getUserId()、getSupportedInterfaces()、setAfterSearchScore()等)
     * 修复一些bug
+
+#1.1.6
+    * 新增LinkAccountSucceeded事件
+    * 升级Jackson依赖的版本

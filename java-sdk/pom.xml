@@ -14,7 +14,7 @@
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <name>bot-sdk</name>
     <url>http://maven.apache.org</url>
     <properties>
@@ -62,17 +62,17 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.6.2</version>
+            <version>2.9.7</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.6.7</version>
+            <version>2.9.7</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.6.7</version>
+            <version>2.9.7</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>

@@ -17,6 +17,7 @@
 package com.baidu.dueros.data.request;
 
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
+import com.baidu.dueros.data.request.events.LinkAccountSucceededEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
 import com.baidu.dueros.data.request.pay.event.ChargeEvent;
 import com.baidu.dueros.data.request.permission.event.PermissionGrantFailedEvent;
@@ -71,7 +72,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @Type(value = PlaybackQueueClearedEvent.class), @Type(value = ElementSelectedEvent.class),
         @Type(value = LinkClickedEvent.class), @Type(value = ChargeEvent.class),
         @Type(value = PermissionGrantFailedEvent.class), @Type(value = PermissionRejectedEvent.class),
-        @Type(value = PermissionGrantedEvent.class), @Type(value = PermissionRequiredEvent.class) })
+        @Type(value = PermissionGrantedEvent.class), @Type(value = PermissionRequiredEvent.class),
+        @Type(value = LinkAccountSucceededEvent.class)})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RequestBody {
 

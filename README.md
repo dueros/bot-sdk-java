@@ -17,7 +17,7 @@
 <dependency>
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
 </dependency>
 ```
 

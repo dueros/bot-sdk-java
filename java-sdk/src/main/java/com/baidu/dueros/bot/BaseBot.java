@@ -36,6 +36,7 @@ import com.baidu.dueros.data.request.SessionEndedRequest;
 import com.baidu.dueros.data.request.SupportedInterfaces;
 import com.baidu.dueros.data.request.audioplayer.event.AudioPlayerEvent;
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
+import com.baidu.dueros.data.request.events.LinkAccountSucceededEvent;
 import com.baidu.dueros.data.request.events.CommonEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
 import com.baidu.dueros.data.request.pay.event.ChargeEvent;
@@ -749,6 +750,9 @@ public class BaseBot {
             } else if (requestBody instanceof PermissionRequiredEvent) {
                 PermissionRequiredEvent permissionRequiredEvent = (PermissionRequiredEvent) requestBody;
                 response = this.onPermissionRequiredEvent(permissionRequiredEvent);
+            } else if (requestBody instanceof LinkAccountSucceededEvent) {
+                LinkAccountSucceededEvent linkAccountSucceededEvent = (LinkAccountSucceededEvent) requestBody;
+                response = this.onLinkAccountSucceededEvent(linkAccountSucceededEvent);
             }
         } else if (requestBody instanceof ChargeEvent) {
             ChargeEvent chargeEvent = (ChargeEvent) requestBody;
@@ -856,6 +860,17 @@ public class BaseBot {
      * @return Response 返回的Response
      */
     protected Response onPermissionRequiredEvent(final PermissionRequiredEvent permissionRequiredEvent) {
+        return response;
+    }
+
+    /**
+     * 当用户授权完成之后，技能会收到此事件
+     *
+     * @param linkAccountSucceededEvent
+     *            授权成功事件
+     * @return Response 返回的Response
+     */
+    protected Response onLinkAccountSucceededEvent(final LinkAccountSucceededEvent linkAccountSucceededEvent) {
         return response;
     }
 
