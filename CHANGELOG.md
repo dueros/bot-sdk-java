@@ -9,3 +9,7 @@
 #1.1.6
     * 新增LinkAccountSucceeded事件
     * 升级Jackson依赖的版本
+
+#1.1.7
+    * 支持Form.ButtonClicked事件
+    * 支持Form.RadioButtonClicked事件

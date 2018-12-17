@@ -37,8 +37,10 @@ import com.baidu.dueros.data.request.SupportedInterfaces;
 import com.baidu.dueros.data.request.audioplayer.event.AudioPlayerEvent;
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
 import com.baidu.dueros.data.request.events.LinkAccountSucceededEvent;
+import com.baidu.dueros.data.request.events.ButtonClickedEvent;
 import com.baidu.dueros.data.request.events.CommonEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
+import com.baidu.dueros.data.request.events.RadioButtonClickedEvent;
 import com.baidu.dueros.data.request.pay.event.ChargeEvent;
 import com.baidu.dueros.data.request.permission.event.PermissionGrantFailedEvent;
 import com.baidu.dueros.data.request.permission.event.PermissionGrantedEvent;
@@ -753,6 +755,12 @@ public class BaseBot {
             } else if (requestBody instanceof LinkAccountSucceededEvent) {
                 LinkAccountSucceededEvent linkAccountSucceededEvent = (LinkAccountSucceededEvent) requestBody;
                 response = this.onLinkAccountSucceededEvent(linkAccountSucceededEvent);
+            } else if (requestBody instanceof ButtonClickedEvent) {
+                ButtonClickedEvent buttonClickedEvent = (ButtonClickedEvent) requestBody;
+                response = this.onButtonClickedEvent(buttonClickedEvent);
+            } else if (requestBody instanceof RadioButtonClickedEvent) {
+                RadioButtonClickedEvent radioButtonClickedEvent = (RadioButtonClickedEvent) requestBody;
+                response = this.onRadioButtonClicked(radioButtonClickedEvent);
             }
         } else if (requestBody instanceof ChargeEvent) {
             ChargeEvent chargeEvent = (ChargeEvent) requestBody;
@@ -815,6 +823,28 @@ public class BaseBot {
      * @return Response 返回的Response
      */
     protected Response onLinkClickedEvent(final LinkClickedEvent linkClickedEvent) {
+        return response;
+    }
+
+    /**
+     * 用户点击Button后，技能会收到Form.ButtonClicked事
+     * 
+     * @param buttonClickedEvent
+     *            用户点击Button事件
+     * @return Response 返回的Response
+     */
+    protected Response onButtonClickedEvent(final ButtonClickedEvent buttonClickedEvent) {
+        return response;
+    }
+
+    /**
+     * 用户点击控制组件的button后，技能会收到Form.radioButtonClickedEvent事
+     * 
+     * @param radioButtonClickedEvent
+     *            用户点击Button事件
+     * @return Response 返回的Response
+     */
+    protected Response onRadioButtonClicked(final RadioButtonClickedEvent radioButtonClickedEvent) {
         return response;
     }
 

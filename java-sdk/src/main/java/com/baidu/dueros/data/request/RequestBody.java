@@ -16,9 +16,11 @@
 
 package com.baidu.dueros.data.request;
 
+import com.baidu.dueros.data.request.events.ButtonClickedEvent;
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
 import com.baidu.dueros.data.request.events.LinkAccountSucceededEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
+import com.baidu.dueros.data.request.events.RadioButtonClickedEvent;
 import com.baidu.dueros.data.request.pay.event.ChargeEvent;
 import com.baidu.dueros.data.request.permission.event.PermissionGrantFailedEvent;
 import com.baidu.dueros.data.request.permission.event.PermissionGrantedEvent;
@@ -73,7 +75,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @Type(value = LinkClickedEvent.class), @Type(value = ChargeEvent.class),
         @Type(value = PermissionGrantFailedEvent.class), @Type(value = PermissionRejectedEvent.class),
         @Type(value = PermissionGrantedEvent.class), @Type(value = PermissionRequiredEvent.class),
-        @Type(value = LinkAccountSucceededEvent.class)})
+        @Type(value = LinkAccountSucceededEvent.class), @Type(value = ButtonClickedEvent.class),
+        @Type(value = RadioButtonClickedEvent.class)})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RequestBody {
 
@@ -129,6 +132,15 @@ public abstract class RequestBody {
      */
     public String getTimestamp() {
         return timestamp;
+    }
+
+    /**
+     * 获取timestamp的getter方法
+     * 
+     * @return String timestamprequest时间，Bot结合http header一起用于做安全检查
+     */
+    public String getDialogRequestId() {
+        return dialogRequestId;
     }
 
     /**
