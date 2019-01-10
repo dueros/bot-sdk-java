@@ -37,8 +37,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
 @JsonSubTypes({ @Type(value = BodyTemplate1.class), @Type(value = BodyTemplate2.class),
         @Type(value = BodyTemplate3.class), @Type(value = BodyTemplate4.class), @Type(value = BodyTemplate5.class),
-        @Type(value = ListTemplate1.class), @Type(value = ListTemplate2.class), @Type(value = ListTemplate3.class),
-        @Type(value = ListTemplate4.class)})
+        @Type(value = BodyTemplate6.class), @Type(value = ListTemplate1.class), @Type(value = ListTemplate2.class),
+        @Type(value = ListTemplate3.class), @Type(value = ListTemplate4.class) })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BaseTemplate {
     // 唯一标识这个模板

@@ -18,6 +18,7 @@ package com.baidu.dueros.data.request;
 
 import com.baidu.dueros.data.request.supportedInterfaces.Alerts;
 import com.baidu.dueros.data.request.supportedInterfaces.AudioPlayer;
+import com.baidu.dueros.data.request.supportedInterfaces.Display;
 import com.baidu.dueros.data.request.supportedInterfaces.PlayController;
 import com.baidu.dueros.data.request.supportedInterfaces.ScreenExtendedCard;
 import com.baidu.dueros.data.request.supportedInterfaces.SpeakerController;
@@ -42,6 +43,7 @@ public class SupportedInterfaces {
     private com.baidu.dueros.data.request.supportedInterfaces.System system;
     private ScreenExtendedCard screenExtendedCard;
     private VideoPlayer videoPlayer;
+    private Display display;
 
     public static Builder newBuild() {
         return new Builder();
@@ -59,6 +61,7 @@ public class SupportedInterfaces {
         system = builder.system;
         screenExtendedCard = builder.screenExtendedCard;
         videoPlayer = builder.videoPlayer;
+        display = builder.display;
     }
 
     public SupportedInterfaces(@JsonProperty("TextInput") TextInput textInput,
@@ -69,7 +72,7 @@ public class SupportedInterfaces {
             @JsonProperty("SpeakerController") SpeakerController speakerController,
             @JsonProperty("System") com.baidu.dueros.data.request.supportedInterfaces.System system,
             @JsonProperty("ScreenExtendedCard") ScreenExtendedCard screenExtendedCard,
-            @JsonProperty("VideoPlayer") VideoPlayer videoPlayer) {
+            @JsonProperty("VideoPlayer") VideoPlayer videoPlayer, @JsonProperty("Display") Display display) {
         this.voiceInput = voiceInput;
         this.textInput = textInput;
         this.voiceOutput = voiceOutput;
@@ -81,6 +84,7 @@ public class SupportedInterfaces {
         this.system = system;
         this.screenExtendedCard = screenExtendedCard;
         this.videoPlayer = videoPlayer;
+        this.display = display;
     }
 
     public TextInput getTextInput() {
@@ -127,6 +131,10 @@ public class SupportedInterfaces {
         return videoPlayer;
     }
 
+    public Display getDisplay() {
+        return display;
+    }
+
     public static final class Builder {
 
         private TextInput textInput;
@@ -140,6 +148,7 @@ public class SupportedInterfaces {
         private com.baidu.dueros.data.request.supportedInterfaces.System system;
         private ScreenExtendedCard screenExtendedCard;
         private VideoPlayer videoPlayer;
+        private Display display;
 
         public Builder setTextInput(TextInput textInput) {
             this.textInput = textInput;
@@ -193,6 +202,11 @@ public class SupportedInterfaces {
 
         public Builder setVideoPlayer(VideoPlayer videoPlayer) {
             this.videoPlayer = videoPlayer;
+            return this;
+        }
+
+        public Builder setDisplay(Display display) {
+            this.display = display;
             return this;
         }
 
