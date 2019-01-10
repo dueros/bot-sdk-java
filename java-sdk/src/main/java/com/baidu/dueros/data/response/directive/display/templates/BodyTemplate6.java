@@ -86,7 +86,7 @@ public class BodyTemplate6 extends BaseTemplate {
     /**
      * 设置模板超时时间的setter方法
      * 
-     * @param int
+     * @param duration
      *            模板超时时间
      * @return BodyTemplate6
      */
