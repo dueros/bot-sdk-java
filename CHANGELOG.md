@@ -17,3 +17,7 @@
 # 1.1.8
     * 添加BodyTemplate6展现模板
     * supportedInterfaces新增Display
+
+# 1.1.9
+    * 修复LinkAccountSucceeded事件和Charge事件dispatch Bug
+    * BaseBot新增strRequest字段（收到的请求字符串）

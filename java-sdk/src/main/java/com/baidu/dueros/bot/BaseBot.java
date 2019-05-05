@@ -39,6 +39,7 @@ import com.baidu.dueros.data.request.events.ElementSelectedEvent;
 import com.baidu.dueros.data.request.events.LinkAccountSucceededEvent;
 import com.baidu.dueros.data.request.events.ButtonClickedEvent;
 import com.baidu.dueros.data.request.events.CommonEvent;
+import com.baidu.dueros.data.request.events.ConnectionsResponseEvent;
 import com.baidu.dueros.data.request.events.LinkClickedEvent;
 import com.baidu.dueros.data.request.events.RadioButtonClickedEvent;
 import com.baidu.dueros.data.request.pay.event.ChargeEvent;
@@ -73,8 +74,10 @@ import com.baidu.dueros.model.Response;
 import com.baidu.dueros.model.ResponseEncapsulation;
 import com.baidu.dueros.nlu.Intent;
 import com.baidu.dueros.nlu.Slot;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -114,6 +117,8 @@ public class BaseBot {
     private static ConcurrentHashMap<String, PublicKey> cache = new ConcurrentHashMap<>();
     // 数据统计信息
     public BotMonitor botMonitor;
+    // 序列化字符串
+    private String strRequest;
 
     /**
      * Base构造方法
@@ -126,6 +131,7 @@ public class BaseBot {
     protected BaseBot(Request request) throws IOException {
         this.request = request;
         this.session.getAttributes().putAll(this.request.getSession().getAttributes());
+        this.strRequest = request.toString();
     }
 
     /**
@@ -141,6 +147,7 @@ public class BaseBot {
         this.request = mapper.readValue(request, Request.class);
         this.botMonitor = new BotMonitor(request);
         this.session.getAttributes().putAll(this.request.getSession().getAttributes());
+        this.strRequest = request;
     }
 
     /**
@@ -153,6 +160,7 @@ public class BaseBot {
      */
     protected BaseBot(Certificate certificate) throws IOException {
         this(certificate.getMessage());
+        this.strRequest = certificate.getMessage();
     }
 
     /**
@@ -170,6 +178,7 @@ public class BaseBot {
         this.request = mapper.readValue(message, Request.class);
         this.botMonitor = new BotMonitor(message);
         this.session.getAttributes().putAll(this.request.getSession().getAttributes());
+        this.strRequest = certificate.getMessage();
     }
 
     /**
@@ -218,6 +227,15 @@ public class BaseBot {
      */
     protected String getUserId() {
         return request.getContext().getSystem().getUser().getUserId();
+    }
+
+    /**
+     * 获取序列化字符串信息
+     * 
+     * @return String strRequest
+     */
+    public String getStrRequest() {
+        return strRequest;
     }
 
     /**
@@ -640,10 +658,14 @@ public class BaseBot {
     /**
      * 事件调度
      * 
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonParseException
+     * 
      * @throws Exception
      *             抛出异常
      */
-    private void dispatch() {
+    private void dispatch() throws JsonParseException, JsonMappingException, IOException {
         RequestBody requestBody = request.getRequest();
         if (requestBody instanceof LaunchRequest) {
             LaunchRequest launchRequest = (LaunchRequest) requestBody;
@@ -733,6 +755,28 @@ public class BaseBot {
                 PlaybackQueueClearedEvent playbackQueueClearedEvent = (PlaybackQueueClearedEvent) requestBody;
                 response = videoPlayer.onPlaybackQueueClearedEvent(playbackQueueClearedEvent);
             }
+        } else if (requestBody instanceof ConnectionsResponseEvent) {
+            ConnectionsResponseEvent connectionsResponseEvent = (ConnectionsResponseEvent) requestBody;
+            if ("Charge".equals(connectionsResponseEvent.getName())) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode tree = objectMapper.readTree(strRequest);
+                List<JsonNode> code = tree.findValues("request");
+                if (code.size() == 1 && code.get(0) != null) {
+                    String strRequest = code.get(0).toString();
+                    ChargeEvent chargeEvent = objectMapper.readValue(strRequest, ChargeEvent.class);
+                    response = this.onChargeEvent(chargeEvent);
+                }
+            } else if ("LinkAccountSucceeded".equals(connectionsResponseEvent.getName())) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode tree = objectMapper.readTree(strRequest);
+                List<JsonNode> code = tree.findValues("request");
+                if (code.size() == 1 && code.get(0) != null) {
+                    String strRequest = code.get(0).toString();
+                    LinkAccountSucceededEvent linkAccountSucceededEvent = objectMapper.readValue(strRequest,
+                            LinkAccountSucceededEvent.class);
+                    response = this.onLinkAccountSucceededEvent(linkAccountSucceededEvent);
+                }
+            }
         } else if (requestBody instanceof CommonEvent) {
             if (requestBody instanceof ElementSelectedEvent) {
                 ElementSelectedEvent elementSelectedEvent = (ElementSelectedEvent) requestBody;
@@ -752,9 +796,6 @@ public class BaseBot {
             } else if (requestBody instanceof PermissionRequiredEvent) {
                 PermissionRequiredEvent permissionRequiredEvent = (PermissionRequiredEvent) requestBody;
                 response = this.onPermissionRequiredEvent(permissionRequiredEvent);
-            } else if (requestBody instanceof LinkAccountSucceededEvent) {
-                LinkAccountSucceededEvent linkAccountSucceededEvent = (LinkAccountSucceededEvent) requestBody;
-                response = this.onLinkAccountSucceededEvent(linkAccountSucceededEvent);
             } else if (requestBody instanceof ButtonClickedEvent) {
                 ButtonClickedEvent buttonClickedEvent = (ButtonClickedEvent) requestBody;
                 response = this.onButtonClickedEvent(buttonClickedEvent);
@@ -762,9 +803,6 @@ public class BaseBot {
                 RadioButtonClickedEvent radioButtonClickedEvent = (RadioButtonClickedEvent) requestBody;
                 response = this.onRadioButtonClicked(radioButtonClickedEvent);
             }
-        } else if (requestBody instanceof ChargeEvent) {
-            ChargeEvent chargeEvent = (ChargeEvent) requestBody;
-            response = this.onChargeEvent(chargeEvent);
         }
         if (response == null) {
             response = this.onDefaultEvent();

@@ -16,10 +16,9 @@
 
 package com.baidu.dueros.data.request.pay.event;
 
-import com.baidu.dueros.data.request.RequestBody;
+import com.baidu.dueros.data.request.events.ConnectionsResponseEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * 扣款事件
@@ -29,36 +28,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * @since 2018年06月29日
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeName("Connections.Response")
-public class ChargeEvent extends RequestBody {
+public class ChargeEvent extends ConnectionsResponseEvent {
 
-    // 请求的动作。此处为Charge
-    private String name;
-    // 对应支付指令的token
-    private String token;
-    // 详细信息
     private Payload payload;
 
     /**
-     * 返回一个用来构造{@code ChargeEvent}的{@code Builder}
+     * 获取payload的getter方法
      * 
-     * @return Builder 用来构造{@code ChargeEvent}
+     * @return Payload payload
      */
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
-    /**
-     * 通过{@code Builder}来构造{@code ChargeEvent}
-     * 
-     * @param builder
-     *            用来构造{@code ChargeEvent}
-     */
-    protected ChargeEvent(Builder builder) {
-        super(builder);
-        this.name = builder.name;
-        this.token = builder.token;
-        this.payload = builder.payload;
+    public Payload getPayload() {
+        return payload;
     }
 
     /**
@@ -77,32 +57,22 @@ public class ChargeEvent extends RequestBody {
      * @param payload
      *            payload
      */
-    protected ChargeEvent(@JsonProperty("requestId") final String requestId,
+    public ChargeEvent(@JsonProperty("requestId") final String requestId,
             @JsonProperty("timestamp") final String timestamp,
             @JsonProperty("dialogRequestId") final String dialogRequestId, @JsonProperty("name") final String name,
             @JsonProperty("token") final String token, @JsonProperty("payload") final Payload payload) {
-        super(requestId, timestamp, dialogRequestId);
-        this.name = name;
-        this.token = token;
+        super(requestId, timestamp, dialogRequestId, name, token);
         this.payload = payload;
     }
 
     /**
-     * 获取token的getter方法
+     * 通过{@code Builder}来构造{@code ChargeEvent}
      * 
-     * @return String token
+     * @param builder
+     *            用来构造{@code ChargeEvent}
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 获取token的getter方法
-     * 
-     * @return String token
-     */
-    public String getToken() {
-        return token;
+    protected ChargeEvent(Builder builder) {
+        super(builder);
     }
 
     /**
@@ -132,48 +102,8 @@ public class ChargeEvent extends RequestBody {
         return payload.getMessage();
     }
 
-    /**
-     * 获取token的getter方法
-     * 
-     * @return String token
-     */
-    public Payload getPayload() {
-        return payload;
-    }
-
-    /**
-     * 用来构造{@code ChargeEvent}
-     * 
-     * @author hujie08(hujie08@baidu.com)
-     * @version V1.0
-     * @since 2018年5月3日
-     */
-    public static final class Builder extends RequestBodyBuilder<Builder, ChargeEvent> {
-
-        public String name;
-        public String token;
-        public Payload payload;
-
-        public Builder setToken(final String token) {
-            this.token = token;
-            return this;
-        }
-
-        public Builder setName(final String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setPayload(final Payload payload) {
-            this.payload = payload;
-            return this;
-        }
-
-        @Override
-        public ChargeEvent build() {
-            return new ChargeEvent(this);
-        }
-
+    public void setPayload(Payload payload) {
+        this.payload = payload;
     }
 
 }
