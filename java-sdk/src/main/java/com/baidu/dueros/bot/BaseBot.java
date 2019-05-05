@@ -138,9 +138,11 @@ public class BaseBot {
      * Base构造方法
      * 
      * @param request
-     *            字符串
+     *            为Servlet的request
      * @throws IOException
-     *             抛出的异常
+     *             抛出异常
+     * @throws JsonMappingException
+     *             抛出异常
      */
     protected BaseBot(String request) throws IOException, JsonMappingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -169,6 +171,8 @@ public class BaseBot {
      * @param request
      *            为Servlet的request
      * @throws IOException
+     *             抛出异常
+     * @throws JsonMappingException
      *             抛出异常
      */
     protected BaseBot(HttpServletRequest request) throws IOException, JsonMappingException {

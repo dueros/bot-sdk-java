@@ -48,6 +48,8 @@ public class TaxBot extends BaseBot {
      *            servlet Request作为参数
      * @throws IOException
      *             抛出异常
+     * @throws JsonMappingException
+     *             抛出异常
      */
     public TaxBot(HttpServletRequest request) throws IOException, JsonMappingException {
         super(request);
@@ -143,13 +145,12 @@ public class TaxBot extends BaseBot {
         // 构造OutputSpeech
         OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "欢迎再次使用所得税服务");
 
-        
         ListCard listCard = new ListCard();
         StandardCardInfo item1 = new StandardCardInfo("title1", "content1");
         StandardCardInfo item2 = new StandardCardInfo("title2", "content2");
         listCard.addStandardCardInfo(item1);
         listCard.addStandardCardInfo(item2);
-        
+
         // 构造Response
         Response response = new Response(outputSpeech, textCard);
 
@@ -227,7 +228,7 @@ public class TaxBot extends BaseBot {
 
         return response;
     }
-    
+
     protected Response onDefaultEvent() {
         TextCard textCard = new TextCard("请选择您要查询的种类");
         textCard.setAnchorText("setAnchorText");

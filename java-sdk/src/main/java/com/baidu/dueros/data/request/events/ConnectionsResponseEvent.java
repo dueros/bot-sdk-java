@@ -52,8 +52,6 @@ public class ConnectionsResponseEvent extends RequestBody {
      *            name
      * @param token
      *            token
-     * @param payload
-     *            payload
      */
     protected ConnectionsResponseEvent(@JsonProperty("requestId") final String requestId,
             @JsonProperty("timestamp") final String timestamp,
