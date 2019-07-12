@@ -23,11 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import com.baidu.dueros.bot.BaseBot;
 import com.baidu.dueros.data.request.IntentRequest;
 import com.baidu.dueros.data.request.LaunchRequest;
+import com.baidu.dueros.data.request.buy.event.BuyEvent;
 import com.baidu.dueros.data.request.pay.event.ChargeEvent;
 import com.baidu.dueros.data.response.OutputSpeech;
 import com.baidu.dueros.data.response.Reprompt;
 import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.card.TextCard;
+import com.baidu.dueros.data.response.directive.pay.Buy;
 import com.baidu.dueros.data.response.directive.pay.Charge;
 import com.baidu.dueros.model.Response;
 
@@ -71,6 +73,14 @@ public class ChargeBot extends BaseBot {
             // 构造返回的Response
             Response response = new Response(outputSpeech);
             return response;
+        } else if ("buy".equals(intentRequest.getIntentName())) {
+            Buy buy = new Buy("token", "productId");
+            this.addDirective(buy);
+            OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "欢迎购买商品");
+            // 构造返回的Response
+            Response response = new Response(outputSpeech);
+            return response;
+
         }
 
         return null;
@@ -88,6 +98,16 @@ public class ChargeBot extends BaseBot {
 
         Response response = new Response(outputSpeech, textCard, reprompt);
 
+        return response;
+    }
+
+    @Override
+    protected Response onBuyEvent(final BuyEvent buyEvent) {
+        String purchaseResult = buyEvent.getPayload().getPurchaseResult().getPurchaseResult();
+        String baiduOrderReferenceId = buyEvent.getPayload().getBaiduOrderReferenceId();
+        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, purchaseResult + baiduOrderReferenceId);
+
+        Response response = new Response(outputSpeech);
         return response;
     }
 

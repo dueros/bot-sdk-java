@@ -1,0 +1,176 @@
+{
+    "type":"DPL",
+    "version":"1.0",
+    "mainTemplate":{
+        "parameters":[
+            "payload"
+        ],
+        "items":[
+            {
+                "type":"Image",
+                "position":"absolute",
+                "top":"0dp",
+                "left":"0dp",
+                "src":"https://d2o906d8ln7ui1.cloudfront.net/images/BT7_Background.png",
+                "height":"100%",
+                "width":"100%"
+            },
+            {
+                "type":"Header",
+                "headerTitle":"DPL示例",
+                "headerImage":"https://dbp-dict.bj.bcebos.com/dpl/header-icon.png",
+                "hasBackIcon":true
+            },
+            {
+                "type":"Container",
+                "width":"100%",
+                "height":"100%",
+                "padding-top": "10%",
+                "padding-left": "10%",
+                "flex-direction": "row",
+                "position":"absolute",
+                "top":"0dp",
+                "left":"0dp",
+                "items":[
+                    {
+                        "type": "ScrollView",
+                        "componentId": "demo_launch_scrollview_compid",
+                        "direction": "vertical",
+                        "width": "40%",
+                        "height": "400dp",
+                        "margin-top": "15dp",
+                        "items": [
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "text": "这个DPL的样例比较完整的展示了DPL的页面构建以及交互的实现，涉及11种组件(9种基础组件+2种复合组件)和8种常见的交互Command。组件: Text、Image、Container、Frame、List、Pager、ScrollView、Audio、Video、Header、Footer。交互Command: AutoPage、SetPage、Scroll、ScrollToIndex、Animation、ControlMedia、SendEvent、SetState、Parallel。页面交互的部分支持：页面点击和通过query控制后续组件变更时候会定期更新此demo， 使用前请先配置好列表中的意图，运行服务后在小度在家有屏系列产品上体验。"
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "10dp",
+                                "text": "如何运行demo"
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "20dp",
+                                "text": "1. 在DBP技能开发平台创建一个技能 如: 技能名称：DPL例子， 调用名称：上海，调用名称在调试模式下可以自定义。"
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "20dp",
+                                "text": "2. 给新建技能创建demo中需要的意图，demo中一共有14个意图"
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "20dp",
+                                "text": "3. 进入DPL_CFC,  npm install 下载安装依赖"
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "20dp",
+                                "text": "4. 将demo服务地址配置"
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "20dp",
+                                "text": "5. 在小度在家或者小度在家1S上绑定自己的开发者账户，进行如下操作："
+                            },
+                            {
+                                "type": "Text",
+                                "color": "#18773d",
+                                "letter-spacing": "0.5dp",
+                                "font-size": "20dp",
+                                "margin-top": "20dp",
+                                "text": "打开技能调试模式 --> 打开上海 --> query：简单图片／长文本／短文本／右图／左图详情／横向列表／视频相册"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Pager",
+                        "componentId": "demo_launch_pager_compid",
+                        "width": "45%",
+                        "margin-left": "5%",
+                        "height": "300dp",
+                        "onLoaded": [
+                            {
+                                "type": "AutoPage",
+                                "componentId": "demo_launch_pager_compid",
+                                "durationInMillisecond": 1000
+                            }
+                        ],
+                        "items": [
+                            {
+                                "type": "Frame",
+                                "width": "100%",
+                                "height": "400dp",
+                                "border-radius": "50%",
+                                "padding-top": "22%",
+                                "padding-left": "8%",
+                                "background-color": "#FFB6C1",
+                                "items": [
+                                    {
+                                        "type": "Text",
+                                        "font-size": "25dp",
+                                        "text": "在DBP技能开发平台创建技能 如技能名称:DPL例子,调用名称:上海，调用名称在调试模式下可以自定义。"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Frame",
+                                "width": "100%",
+                                "height": "400dp",
+                                "border-radius": "50%",
+                                "padding-top": "30%",
+                                "padding-left": "8%",
+                                "background-color": "#FF83FA",
+                                "items": [
+                                    {
+                                        "type": "Text",
+                                        "font-size": "25dp",
+                                        "text": "给新建技能创建demo中需要的意图，demo中一共有14个意图"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Frame",
+                                "width": "100%",
+                                "height": "400dp",
+                                "padding-top": "30%",
+                                "padding-left": "15%",
+                                "border-radius": "50%",
+                                "background-color": "#FFEC8B",
+                                "items": [
+                                    {
+                                        "type": "Text",
+                                        "font-size": "25dp",
+                                        "text": "部署CFC或者WebService"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -77,6 +77,7 @@ public class TaxAction extends HttpServlet {
             String responseJson = bot.run();
             // 设置response的编码UTF-8
             response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
             // 返回response
             response.getWriter().append(responseJson);
 

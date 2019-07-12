@@ -1,0 +1,121 @@
+{
+    "type":"DPL",
+    "version":"1.0",
+    "dataSource": {
+        "listData": [
+            {
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2F1.jpeg",
+                "desc":"心心"
+            },
+            {
+                "src":"https://dbp-dict.bj.bcebos.com/dpl/details2.png",
+                "desc":"美酒"
+            },
+            {
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2F3.jpeg",
+                "desc":"猫咪"
+            },
+            {
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2F4.jpeg",
+                "desc":"奶狗"
+            },
+            {
+                "src":"https://dbp-dict.bj.bcebos.com/dpl/details1.png",
+                "desc":"美食"
+            }
+        ]
+    },
+    "styles": {
+        "listStyle": {
+            "values": {
+                "height":"100%",
+                "width":"100%",
+                "direction":"horizontal"
+            }
+        },
+        "listItemTextStyle": {
+            "values": {
+                "font-size":"30dp",
+                "letter-spacing":"0.6dp",
+                "margin-top":"10dp"
+            }
+        },
+        "listItemImageStyle": {
+            "values": {
+                "width":"200dp",
+                "height":"260dp",
+                "border-radius":"5%"
+            }
+        }
+    },
+    "layouts": {
+        "listItemLayout": {
+            "parameters": [
+                "listItemData"
+            ],
+            "item": [
+                {
+                    "type":"Container",
+                    "height":"100%",
+                    "width":"100%",
+                    "margin-left":"30dp",
+                    "margin-top": "100dp",
+                    "items":[
+                        {
+                            "type":"Image",
+                            "style": "listItemImageStyle",
+                            "src":"${listItemData.src}"
+                        },
+                        {
+                            "type":"Text",
+                            "style": "listItemTextStyle",
+                            "text":"${listItemData.desc}"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "mainTemplate":{
+        "parameters":[
+            "payload"
+        ],
+        "items":[
+            {
+                "type":"Image",
+                "height":"100%",
+                "width":"100%",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp",
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2Fbg-img4.png"
+            },
+            {
+                "type":"Container",
+                "width":"100%",
+                "height":"100%",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp",
+                "items":[
+                    {
+                        "type":"Header",
+                        "headerImage":"https://dbp-dict.bj.bcebos.com/dpl/header-icon.png",
+                        "headerTitle":"横向列表"
+                    },
+                    {
+                        "type":"List",
+                        "style": "listStyle",
+                        "data": "${payload.listData}",
+                        "items":[
+                            {
+                                "type": "listItemLayout",
+                                "listItemData": "${data}"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

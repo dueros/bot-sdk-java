@@ -16,6 +16,7 @@
 
 package com.baidu.dueros.data.request;
 
+import com.baidu.dueros.data.request.buy.event.BuyEvent;
 import com.baidu.dueros.data.request.events.ButtonClickedEvent;
 import com.baidu.dueros.data.request.events.ConnectionsResponseEvent;
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
@@ -36,6 +37,7 @@ import com.baidu.dueros.data.request.videoplayer.event.PlaybackStutterFinishedEv
 import com.baidu.dueros.data.request.videoplayer.event.PlaybackStutterStartedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.ProgressReportDelayElapsedEvent;
 import com.baidu.dueros.data.request.videoplayer.event.ProgressReportIntervalElapsedEvent;
+import com.baidu.dueros.data.response.directive.dpl.event.UserEvent;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -74,7 +76,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @Type(value = LinkClickedEvent.class), @Type(value = ConnectionsResponseEvent.class),
         @Type(value = PermissionGrantFailedEvent.class), @Type(value = PermissionRejectedEvent.class),
         @Type(value = PermissionGrantedEvent.class), @Type(value = PermissionRequiredEvent.class),
-        @Type(value = ButtonClickedEvent.class), @Type(value = RadioButtonClickedEvent.class) })
+        @Type(value = ButtonClickedEvent.class), @Type(value = RadioButtonClickedEvent.class),
+        @Type(value = UserEvent.class), @Type(value = BuyEvent.class) })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RequestBody {
 

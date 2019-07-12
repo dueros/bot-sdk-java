@@ -1,0 +1,72 @@
+{
+    "type":"DPL",
+    "version":"1.0",
+    "dataSource": {
+        "title": "徒劳的寒鸦",
+        "content": "宙斯想要为鸟类立一个王，指定一个日期，要求众鸟全都按时出席，以便选他们之中最美丽的为王。众鸟都跑到河里去梳洗打扮。寒鸦知道自己没一处漂亮，便来到河边，捡起众鸟脱落下的羽毛，小心翼翼地全插在自己身上，再用胶粘住。指定的日期到了，所有的鸟都一齐来到宙斯面前。宙斯一眼就看见花花绿绿的寒鸦，在众鸟之中显得格外漂亮，准备立他为王。众鸟十分气愤，纷纷从寒鸦身上拔下本属于自己的羽毛。于是，寒鸦身上美丽的羽毛一下全没了，又变成了一只丑陋的寒鸦了。"
+    },
+    "styles": {
+        "baseAbsolutePositionStyle": {
+           "values" : {
+               "position": "absolute",
+               "left": "0dp",
+               "top": "0dp",
+               "height":"100%",
+               "width":"100%"
+           }
+        },
+        "storyContentStyle": {
+            "values": {
+                "font-size":"30dp",
+                "line-height":"40dp",
+                "font-style":"normal",
+                "letter-spacing":"0.6dp"
+            }
+        },
+        "backgroundImageStyle": {
+            "extend": ["baseAbsolutePositionStyle"],
+            "values": {}
+        },
+        "mainBodyStyle": {
+            "extend": "baseAbsolutePositionStyle"
+        }
+    },
+    "mainTemplate":{
+        "parameters":[
+            "payload"
+        ],
+        "items":[
+            {
+                "type":"Image",
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2Fbg-img4.png",
+                "style": "backgroundImageStyle"
+            },
+            {
+                "type":"Container",
+                "style": "mainBodyStyle",
+                "items":[
+                    {
+                        "type":"Header",
+                        "headerTitle": "${payload.title}",
+                        "headerImage": "https://dbp-dict.bj.bcebos.com/dpl%2Fh3.png",
+                        "hasBackIcon": true
+                    },
+                    {
+                        "type":"Container",
+                        "height":"80%",
+                        "width":"80%",
+                        "margin-left": "10%",
+                        "margin-top": "80dp",
+                        "items":[
+                            {
+                                "type":"Text",
+                                "text":"${payload.content}",
+                                "style": "storyContentStyle"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

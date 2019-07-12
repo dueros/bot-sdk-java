@@ -21,3 +21,9 @@
 # 1.1.9
     * 修复LinkAccountSucceeded事件和Charge事件dispatch Bug
     * BaseBot新增strRequest字段（收到的请求字符串）
+
+# 1.2.0
+    * 新增DPL相关指令
+    * 新增RenderAudioList、RenderVideoList、RenderAlbumList指令
+    * 新增Buy指令
+    * 修复ListTemplate4相关问题

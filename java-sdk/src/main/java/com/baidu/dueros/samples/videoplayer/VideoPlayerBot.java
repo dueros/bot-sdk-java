@@ -37,11 +37,13 @@ import com.baidu.dueros.data.response.Reprompt;
 import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.card.TextCard;
 import com.baidu.dueros.data.response.directive.videoplayer.ClearQueue;
+import com.baidu.dueros.data.response.directive.videoplayer.Image;
 import com.baidu.dueros.data.response.directive.videoplayer.Play;
 import com.baidu.dueros.data.response.directive.videoplayer.Play.PlayBehaviorType;
+import com.baidu.dueros.data.response.directive.videoplayer.RenderVideoList;
+import com.baidu.dueros.data.response.directive.videoplayer.RenderVideoList.RenderVideoListPlayBehaviorType;
+import com.baidu.dueros.data.response.directive.videoplayer.RenderVideoListVideoItem;
 import com.baidu.dueros.data.response.directive.videoplayer.Stop;
-import com.baidu.dueros.data.response.directive.videoplayer.Stream;
-import com.baidu.dueros.data.response.directive.videoplayer.VideoItem;
 import com.baidu.dueros.model.Response;
 
 /**
@@ -78,7 +80,7 @@ public class VideoPlayerBot extends VideoPlayer {
         // 构造TextCard
         TextCard textCard = new TextCard();
         textCard.setContent("欢迎使用视频播放");
-        textCard.setUrl("www:....");
+        textCard.setUrl("http:....");
         textCard.setAnchorText("setAnchorText");
         // 构造OutputSpeech
         OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "欢迎使用视频播放");
@@ -99,13 +101,41 @@ public class VideoPlayerBot extends VideoPlayer {
     protected Response onInent(IntentRequest intentRequest) {
         // 判断NLU解析的意图名称是否匹配 video_play_intent
         if ("video_play_intent".equals(intentRequest.getIntentName())) {
-            Play play = new Play("http://www.video");
+            Play play = new Play("http:.....mp4");
             play.setPlayBehavior(PlayBehaviorType.REPLACE_ALL);
             play.setToken("token");
             // 也可以链式set信息
             play.setOffsetInMilliSeconds(1000).setVideoItemId("video_1");
             this.addDirective(play);
-            OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "即将为您播放视频");
+
+            // 同时返回播放列表RenderVideoList
+            RenderVideoListVideoItem renderVideoListVideoItem = new RenderVideoListVideoItem();
+            renderVideoListVideoItem.setTitle("卖火柴的小女孩");
+            renderVideoListVideoItem.setMediaLengthInMilliseconds(1000);
+            renderVideoListVideoItem.setTitleSubtext1("卖火柴的小女孩");
+            renderVideoListVideoItem.setTitleSubtext2("卖火柴的小女孩");
+            renderVideoListVideoItem.setImage(new Image("http:.....png"));
+            renderVideoListVideoItem.setToken("123");
+
+            RenderVideoListVideoItem renderVideoListVideoItem1 = new RenderVideoListVideoItem();
+            renderVideoListVideoItem1.setTitle("卖火柴的小女孩");
+            renderVideoListVideoItem1.setMediaLengthInMilliseconds(1000);
+            renderVideoListVideoItem1.setTitleSubtext1("卖火柴的小女孩");
+            renderVideoListVideoItem1.setTitleSubtext2("卖火柴的小女孩");
+            renderVideoListVideoItem1.setImage(new Image("http:.....png"));
+            renderVideoListVideoItem1.setToken("123");
+
+            RenderVideoList renderVideoList = new RenderVideoList();
+            renderVideoList.setBehavior(RenderVideoListPlayBehaviorType.REPLACE);
+            renderVideoList.setToken("456");
+            renderVideoList.setSize(2);
+            renderVideoList.setTitle("查看播放列表");
+            renderVideoList.addVideoItem(renderVideoListVideoItem);
+            renderVideoList.addVideoItem(renderVideoListVideoItem1);
+
+            this.addDirective(renderVideoList);
+
+            OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "开始播放");
             Response response = new Response(outputSpeech);
             return response;
         }
@@ -149,8 +179,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 重写onPlaybackStartedEvent方法，处理PlaybackStartedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackStartedEvent(com.baidu.dueros.data
-     * .request.videoplayer.event.PlaybackStartedEvent)
+     * com.baidu.dueros.bot.VideoPlayer#onPlaybackStartedEvent(com.baidu.dueros.
+     * data .request.videoplayer.event.PlaybackStartedEvent)
      */
     @Override
     protected Response onPlaybackStartedEvent(PlaybackStartedEvent playbackStartedEvent) {
@@ -161,8 +191,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 重写onPlaybackStoppedEvent方法，处理PlaybackStoppedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackStoppedEvent(com.baidu.dueros.data
-     * .request.videoplayer.event.PlaybackStoppedEvent)
+     * com.baidu.dueros.bot.VideoPlayer#onPlaybackStoppedEvent(com.baidu.dueros.
+     * data .request.videoplayer.event.PlaybackStoppedEvent)
      */
     @Override
     protected Response onPlaybackStoppedEvent(PlaybackStoppedEvent playbackStoppedEvent) {
@@ -184,9 +214,8 @@ public class VideoPlayerBot extends VideoPlayer {
     /*
      * 重写onPlaybackFinishedEvent方法，处理PlaybackFinishedEvent事件
      * 
-     * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackFinishedEvent(com.baidu.dueros.
-     * data.request.videoplayer.event.PlaybackFinishedEvent)
+     * @see com.baidu.dueros.bot.VideoPlayer#onPlaybackFinishedEvent(com.baidu.
+     * dueros. data.request.videoplayer.event.PlaybackFinishedEvent)
      */
     @Override
     protected Response onPlaybackFinishedEvent(PlaybackFinishedEvent playbackFinishedEvent) {
@@ -198,8 +227,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 处理ProgressReportIntervalElapsedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onProgressReportIntervalElapsedEvent(com.
-     * baidu.dueros.data.request.videoplayer.event.
+     * com.baidu.dueros.bot.VideoPlayer#onProgressReportIntervalElapsedEvent(
+     * com. baidu.dueros.data.request.videoplayer.event.
      * ProgressReportIntervalElapsedEvent)
      */
     @Override
@@ -212,7 +241,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 重写onProgressReportDelayElapsedEvent方法，处理ProgressReportDelayElapsedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onProgressReportDelayElapsedEvent(com.baidu.
+     * com.baidu.dueros.bot.VideoPlayer#onProgressReportDelayElapsedEvent(com.
+     * baidu.
      * dueros.data.request.videoplayer.event.ProgressReportDelayElapsedEvent)
      */
     @Override
@@ -224,8 +254,8 @@ public class VideoPlayerBot extends VideoPlayer {
     /*
      * 重写onPlaybackStutterFinishedEvent方法，处理PlaybackStutterFinishedEvent事件
      * 
-     * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackStutterFinishedEvent(com.baidu.
+     * @see com.baidu.dueros.bot.VideoPlayer#onPlaybackStutterFinishedEvent(com.
+     * baidu.
      * dueros.data.request.videoplayer.event.PlaybackStutterFinishedEvent)
      */
     @Override
@@ -237,8 +267,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 重写onPlaybackPausedEvent方法，处理PlaybackPausedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackPausedEvent(com.baidu.dueros.data.
-     * request.videoplayer.event.PlaybackPausedEvent)
+     * com.baidu.dueros.bot.VideoPlayer#onPlaybackPausedEvent(com.baidu.dueros.
+     * data. request.videoplayer.event.PlaybackPausedEvent)
      */
     @Override
     protected Response onPlaybackPausedEvent(PlaybackPausedEvent playbackPausedEvent) {
@@ -249,8 +279,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 重写onPlaybackResumedEvent方法，处理PlaybackResumedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackResumedEvent(com.baidu.dueros.data
-     * .request.videoplayer.event.PlaybackResumedEvent)
+     * com.baidu.dueros.bot.VideoPlayer#onPlaybackResumedEvent(com.baidu.dueros.
+     * data .request.videoplayer.event.PlaybackResumedEvent)
      */
     @Override
     protected Response onPlaybackResumedEvent(PlaybackResumedEvent playbackResumedEvent) {
@@ -261,8 +291,8 @@ public class VideoPlayerBot extends VideoPlayer {
      * 重写onPlaybackQueueClearedEvent方法，处理PlaybackQueueClearedEvent事件
      * 
      * @see
-     * com.baidu.dueros.bot.VideoPlayer#onPlaybackQueueClearedEvent(com.baidu.dueros
-     * .data.request.videoplayer.event.PlaybackQueueClearedEvent)
+     * com.baidu.dueros.bot.VideoPlayer#onPlaybackQueueClearedEvent(com.baidu.
+     * dueros .data.request.videoplayer.event.PlaybackQueueClearedEvent)
      */
     @Override
     protected Response onPlaybackQueueClearedEvent(PlaybackQueueClearedEvent playbackQueueClearedEvent) {
@@ -272,8 +302,8 @@ public class VideoPlayerBot extends VideoPlayer {
     /*
      * 重写onSessionEnded方法，处理SessionEndedRequest对话事件
      * 
-     * @see com.baidu.dueros.bot.BaseBot#onSessionEnded(com.baidu.dueros.data.request.
-     * SessionEndedRequest)
+     * @see com.baidu.dueros.bot.BaseBot#onSessionEnded(com.baidu.dueros.data.
+     * request. SessionEndedRequest)
      */
     @Override
     protected Response onSessionEnded(SessionEndedRequest sessionEndedRequest) {
@@ -298,14 +328,18 @@ public class VideoPlayerBot extends VideoPlayer {
      * @return Response 响应
      */
     protected Response getResponse() {
-        Stream stream = new Stream("http://dueroscdn.ubestkid.com/blk/m/526_mhcdxnh.mp4", 0);
-        stream.setExpectedPreviousToken("expectedPreviousToken");
-        stream.setProgressReport(400, 500);
-        VideoItem videoItem = new VideoItem("id:12345", stream);
-        Play play = new Play(PlayBehaviorType.ENQUEUE, videoItem);
-        this.addDirective(play);
-        OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "即将为您播放视频");
-        Response response = new Response(outputSpeech);
+        // Stream stream = new
+        // Stream("http://dueroscdn.ubestkid.com/blk/m/526_mhcdxnh.mp4", 0);
+        // stream.setExpectedPreviousToken("expectedPreviousToken");
+        // stream.setProgressReport(400, 500);
+        // VideoItem videoItem = new VideoItem("id:12345", stream);
+        // Play play = new Play(PlayBehaviorType.ENQUEUE, videoItem);
+        // this.addDirective(play);
+        // OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText,
+        // "即将为您播放视频");
+
+        this.waitAnswer();
+        Response response = new Response();
         return response;
     }
 }

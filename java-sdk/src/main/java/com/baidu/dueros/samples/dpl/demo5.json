@@ -1,0 +1,96 @@
+{
+    "type":"DPL",
+    "version":"1.0",
+    "mainTemplate":{
+        "parameters":[
+            "payload"
+        ],
+        "items":[
+            {
+                "type":"Image",
+                "height":"100%",
+                "width":"100%",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp",
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2Fbg-img4.png"
+            },
+            {
+                "type":"Container",
+                "width":"100%",
+                "height":"100%",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp",
+                "items":[
+                    {
+                        "type":"Header",
+                        "headerImage":"https://dbp-dict.bj.bcebos.com/dpl/header-icon.png"
+                    },
+                    {
+                        "type":"Container",
+                        "flex-direction":"row",
+                        "width":"100%",
+                        "height":"100%",
+                        "items":[
+                            {
+                                "type":"Image",
+                                "height":"350dp",
+                                "width":"270dp",
+                                "border-radius": "5%",
+                                "margin-left":"35dp",
+                                "margin-top":"40dp",
+                                "src":"https://dbp-dict.bj.bcebos.com/dpl%2F4.jpeg"
+                            },
+                            {
+                                "type":"Container",
+                                "width":"65%",
+                                "height":"100%",
+                                "items":[
+                                    {
+                                        "type":"Text",
+                                        "text":"Chinese Pastoral Dog",
+                                        "font-size":"25dp",
+                                        "margin-top":"40dp",
+                                        "margin-left":"7%",
+                                        "line-height":"20dp"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"Country of origin: China",
+                                        "font-size":"25dp",
+                                        "margin-top":"30dp",
+                                        "margin-left":"7%",
+                                        "line-height":"20dp"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"The firewood dog, also known as the Chinese Pastoral Dog, is widely distributed in China and has a large number. It is mild in temperament and loyal to its owner. Many families in the countryside raise firewood dogs.",
+                                        "font-size":"25dp",
+                                        "margin-top":"30dp",
+                                        "margin-left":"7%",
+                                        "line-height":"80dp"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"• Chinese Pastoral Dog is endemic to China",
+                                        "font-size":"20dp",
+                                        "margin-top":"15dp",
+                                        "margin-left":"7%",
+                                        "line-height":"40dp"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type":"Footer",
+                        "hints":[
+                            "Chinese Pastoral Dog"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

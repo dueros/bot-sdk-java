@@ -35,6 +35,7 @@ import com.baidu.dueros.data.request.RequestBody;
 import com.baidu.dueros.data.request.SessionEndedRequest;
 import com.baidu.dueros.data.request.SupportedInterfaces;
 import com.baidu.dueros.data.request.audioplayer.event.AudioPlayerEvent;
+import com.baidu.dueros.data.request.buy.event.BuyEvent;
 import com.baidu.dueros.data.request.events.ElementSelectedEvent;
 import com.baidu.dueros.data.request.events.LinkAccountSucceededEvent;
 import com.baidu.dueros.data.request.events.ButtonClickedEvent;
@@ -69,11 +70,14 @@ import com.baidu.dueros.data.response.directive.ConfirmSlot;
 import com.baidu.dueros.data.response.directive.Delegate;
 import com.baidu.dueros.data.response.directive.Directive;
 import com.baidu.dueros.data.response.directive.ElicitSlot;
+import com.baidu.dueros.data.response.directive.dpl.ExecuteCommands;
+import com.baidu.dueros.data.response.directive.dpl.event.UserEvent;
 import com.baidu.dueros.model.Request;
 import com.baidu.dueros.model.Response;
 import com.baidu.dueros.model.ResponseEncapsulation;
 import com.baidu.dueros.nlu.Intent;
 import com.baidu.dueros.nlu.Slot;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -546,6 +550,9 @@ public class BaseBot {
      *            需要用户构造的指令，为Directive的子类
      */
     protected void addDirective(Directive directive) {
+        if (directive instanceof ExecuteCommands) {
+            ((ExecuteCommands) directive).setToken(request.getContext().getScreen().getToken());
+        }
         directives.add(directive);
     }
 
@@ -612,9 +619,20 @@ public class BaseBot {
      * 在Bot没有返回的情况下，默认返回
      * 
      * @return String 默认返回
+     * @throws JsonProcessingException
      */
-    public String defaultResponse() {
-        return "{\"status\":0,\"msg\":\"\"}";
+    public String defaultResponse() throws JsonProcessingException {
+
+        ResponseBody responseBody = new ResponseBody();
+        // 默认shouldEndSessions设置为false
+        responseBody.setShouldEndSession(false);
+
+        ResponseEncapsulation response = new ResponseEncapsulation(responseBody);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(Include.NON_NULL);
+        String str = objectMapper.writeValueAsString(response);
+        return str;
     }
 
     /**
@@ -656,7 +674,9 @@ public class BaseBot {
         }
 
         ResponseEncapsulation responseEncapsulation = new ResponseEncapsulation(context, session, responseBody);
-        return new ObjectMapper().writeValueAsString(responseEncapsulation);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        return mapper.writeValueAsString(responseEncapsulation);
     }
 
     /**
@@ -681,83 +701,83 @@ public class BaseBot {
             SessionEndedRequest sessionEndedRequest = (SessionEndedRequest) requestBody;
             response = onSessionEnded(sessionEndedRequest);
         } else if (requestBody instanceof AudioPlayerEvent) {
-            AudioPlayer audioPlayer = (AudioPlayer) this;
+            // AudioPlayer audioPlayer = (AudioPlayer) this;
             if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent;
                 playbackNearlyFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent) requestBody;
-                response = audioPlayer.onPlaybackNearlyFinishedEvent(playbackNearlyFinishedEvent);
+                response = this.onPlaybackNearlyFinishedEvent(playbackNearlyFinishedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent playbackStartedEvent;
                 playbackStartedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent) requestBody;
-                response = audioPlayer.onPlaybackStartedEvent(playbackStartedEvent);
+                response = this.onPlaybackStartedEvent(playbackStartedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent playbackStoppedEvent;
                 playbackStoppedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent) requestBody;
-                response = audioPlayer.onPlaybackStoppedEvent(playbackStoppedEvent);
+                response = this.onPlaybackStoppedEvent(playbackStoppedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent playbackFinishedEvent;
                 playbackFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent) requestBody;
-                response = audioPlayer.onPlaybackFinishedEvent(playbackFinishedEvent);
+                response = this.onPlaybackFinishedEvent(playbackFinishedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent playbackPausedEvent;
                 playbackPausedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent) requestBody;
-                response = audioPlayer.onPlaybackPausedEvent(playbackPausedEvent);
+                response = this.onPlaybackPausedEvent(playbackPausedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent playbackResumedEvent;
                 playbackResumedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent) requestBody;
-                response = audioPlayer.onPlaybackResumedEvent(playbackResumedEvent);
+                response = this.onPlaybackResumedEvent(playbackResumedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent playbackStutterFinishedEvent;
                 playbackStutterFinishedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent) requestBody;
-                response = audioPlayer.onPlaybackStutterFinishedEvent(playbackStutterFinishedEvent);
+                response = this.onPlaybackStutterFinishedEvent(playbackStutterFinishedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent playbackStutterStartedEvent;
                 playbackStutterStartedEvent = (com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent) requestBody;
-                response = audioPlayer.onPlaybackStutterStartedEvent(playbackStutterStartedEvent);
+                response = this.onPlaybackStutterStartedEvent(playbackStutterStartedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent;
                 progressReportDelayElapsedEvent = (com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent) requestBody;
-                response = audioPlayer.onProgressReportDelayElapsedEvent(progressReportDelayElapsedEvent);
+                response = this.onProgressReportDelayElapsedEvent(progressReportDelayElapsedEvent);
             } else if (requestBody instanceof com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent) {
                 com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent;
                 progressReportIntervalElapsedEvent = (com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent) requestBody;
-                response = audioPlayer.onProgressReportIntervalElapsedEvent(progressReportIntervalElapsedEvent);
+                response = this.onProgressReportIntervalElapsedEvent(progressReportIntervalElapsedEvent);
             }
         } else if (requestBody instanceof VideoPlayerEvent) {
-            VideoPlayer videoPlayer = (VideoPlayer) this;
+            // VideoPlayer videoPlayer = (VideoPlayer) this;
             if (requestBody instanceof PlaybackStartedEvent) {
                 PlaybackStartedEvent playbackStartedEvent = (PlaybackStartedEvent) requestBody;
-                response = videoPlayer.onPlaybackStartedEvent(playbackStartedEvent);
+                response = this.onPlaybackStartedEvent(playbackStartedEvent);
             } else if (requestBody instanceof PlaybackStoppedEvent) {
                 PlaybackStoppedEvent playbackStoppedEvent = (PlaybackStoppedEvent) requestBody;
-                response = videoPlayer.onPlaybackStoppedEvent(playbackStoppedEvent);
+                response = this.onPlaybackStoppedEvent(playbackStoppedEvent);
             } else if (requestBody instanceof PlaybackFinishedEvent) {
                 PlaybackFinishedEvent playbackFinishedEvent = (PlaybackFinishedEvent) requestBody;
-                response = videoPlayer.onPlaybackFinishedEvent(playbackFinishedEvent);
+                response = this.onPlaybackFinishedEvent(playbackFinishedEvent);
             } else if (requestBody instanceof PlaybackNearlyFinishedEvent) {
                 PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent = (PlaybackNearlyFinishedEvent) requestBody;
-                response = videoPlayer.onPlaybackNearlyFinishedEvent(playbackNearlyFinishedEvent);
+                response = this.onPlaybackNearlyFinishedEvent(playbackNearlyFinishedEvent);
             } else if (requestBody instanceof ProgressReportIntervalElapsedEvent) {
                 ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent = (ProgressReportIntervalElapsedEvent) requestBody;
-                response = videoPlayer.onProgressReportIntervalElapsedEvent(progressReportIntervalElapsedEvent);
+                response = this.onProgressReportIntervalElapsedEvent(progressReportIntervalElapsedEvent);
             } else if (requestBody instanceof ProgressReportDelayElapsedEvent) {
                 ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent = (ProgressReportDelayElapsedEvent) requestBody;
-                response = videoPlayer.onProgressReportDelayElapsedEvent(progressReportDelayElapsedEvent);
+                response = this.onProgressReportDelayElapsedEvent(progressReportDelayElapsedEvent);
             } else if (requestBody instanceof PlaybackStutterStartedEvent) {
                 PlaybackStutterStartedEvent playbackStutterStartedEvent = (PlaybackStutterStartedEvent) requestBody;
-                response = videoPlayer.onPlaybackStutterStartedEvent(playbackStutterStartedEvent);
+                response = this.onPlaybackStutterStartedEvent(playbackStutterStartedEvent);
             } else if (requestBody instanceof PlaybackStutterFinishedEvent) {
                 PlaybackStutterFinishedEvent playbackStutterFinishedEvent = (PlaybackStutterFinishedEvent) requestBody;
-                response = videoPlayer.onPlaybackStutterFinishedEvent(playbackStutterFinishedEvent);
+                response = this.onPlaybackStutterFinishedEvent(playbackStutterFinishedEvent);
             } else if (requestBody instanceof PlaybackPausedEvent) {
                 PlaybackPausedEvent playbackPausedEvent = (PlaybackPausedEvent) requestBody;
-                response = videoPlayer.onPlaybackPausedEvent(playbackPausedEvent);
+                response = this.onPlaybackPausedEvent(playbackPausedEvent);
             } else if (requestBody instanceof PlaybackResumedEvent) {
                 PlaybackResumedEvent playbackResumedEvent = (PlaybackResumedEvent) requestBody;
-                response = videoPlayer.onPlaybackResumedEvent(playbackResumedEvent);
+                response = this.onPlaybackResumedEvent(playbackResumedEvent);
             } else if (requestBody instanceof PlaybackQueueClearedEvent) {
                 PlaybackQueueClearedEvent playbackQueueClearedEvent = (PlaybackQueueClearedEvent) requestBody;
-                response = videoPlayer.onPlaybackQueueClearedEvent(playbackQueueClearedEvent);
+                response = this.onPlaybackQueueClearedEvent(playbackQueueClearedEvent);
             }
         } else if (requestBody instanceof ConnectionsResponseEvent) {
             ConnectionsResponseEvent connectionsResponseEvent = (ConnectionsResponseEvent) requestBody;
@@ -806,6 +826,12 @@ public class BaseBot {
             } else if (requestBody instanceof RadioButtonClickedEvent) {
                 RadioButtonClickedEvent radioButtonClickedEvent = (RadioButtonClickedEvent) requestBody;
                 response = this.onRadioButtonClicked(radioButtonClickedEvent);
+            } else if (requestBody instanceof UserEvent) {
+                UserEvent userEvent = (UserEvent) requestBody;
+                response = this.onUserEvent(userEvent);
+            } else if (requestBody instanceof BuyEvent) {
+                BuyEvent buyEvent = (BuyEvent) requestBody;
+                response = this.onBuyEvent(buyEvent);
             }
         }
         if (response == null) {
@@ -891,6 +917,28 @@ public class BaseBot {
     }
 
     /**
+     * userEvent事件
+     *
+     * @param userEvent
+     *            userEvent
+     * @return Response 返回的Response
+     */
+    protected Response onUserEvent(final UserEvent userEvent) {
+        return response;
+    }
+
+    /**
+     * buyEvent事件
+     *
+     * @param buyEvent
+     *            buyEvent
+     * @return Response 返回的Response
+     */
+    protected Response onBuyEvent(final BuyEvent buyEvent) {
+        return response;
+    }
+
+    /**
      * 处理表示用户拒绝授权事件 对应的事件是：Permission.GrantFailed
      *
      * @param permissionGrantFailedEvent
@@ -954,6 +1002,249 @@ public class BaseBot {
      * @return Response 返回的Response
      */
     protected Response onChargeEvent(final ChargeEvent chargeEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStartedEvent事件
+     *
+     * @param playbackStartedEvent
+     *            PlaybackStartedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStartedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent playbackStartedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStoppedEvent事件
+     *
+     * @param playbackStoppedEvent
+     *            PlaybackStoppedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStoppedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackStoppedEvent playbackStoppedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理onPlaybackNearlyFinishedEvent事件
+     *
+     * @param playbackNearlyFinishedEvent
+     *            PlaybackNearlyFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackNearlyFinishedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackFinishedEvent事件
+     *
+     * @param playbackFinishedEvent
+     *            PlaybackFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackFinishedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackFinishedEvent playbackFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理ProgressReportIntervalElapsedEvent事件
+     *
+     * @param progressReportIntervalElapsedEvent
+     *            ProgressReportIntervalElapsedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onProgressReportIntervalElapsedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理ProgressReportDelayElapsedEvent事件
+     *
+     * @param progressReportDelayElapsedEvent
+     *            ProgressReportDelayElapsedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onProgressReportDelayElapsedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStutterStartedEvent事件
+     *
+     * @param playbackStutterStartedEvent
+     *            PlaybackStutterStartedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStutterStartedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterStartedEvent playbackStutterStartedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStutterFinishedEvent事件
+     *
+     * @param playbackStutterFinishedEvent
+     *            PlaybackStutterFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStutterFinishedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackStutterFinishedEvent playbackStutterFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackPausedEvent事件
+     *
+     * @param playbackPausedEvent
+     *            PlaybackPausedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackPausedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackPausedEvent playbackPausedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackResumedEvent事件
+     *
+     * @param playbackResumedEvent
+     *            PlaybackResumedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackResumedEvent(
+            final com.baidu.dueros.data.request.audioplayer.event.PlaybackResumedEvent playbackResumedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackQueueClearedEvent事件
+     *
+     * @param playbackQueueClearedEvent
+     *            PlaybackQueueClearedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackQueueClearedEvent(final PlaybackQueueClearedEvent playbackQueueClearedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStartedEvent事件
+     *
+     * @param playbackStartedEvent
+     *            PlaybackStartedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStartedEvent(final PlaybackStartedEvent playbackStartedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStoppedEvent事件
+     *
+     * @param playbackStoppedEvent
+     *            PlaybackStoppedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStoppedEvent(final PlaybackStoppedEvent playbackStoppedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackNearlyFinishedEvent事件
+     *
+     * @param playbackNearlyFinishedEvent
+     *            PlaybackNearlyFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackNearlyFinishedEvent(final PlaybackNearlyFinishedEvent playbackNearlyFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackFinishedEvent事件
+     *
+     * @param playbackFinishedEvent
+     *            PlaybackFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackFinishedEvent(final PlaybackFinishedEvent playbackFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackPausedEvent事件
+     *
+     * @param playbackPausedEvent
+     *            PlaybackPausedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackPausedEvent(final PlaybackPausedEvent playbackPausedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackResumedEvent事件
+     *
+     * @param playbackResumedEvent
+     *            PlaybackResumedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackResumedEvent(final PlaybackResumedEvent playbackResumedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理PlaybackStutterFinishedEvent事件
+     *
+     * @param playbackStutterFinishedEvent
+     *            PlaybackStutterFinishedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStutterFinishedEvent(final PlaybackStutterFinishedEvent playbackStutterFinishedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理onPlaybackStutterStartedEvent事件
+     *
+     * @param playbackStutterStartedEvent
+     *            playbackStutterStartedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onPlaybackStutterStartedEvent(final PlaybackStutterStartedEvent playbackStutterStartedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理ProgressReportDelayElapsedEvent事件
+     *
+     * @param progressReportDelayElapsedEvent
+     *            progressReportDelayElapsedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onProgressReportDelayElapsedEvent(
+            final ProgressReportDelayElapsedEvent progressReportDelayElapsedEvent) {
+        return response;
+    }
+
+    /**
+     * 处理ProgressReportIntervalElapsedEvent事件
+     *
+     * @param progressReportIntervalElapsedEvent
+     *            ProgressReportIntervalElapsedEvent事件
+     * @return Response 返回的Response
+     */
+    protected Response onProgressReportIntervalElapsedEvent(
+            final ProgressReportIntervalElapsedEvent progressReportIntervalElapsedEvent) {
         return response;
     }
 

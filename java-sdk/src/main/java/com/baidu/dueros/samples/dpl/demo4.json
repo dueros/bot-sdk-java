@@ -1,0 +1,101 @@
+{
+    "type":"DPL",
+    "version":"1.0",
+    "mainTemplate": {
+        "parameters":[
+            "payload"
+        ],
+        "items":[
+            {
+                "type":"Image",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp",
+                "height":"100%",
+                "width":"100%",
+                "src":"https://dbp-dict.bj.bcebos.com/dpl%2Fbg-img4.png"
+            },
+            {
+                "type":"Container",
+                "width":"100%",
+                "height":"100%",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp",
+                "items":[
+                    {
+                        "type":"Header",
+                        "headerImage":"https://dbp-dict.bj.bcebos.com/dpl/header-icon.png"
+                    },
+                    {
+                        "type":"Container",
+                        "flex-direction":"row",
+                        "width":"100%",
+                        "height":"100%",
+                        "position":"absolute",
+                        "items":[
+                            {
+                                "type":"Container",
+                                "width":"65%",
+                                "height":"100%",
+                                "items":[
+                                    {
+                                        "type":"Text",
+                                        "text":"柴犬 | 中华田园犬",
+                                        "color":"blue",
+                                        "font-size":"30dp",
+                                        "letter-spacing":"0.5dp",
+                                        "margin-top":"100dp",
+                                        "margin-left":"10%",
+                                        "line-height":"40dp"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"在国内数量很多",
+                                        "font-size":"25dp",
+                                        "letter-spacing":"0.5dp",
+                                        "margin-top":"20dp",
+                                        "margin-left":"10%",
+                                        "line-height":"40dp"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"产地: 中国",
+                                        "font-size":"25dp",
+                                        "letter-spacing":"0.5dp",
+                                        "margin-top":"80dp",
+                                        "margin-left":"10%",
+                                        "line-height":"40dp"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"柴犬又称为中华田园犬，在国内分布广泛且数量众多，性情温和对主人忠诚，在农村很多人家都会饲养柴犬",
+                                        "font-size":"30dp",
+                                        "letter-spacing":"0.5dp",
+                                        "margin-top":"30dp",
+                                        "margin-left":"10%",
+                                        "line-height":"40dp"
+                                    }
+                                ]
+                            },
+                            {
+                                "type":"Image",
+                                "height":"350dp",
+                                "width":"280dp",
+                                "margin-left":"10dp",
+                                "margin-top":"105dp",
+                                "src":"https://dbp-dict.bj.bcebos.com/dpl%2F4.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        "type":"Footer",
+                        "hints":[
+                            "右图"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

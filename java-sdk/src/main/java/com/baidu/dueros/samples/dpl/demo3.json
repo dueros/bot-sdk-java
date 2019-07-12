@@ -1,0 +1,123 @@
+{
+    "type":"DPL",
+    "version":"1.0",
+    "dataSource": {
+        "firstText": "firewood dog | Chinese Pastoral Dog",
+        "secondText": "has a large number",
+        "thirdText": "Country of origin: China",
+        "bottomText": "widely distributed in China and has a large number",
+        "hint": "Chinese Pastoral Dog"
+    },
+    "styles": {
+        "backgroundImageStyle": {
+            "values": {
+                "height":"100%",
+                "width":"100%",
+                "position": "absolute",
+                "left": "0dp",
+                "top": "0dp"
+            }
+        },
+        "mainBodyStyle": {
+            "extend": "backgroundImageStyle",
+            "values": {
+                "flex-direction":"row"
+            }
+        },
+        "firstTextStyle": {
+            "values": {
+                "color":"blue",
+                "font-size":"35dp",
+                "margin-top":"90dp",
+                "margin-left":"10%",
+                "line-height":"40dp"
+            }
+        },
+        "secondTextStyle": {
+            "values": {
+                "font-size":"25dp",
+                "margin-top":"20dp",
+                "margin-left":"10%",
+                "line-height":"40dp"
+            }
+        },
+        "thirdTextStyle": {
+            "values": {
+                "font-size":"25dp",
+                "margin-top":"80dp",
+                "margin-left":"10%",
+                "line-height":"40dp"
+            }
+        },
+        "bottomTextStyle": {
+            "values": {
+                "font-size":"30dp",
+                "margin-top":"30dp",
+                "margin-left":"10%",
+                "line-height":"40dp"
+            }
+        }
+    },
+    "mainTemplate":{
+        "parameters":[
+            "payload"
+        ],
+        "items":[
+            {
+                "type":"Image",
+                "style": "backgroundImageStyle",
+                "src":"https://d2o906d8ln7ui1.cloudfront.net/images/BT6_Background.png"
+            },
+            {
+                "type":"Container",
+                "width":"100%",
+                "height":"100%",
+                "items":[
+                    {
+                        "type":"Header",
+                        "headerImage":"https://dbp-dict.bj.bcebos.com/dpl/header2.png"
+                    },
+                    {
+                        "type":"Container",
+                        "style": "mainBodyStyle",
+                        "items":[
+                            {
+                                "type":"Container",
+                                "width":"100%",
+                                "height":"100%",
+                                "items":[
+                                    {
+                                        "type":"Text",
+                                        "text":"${payload.firstText}",
+                                        "style": "firstTextStyle"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"${payload.secondText}",
+                                        "style": "secondTextStyle"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"${payload.thirdText}",
+                                        "style": "thirdTextStyle"
+                                    },
+                                    {
+                                        "type":"Text",
+                                        "text":"${payload.bottomText}",
+                                        "style": "bottomTextStyle"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Footer",
+                        "hints": [
+                            "${payload.hint}"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

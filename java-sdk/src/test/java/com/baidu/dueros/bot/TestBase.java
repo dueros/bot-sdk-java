@@ -31,8 +31,6 @@ import org.junit.Test;
  * @since 2017年12月8日
  */
 public class TestBase {
-    
-    
 
     /**
      * 
@@ -66,7 +64,8 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.BaseBot#Base(com.baidu.dueros.model.Request)}.
+     * {@link com.baidu.dueros.bot.BaseBot#Base(com.baidu.dueros.model.Request)}
+     * .
      */
     @Test
     public void testBaseRequest() {
@@ -74,7 +73,8 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.BaseBot#Base(java.lang.String)}.
+     * Test method for
+     * {@link com.baidu.dueros.bot.BaseBot#Base(java.lang.String)}.
      */
     @Test
     public void testBaseString() {
@@ -101,7 +101,8 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.BaseBot#getSessionAttribute(java.lang.String)}.
+     * {@link com.baidu.dueros.bot.BaseBot#getSessionAttribute(java.lang.String)}
+     * .
      */
     @Test
     public void testGetSessionAttribute() {
@@ -119,8 +120,8 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.BaseBot#clearSessionAttribute()}
-     * .
+     * Test method for
+     * {@link com.baidu.dueros.bot.BaseBot#clearSessionAttribute()} .
      */
     @Test
     public void testClearSessionAttribute() {
@@ -146,7 +147,8 @@ public class TestBase {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.bot.BaseBot#ask(java.lang.String)}.
+     * Test method for
+     * {@link com.baidu.dueros.bot.BaseBot#ask(java.lang.String)}.
      */
     @Test
     public void testAsk() {
@@ -230,7 +232,8 @@ public class TestBase {
 
     /**
      * Test method for
-     * {@link com.baidu.dueros.bot.BaseBot#build(com.baidu.dueros.model.Response)}.
+     * {@link com.baidu.dueros.bot.BaseBot#build(com.baidu.dueros.model.Response)}
+     * .
      */
     @Test
     public void testBuild() {

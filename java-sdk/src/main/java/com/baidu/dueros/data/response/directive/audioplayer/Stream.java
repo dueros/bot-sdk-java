@@ -128,6 +128,7 @@ public class Stream {
 
     /**
      * 获取音频流格式的getter方法
+     * 
      * @return STREAM_FORMAT 音频流格式
      */
     public STREAM_FORMAT getStreamFormat() {
@@ -136,6 +137,7 @@ public class Stream {
 
     /**
      * 设置音频流格式的setter方法
+     * 
      * @param streamFormat
      *            音频流格式
      * @return Stream
@@ -168,6 +170,7 @@ public class Stream {
 
     /**
      * 获取定时上报ProgressReportIntervalElapsed事件的间隔时间的getter方法
+     * 
      * @return int 定时上报ProgressReportIntervalElapsed事件的间隔时间
      */
     public int getProgressReportIntervalMs() {
@@ -176,6 +179,7 @@ public class Stream {
 
     /**
      * 设置定时上报ProgressReportIntervalElapsed事件的间隔时间的setter方法
+     * 
      * @param progressReportIntervalMs
      *            定时上报ProgressReportIntervalElapsed事件的间隔时间
      * @return Stream

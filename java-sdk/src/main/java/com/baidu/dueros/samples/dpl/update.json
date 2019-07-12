@@ -1,0 +1,111 @@
+{
+  "type": "DPL",
+  "version": "1.0",
+  "mainTemplate": {
+    "parameters": [
+      "payload"
+    ],
+    "items": [
+      {
+        "type": "Container",
+        "componentId": "replaceComponentId",
+        "width": "60%",
+        "height": "100%",
+        "flex-direction": "column",
+        "padding-left": "10dp",
+        "items": [
+          {
+            "type": "Video",
+            "width": "80%",
+            "height": "70%",
+            "componentId": "demo_video_compid",
+            "src": "https://dbp-dict.bj.bcebos.com/video2.mp4",
+            "backVisible":true,
+            "controls":true,
+            "fullScreen":true,
+            "loop":true,
+            "nextEnable":false,
+            "nextVisible":false,
+            "noProgressBar":true,
+            "noSwitcher": false,
+            "prevEnable": false,
+            "prevVisible": false,
+            "bar-visible": true,
+            "onPlay": [
+              {
+                "type": "SendEvent"
+              }
+            ],
+            "onPause": [
+              {
+                "type": "SendEvent"
+              }
+            ],
+            "onNext": [
+              {
+                "type": "SendEvent"
+              }
+            ],
+            "onPrevious": [
+              {
+                "type": "SendEvent"
+              }
+            ],
+            "onEnd": [
+              {
+                "type": "SendEvent"
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "flex-direction": "row",
+            "width": "100%",
+            "height": "70dp",
+            "items": [
+              {
+                "type": "Text",
+                "componentId": "demo_text_compid",
+                "color": "red",
+                "font-size": "20dp",
+                "margin-top": "15dp",
+                "text": "视频标题"
+              },
+              {
+                "type": "Image",
+                "componentId": "demo_image_compid",
+                "onClick": [
+                  {
+                    "type": "SendEvent"
+                  },
+                  {
+                    "type": "SetState",
+                    "componentId": "demo_image_compid",
+                    "state": "src",
+                    "value": "https://dbp-dict.bj.bcebos.com/dpl%2F%E5%BF%83.png"
+                  },
+                  {
+                    "type": "Animation",
+                    "componentId": "demo_image_compid",
+                    "from": "40dp",
+                    "to": "10dp",
+                    "easing": "ease-in",
+                    "attribute": "height",
+                    "duration": 500,
+                    "repeatCount": "3",
+                    "repeatMode": "reverse"
+                  }
+                ],
+                "width": "40dp",
+                "height": "40dp",
+                "margin-top": "12dp",
+                "margin-left": "350dp",
+                "src": "https://dbp-dict.bj.bcebos.com/dpl%2F%E7%81%B0%E5%BF%83.png"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

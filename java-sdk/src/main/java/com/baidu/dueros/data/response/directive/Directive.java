@@ -16,6 +16,9 @@
 
 package com.baidu.dueros.data.response.directive;
 
+import com.baidu.dueros.data.response.directive.audioplayer.RenderAudioList;
+import com.baidu.dueros.data.response.directive.display.RenderAlbumList;
+import com.baidu.dueros.data.response.directive.videoplayer.RenderVideoList;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -42,7 +45,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.videoplayer.ClearQueue.class),
         @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.pay.Charge.class),
         @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.permission.AskForPermissionsConsent.class),
-        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.display.PushStack.class)})
+        @JsonSubTypes.Type(com.baidu.dueros.data.response.directive.display.PushStack.class),
+        @JsonSubTypes.Type(RenderAudioList.class), @JsonSubTypes.Type(RenderVideoList.class),
+        @JsonSubTypes.Type(RenderAlbumList.class) })
 public abstract class Directive {
 
 }

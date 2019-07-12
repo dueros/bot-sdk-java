@@ -45,6 +45,10 @@ public class ResponseEncapsulation {
 
     }
 
+    public ResponseEncapsulation(ResponseBody responseBody) {
+        response = responseBody;
+    }
+
     /**
      * 构造方法
      * 

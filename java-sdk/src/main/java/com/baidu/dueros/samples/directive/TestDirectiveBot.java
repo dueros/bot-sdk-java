@@ -188,8 +188,8 @@ public class TestDirectiveBot extends BaseBot {
      * 重写onElementSelectedEvent方法，处理Display.ElementSelected 事件
      * 
      * @see
-     * com.baidu.dueros.bot.BaseBot#onElementSelectedEvent(com.baidu.dueros.data.
-     * request.events.ElementSelectedEvent)
+     * com.baidu.dueros.bot.BaseBot#onElementSelectedEvent(com.baidu.dueros.
+     * data. request.events.ElementSelectedEvent)
      */
     @Override
     protected Response onElementSelectedEvent(ElementSelectedEvent elementSelectedEvent) {
@@ -207,8 +207,8 @@ public class TestDirectiveBot extends BaseBot {
      * 重写onLinkClickedEvent方法，处理Screen.LinkClicked事件
      * 
      * @see
-     * com.baidu.dueros.bot.BaseBot#onLinkClickedEvent(com.baidu.dueros.data.request
-     * .events.LinkClickedEvent)
+     * com.baidu.dueros.bot.BaseBot#onLinkClickedEvent(com.baidu.dueros.data.
+     * request .events.LinkClickedEvent)
      */
     @Override
     protected Response onLinkClickedEvent(LinkClickedEvent linkClickedEvent) {

@@ -25,17 +25,17 @@ import org.junit.Test;
 
 /**
  * 
- * @author	tianlonglong(tianlong02@baidu.com)
- * @version	V1.0
- * @since	2018年1月9日
+ * @author tianlonglong(tianlong02@baidu.com)
+ * @version V1.0
+ * @since 2018年1月9日
  */
 public class TestCertificate {
 
     /**
      * 
-     * @param	TODO
-     * @throws	TODO
-     * @return	void
+     * @param TODO
+     * @throws TODO
+     * @return void
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -43,9 +43,9 @@ public class TestCertificate {
 
     /**
      * 
-     * @param	TODO
-     * @throws	TODO
-     * @return	void
+     * @param TODO
+     * @throws TODO
+     * @return void
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
@@ -53,16 +53,18 @@ public class TestCertificate {
 
     /**
      * 
-     * @param	TODO
-     * @throws	TODO
-     * @return	void
+     * @param TODO
+     * @throws TODO
+     * @return void
      */
     @Before
     public void setUp() throws Exception {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.certificate.Certificate#verify(java.util.concurrent.ConcurrentHashMap, com.baidu.dueros.certificate.Certificate)}.
+     * Test method for
+     * {@link com.baidu.dueros.certificate.Certificate#verify(java.util.concurrent.ConcurrentHashMap, com.baidu.dueros.certificate.Certificate)}
+     * .
      */
     @Test
     public void testVerify() {
@@ -70,7 +72,9 @@ public class TestCertificate {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.certificate.Certificate#getPublicKeyFromUrl(java.lang.String)}.
+     * Test method for
+     * {@link com.baidu.dueros.certificate.Certificate#getPublicKeyFromUrl(java.lang.String)}
+     * .
      */
     @Test
     public void testGetPublicKeyFromUrl() {
@@ -78,7 +82,8 @@ public class TestCertificate {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.certificate.Certificate#getSignature()}.
+     * Test method for
+     * {@link com.baidu.dueros.certificate.Certificate#getSignature()}.
      */
     @Test
     public void testGetSignature() {
@@ -86,7 +91,8 @@ public class TestCertificate {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.certificate.Certificate#getSignaturecerturl()}.
+     * Test method for
+     * {@link com.baidu.dueros.certificate.Certificate#getSignaturecerturl()}.
      */
     @Test
     public void testGetSignaturecerturl() {
@@ -94,7 +100,8 @@ public class TestCertificate {
     }
 
     /**
-     * Test method for {@link com.baidu.dueros.certificate.Certificate#getMessage()}.
+     * Test method for
+     * {@link com.baidu.dueros.certificate.Certificate#getMessage()}.
      */
     @Test
     public void testGetMessage() {

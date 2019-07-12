@@ -14,7 +14,7 @@
     <groupId>com.baidu.dueros</groupId>
     <artifactId>bot-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.9</version>
+    <version>1.2.0</version>
     <name>bot-sdk</name>
     <url>http://maven.apache.org</url>
     <properties>

@@ -21,6 +21,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.baidu.dueros.bot.AudioPlayer;
+import com.baidu.dueros.data.request.IntentRequest;
 import com.baidu.dueros.data.request.LaunchRequest;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackNearlyFinishedEvent;
 import com.baidu.dueros.data.request.audioplayer.event.PlaybackStartedEvent;
@@ -29,6 +30,8 @@ import com.baidu.dueros.data.response.OutputSpeech.SpeechType;
 import com.baidu.dueros.data.response.Reprompt;
 import com.baidu.dueros.data.response.card.TextCard;
 import com.baidu.dueros.data.response.directive.AudioPlayerDirective.PlayBehaviorType;
+import com.baidu.dueros.data.response.directive.audioplayer.RenderAudioList;
+import com.baidu.dueros.data.response.directive.audioplayer.RenderAudioListAudioItem;
 import com.baidu.dueros.data.response.directive.Play;
 import com.baidu.dueros.model.Response;
 
@@ -80,6 +83,44 @@ public class AudioPlayerBot extends AudioPlayer {
         Response response = new Response(outputSpeech, textCard, reprompt);
 
         return response;
+    }
+
+    @Override
+    protected Response onInent(IntentRequest intentRequest) {
+        if ("play".equals(intentRequest.getIntentName())) {
+            Play play = new Play("https://.mp3");
+            this.addDirective(play);
+            OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "开始播放");
+            Response response = new Response(outputSpeech);
+            return response;
+        } else if ("play_list".equals(intentRequest.getIntentName())) {
+            RenderAudioListAudioItem renderAudioListAudioItem1 = new RenderAudioListAudioItem();
+            renderAudioListAudioItem1
+                    .setImage(new com.baidu.dueros.data.response.directive.audioplayer.Image("https://.jpg"));
+            renderAudioListAudioItem1.setTitle("测试");
+            renderAudioListAudioItem1.setTitleSubtext1("测试");
+            renderAudioListAudioItem1.setTitleSubtext2("测试");
+            renderAudioListAudioItem1.setToken("123");
+
+            RenderAudioListAudioItem renderAudioListAudioItem2 = new RenderAudioListAudioItem();
+            renderAudioListAudioItem2
+                    .setImage(new com.baidu.dueros.data.response.directive.audioplayer.Image("https://.jpg"));
+            renderAudioListAudioItem2.setTitle("测试");
+            renderAudioListAudioItem2.setTitleSubtext1("测试");
+            renderAudioListAudioItem2.setTitleSubtext2("测试");
+            renderAudioListAudioItem2.setToken("123");
+
+            RenderAudioList renderAudioList = new RenderAudioList();
+            renderAudioList.addAudioItem(renderAudioListAudioItem1);
+            renderAudioList.addAudioItem(renderAudioListAudioItem2);
+
+            this.addDirective(renderAudioList);
+            OutputSpeech outputSpeech = new OutputSpeech(SpeechType.PlainText, "播放列表");
+            Response response = new Response(outputSpeech);
+            return response;
+
+        }
+        return null;
     }
 
     /**

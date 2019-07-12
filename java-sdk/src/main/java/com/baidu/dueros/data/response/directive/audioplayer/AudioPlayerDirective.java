@@ -170,6 +170,7 @@ public class AudioPlayerDirective extends Directive {
 
     /**
      * 设置渲染音频播放器界面信息的setter方法
+     * 
      * @param playerInfo
      *            渲染音频播放器的界面信息
      * @return AudioPlayerDirective

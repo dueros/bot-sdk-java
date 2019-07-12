@@ -54,7 +54,7 @@ public class UserInfo {
     public Account getAccount() {
         return account;
     }
-    
+
     public static final class Builder {
         private LocationInfo location;
         private Account account;

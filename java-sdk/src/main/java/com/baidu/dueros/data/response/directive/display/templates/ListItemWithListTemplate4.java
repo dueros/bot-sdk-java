@@ -25,6 +25,11 @@ public class ListItemWithListTemplate4 {
     // 文本内容
     private TextStructure content = new TextStructure();
 
+    // 图片
+    private ImageStructure image;
+    // anchorWord
+    private String anchorWord;
+
     public String getToken() {
         return token;
     }
@@ -41,4 +46,21 @@ public class ListItemWithListTemplate4 {
         this.content = content;
     }
 
+    public ListItemWithListTemplate4 setAnchorWord(String anchorWord) {
+        this.anchorWord = anchorWord;
+        return this;
+    }
+
+    public ListItemWithListTemplate4 setImage(ImageStructure image) {
+        this.image = image;
+        return this;
+    }
+
+    public String getAnchorWord() {
+        return anchorWord;
+    }
+
+    public ImageStructure getImage() {
+        return image;
+    }
 }
