@@ -145,7 +145,7 @@ public class IntentRequest extends RequestBody {
      * @return String 槽位值
      */
     public String getSlot(String slot) {
-        return intents.get(0).getSlots().get(slot).getName();
+        return intents.get(0).getSlots().get(slot).getValue();
     }
 
     /**
@@ -158,7 +158,7 @@ public class IntentRequest extends RequestBody {
      * @return String 槽位名对应的槽位值
      */
     public String getSlot(String slot, int index) {
-        return intents.get(index).getSlots().get(slot).getName();
+        return intents.get(index).getSlots().get(slot).getValue();
     }
 
     /**
